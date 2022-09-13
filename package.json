@@ -36,10 +36,14 @@
     "bootstrap": "^5.2.1",
     "browserify": "^17.0.0",
     "chokidar": "^3.5.3",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.0.2",
     "drag-drop": "^7.2.0",
     "ejs": "^3.1.8",
+    "express-flash": "^0.0.2",
+    "express-session": "^1.17.3",
+    "express-session-sequelize": "^2.3.0",
     "fs-extra": "^10.1.0",
     "helmet": "^6.0.0",
     "jszip": "^3.10.1",
@@ -49,8 +53,11 @@
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
     "sequelize": "^6.21.6",
+    "sequelize-bcrypt": "^1.2.0",
+    "sequelize-cli": "^6.4.1",
     "sqlite3": "^5.0.11",
     "streamsearch": "^1.1.0",
+    "validator": "^13.7.0",
     "webtorrent-hybrid": "^5.0.2"
   }
 }
