@@ -1,12 +1,12 @@
 const express = require('express');                                               //MVC framework
-const expressLayouts = require('express-ejs-layouts');
+const expressLayouts = require('express-ejs-layouts');                            //Ejs layouts structure
 const logger = require('morgan');                                                 //Logging
 const path = require('path');                                                     //directory traversal
-const cors = require('cors');
-const helmet = require('helmet');  // gotta configure this
+const cors = require('cors');                                                     //Cross origin resource sharing
+const helmet = require('helmet');                                                 //Default security headers
 const passport = require('passport');                                             //authentication middleware
 const session = require('express-session');                                       //login session middleware
-const sessionStorage = require('express-session-sequelize')(session.Store);       //login session middleware
+const sessionStorage = require('express-session-sequelize')(session.Store);       //Session storage
 const cookieParser = require('cookie-parser');                                    //Session cookie parser
 const flash = require('express-flash');                                           //pop up messages
 const homeRoutes = require('./routes/home');                                      //Home routes
@@ -32,6 +32,7 @@ app.set('layout', 'layouts/loggedIn');
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(helmet());
 app.use(cors());
 
 // Session middleware
