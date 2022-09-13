@@ -1,7 +1,7 @@
 const app = require('express');
 const router = app.Router();
 const homeController = require('../controllers/home');
-const authController = require('../controllers/auth'); // need Sqlite and Passport setup first
+const authController = require('../controllers/auth');
 const { ensureAuth, ensureGuest } = require('../middleware/auth');
 
 // @desc  // Show Home Page if logged in
@@ -20,12 +20,12 @@ router.get('/signup', ensureGuest, authController.getSignup)
 // @route // POST /signup
 router.post('/signup', authController.postSignup);
 
-// @desc  // Process Login Form
+// @desc  // Process Login Form if not logged in
 // @route // POST /login
-router.post('/login', authController.postLogin);
+router.post('/login', ensureGuest, authController.postLogin);
 
-// @desc  // Process Login Form
-// @route // POST /login
-router.post('/logout', authController.postLogout);
+// @desc  // Process logout request if logged in
+// @route // POST /logout
+router.post('/logout', ensureAuth, authController.postLogout);
 
 module.exports = router;

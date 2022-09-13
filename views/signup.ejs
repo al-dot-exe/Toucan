@@ -1,29 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-   <%- include('partials/head') %>
-   <head>
-   
-   <body>
-      <div class='container'>
-         <%- include('partials/header') %>
-         <section>
-             <% if (locals.messages.errors) { %>
-                 <% messages.errors.forEach( el => { %>
-                     <div class="alert alert-danger"><%= el.msg %></div>
-                 <% }) %>    
-             <% } %>
+<h1>Signup Page</h1>
+<% if (locals.messages.errors) { %>
+   <% messages.errors.forEach( el => { %>
+       <div class="alert alert-danger"><%= el.msg %></div>
+   <% }) %>    
+<% } %>
 
-             <form action="/signup" method="POST">
-                 <input type="text" name="userName" placeholder="User Name">
-                 <input type="email" name="email" placeholder="Email">
-                 <input type="password" name="password" placeholder="Password">
-                 <input type="password" name="confirmPassword" placeholder="Confirm Password">
-                 <input type="submit">
-             </form>
+<form action="/signup" method="POST">
+   <input type="text" name="userName" placeholder="User Name">
+   <input type="email" name="email" placeholder="Email">
+   <input type="password" name="password" placeholder="Password">
+   <input type="password" name="confirmPassword" placeholder="Confirm Password">
+   <input type="submit">
+</form>
 
-            <%- include('partials/footer') %>
-            <%- include('partials/scripts') %>
-         </section>
-      </div>
-   </body>
-</html>
+<div>
+<a href="/login">go to login</a>
+</div>
+
