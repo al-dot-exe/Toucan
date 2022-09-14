@@ -10,7 +10,6 @@ const session = require('express-session');                                     
 const sessionStorage = require('express-session-sequelize')(session.Store);       //Session storage
 const cookieParser = require('cookie-parser');                                    //Session cookie parser
 const flash = require('express-flash');                                           //pop up messages
-const { client } = require('./config/webtorrent');                                //Torrent Client Instance
 const homeRoutes = require('./routes/home');                                      //Home routes
 const torrentRoutes = require('./routes/torrents.js')                             //Torrent client routes
 const { sequelize, connectDB }= require('./config/database');                     //Sqlite database

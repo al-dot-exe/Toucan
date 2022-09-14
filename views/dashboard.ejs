@@ -17,12 +17,11 @@
 <h4>Sample Torrent View</h4>
 <ul>
    <% torrentsArray.forEach( torrent => { %>
-   <li>.torrent: <%= torrent.torrentFile %> </li> 
    <li>Name: <%= torrent.name %> </li>
    <li>Author: <%= torrent.createdBy %> </li>
    <li>Path: <%= torrent.path %> </li>
-   <li>Progress: <%= torrent.progress %> </li> 
-   <li>Completion time remaining: <%= torrent.timeRemaining %></li>
+   <li>Progress: <%= `${(torrent.progress * 100).toFixed(2)}%` %> </li> 
+   <li>Completion time remaining: <%= `${torrent.timeRemaining.toFixed(2)} seconds`%></li>
    <li>Torrent ready to be used: <%= torrent.ready %></li>
     <% }) %>    
 </ul>

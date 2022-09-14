@@ -27,6 +27,7 @@ module.exports = {
          }, (torrent) => {
             console.log(`Torrent File succesfully downloading`)
          });
+
          const user = await User.findByPk(req.user.id);
 
          req.flash("info", { msg: "added new torrent" });
