@@ -8,6 +8,10 @@ const { ensureAuth, ensureGuest } = require('../middleware/auth');
 // @route // GET /
 router.get('/', ensureAuth, homeController.getIndex);
 
+// @desc  // Show Settings Page if logged in
+// @route // GET /settings
+router.get('/settings', ensureAuth, homeController.getSettings);
+
 // @desc  // Show Login Page if not logged in
 // @route // GET /login
 router.get('/login', ensureGuest, authController.getLogin);
@@ -27,5 +31,10 @@ router.post('/login', ensureGuest, authController.postLogin);
 // @desc  // Process logout request if logged in
 // @route // POST /logout
 router.post('/logout', ensureAuth, authController.postLogout);
+
+// Will add these details later
+// // @desc  // Update Settings  if logged in
+// // @route // PUT /settings
+// router.put('/settings', ensureAuth, homeController.getSettings);
 
 module.exports = router;

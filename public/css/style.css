@@ -24,7 +24,7 @@ nav {
    flex-flow: row wrap;
    justify-content: space-between;
 }
-nav div {
+nav section {
    width: 30%;
    display: flex;
    flex-flow: row wrap;

@@ -1,20 +1,26 @@
 <header>
    <nav>
-      <div id="logo">
+      <section id="logo">
          <a href="/">Toucan Torrent</a>
-      </div>
-      <div id="header-nav">
+      </section>
+      <section id="header-nav">
          <ul>
             <li><a href="/torrents/dashboard">Torrents</a></li>
             <li><a href="/torrents/video">Video</a></li>
             <li><a href="/torrents/music">Music</a></li>
             <li><a href="/torrents/books">Books</a></li>
          </ul>
-      </div>
-    <div>
-        <form action="/logout" method="POST">
-            <button type="submit">Logout</button>
-        </form>
-    </div>
+      </section>
+      <section id="account-nav">
+         <ul>
+            <i>avatar</i>
+            <li><a href="/settings">Settings</a></li>
+            <li> 
+               <form action="/logout" method="POST">
+                  <button type="submit">Logout</button>
+                 </form>
+            </li>
+         </ul>
+      </section>
    </nav>
 </header>

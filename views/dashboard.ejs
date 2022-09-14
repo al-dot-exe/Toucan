@@ -3,6 +3,29 @@
 <br>
 <section>
 <h3>Torrent Client Data will go here</h3>
+
+<% if (locals.messages.info) { %>
+    <% messages.info.forEach( el => { %>
+        <div class="alert"><%= el.msg %></div>
+    <% }) %>    
+<% } %>
+
+<form action="/torrents/add" method="POST">
+   <button type="submit">Test Torrent Submission</button>
+</form>
+
+<h4>Sample Torrent View</h4>
+<ul>
+   <% torrentsArray.forEach( torrent => { %>
+   <li>.torrent: <%= torrent.torrentFile %> </li> 
+   <li>Name: <%= torrent.name %> </li>
+   <li>Author: <%= torrent.createdBy %> </li>
+   <li>Path: <%= torrent.path %> </li>
+   <li>Progress: <%= torrent.progress %> </li> 
+   <li>Completion time remaining: <%= torrent.timeRemaining %></li>
+   <li>Torrent ready to be used: <%= torrent.ready %></li>
+    <% }) %>    
+</ul>
 </section>
 <br>
 <br>

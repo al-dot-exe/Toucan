@@ -1,4 +1,5 @@
-const express = require('express');                                               //MVC framework
+const express = require('@feathersjs/express');                                   //MVC framework
+const feathers = require('@feathersjs/feathers');                                 //Realtime framework
 const expressLayouts = require('express-ejs-layouts');                            //Ejs layouts structure
 const logger = require('morgan');                                                 //Logging
 const path = require('path');                                                     //directory traversal
@@ -9,12 +10,15 @@ const session = require('express-session');                                     
 const sessionStorage = require('express-session-sequelize')(session.Store);       //Session storage
 const cookieParser = require('cookie-parser');                                    //Session cookie parser
 const flash = require('express-flash');                                           //pop up messages
+const { client } = require('./config/webtorrent');                                //Torrent Client Instance
 const homeRoutes = require('./routes/home');                                      //Home routes
 const torrentRoutes = require('./routes/torrents.js')                             //Torrent client routes
 const { sequelize, connectDB }= require('./config/database');                     //Sqlite database
 
-// Express init
-const app = express();
+
+// Feathers Express init
+const app = express(feathers());
+
 
 // .env config
 require('dotenv').config({ path: 'config/.env' });
@@ -26,14 +30,14 @@ require('./config/passport')(passport);
 connectDB();
 
 // Client side middleware
+app.use(cors());
+app.use(helmet());
 app.set('view engine', 'ejs');
 app.use(expressLayouts);
 app.set('layout', 'layouts/loggedIn');
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(helmet());
-app.use(cors());
 
 // Session middleware
 app.use(cookieParser())

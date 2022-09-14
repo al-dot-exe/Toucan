@@ -3,12 +3,24 @@ const { DataTypes, Model } = require('sequelize');
 
 // Torrent Schema
 class Torrent extends Model {}
-Torrent.init({
-   _id: {
+const TorrentSchema = Torrent.init({
+   id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       allowNull: false,
-      unique: true
+      unique: true,
+      primaryKey: true
+   },
+   dotTorrent: {
+      type: DataTypes.BLOB,
+      allowNull: false,
+      unique: true // ensures torrent files won't be uploaded multiple times
+   },
+   category: {
+      type: DataTypes.STRING
+   },
+   piecesFolder: {
+      type: DataTypes.TEXT // path to grab torrent files later
    },
 }, {
       sequelize,
@@ -16,7 +28,8 @@ Torrent.init({
       deletedAt: 'destroyTime'
 });
 
-console.log("Torrent Stuff");
+console.log('Synchronizing Torrent Schema');
+TorrentSchema.sync();
 
 
-module.exports = Torrent;
+module.exports = ('Torrent', TorrentSchema);

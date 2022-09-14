@@ -33,4 +33,7 @@ const UserSchema = User.init({
 // Password hashing middleware
 bcrypt(UserSchema)
 
+UserSchema.sync();
+console.log('Synchronizing User Schema');
+
 module.exports = ('User', UserSchema);
