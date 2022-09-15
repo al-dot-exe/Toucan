@@ -6,11 +6,15 @@ module.exports = {
    getClientDashboard: async (req, res) => {
       // just trying things out but all of this would go inside a post request later
       try {
-         torrentsArray = client.torrents;
          const user = await User.findByPk(req.user.id);
+         let upRate = client.uploadSpeed;
+         let downRate = client.downloadSpeed;
+         let torrentsArray = client.torrents;
          res.render("dashboard", {
             user,
-            torrentsArray
+            torrentsArray,
+            upRate,
+            downRate
          });
       } catch (err) {
          console.error(err);
@@ -18,23 +22,67 @@ module.exports = {
       }
    },
 
+   viewTorrent: async (req, res) => {
+      try {
+         const user = await User.findByPk(req.user.id);
+         const torrentModel = await Torrent.findByPk(req.params.id);
+         const torrent = client.get(torrentModel.torrentID);
+         res.render("viewTorrent", {
+            user,
+            torrent
+         });
+      } catch (err) {
+         console.error(err); res.status().send(':(');
+      }
+   },
+
    postTorrent: async (req, res) => {
       try {
-         const torrentId = 'magnet:?xt=urn:btih:08ada5a7a6183aae1e09d831df6748d566095a10&dn=Sintel&tr=udp%3A%2F%2Fexplodie.org%3A6969&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftracker.empire-js.us%3A1337&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=wss%3A%2F%2Ftracker.fastcast.nz&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&ws=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2F&xs=https%3A%2F%2Fwebtorrent.io%2Ftorrents%2Fsintel.torrent'
-          
-         const newTorrent = client.add(torrentId, {
+         const torrentID = req.body.torrentID.trim();
+
+         const torrentExists = await Torrent.findOne({
+            where: {
+               torrentID: torrentID
+            }
+         });
+
+         if(torrentID.startsWith("'")){
+            req.flash("errors", {
+               msg: "Invalid TorrentID"
+            });
+            return res.redirect('dashboard');
+         }
+
+         if (torrentExists) {
+            req.flash("errors", {
+               msg: "Torrent file already exists in database"
+            });
+            return res.redirect('dashboard');
+         }
+
+         client.add(torrentID, {
             path: 'database/torrents/'
-         }, (torrent) => {
-            console.log(`Torrent File succesfully downloading`)
+         }, async (torrent) => {
+            const newTorrent = Torrent.build({
+               id: torrent.infoHash,
+               name: torrent.name,
+               torrentID: torrentID,
+               folderPath: `database/torrents/${torrent.name}`,
+               //category: eventually,
+            });
+            console.log(`Torrent file succesfully downloading, saving metadata to DB`)
+            await newTorrent.save();
          });
 
          const user = await User.findByPk(req.user.id);
 
          req.flash("info", { msg: "added new torrent" });
          return res.redirect("dashboard");
+
       } catch (err) {
          console.error(err);
-         return res.status(500).send(':(');
+         req.flash("errors", { msg: "error while adding torrent to database" });
+         return res.redirect('dashboard');
       }
    }
 };

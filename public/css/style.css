@@ -7,8 +7,9 @@
    flex-flow: column wrap;
    align-items: stretch;
    width: 80%;
-  margin-left: 10%;
+   margin-left: 10%;
    height: 100%;
+
 }
 
 header,
@@ -37,4 +38,28 @@ nav section {
    flex-flow: row;
    justify-content: space-around;
    align-items: stretch;
+}
+
+#torrent-table {
+   display: flex;
+   flex-flow: column nowrap;
+   align-items: stretch;
+   /* justify-content: center; */
+   border: 1px solid green;
+}
+
+#torrent-table thead {
+   background-color: lightgrey;
+}
+/* #torrent-table tbody { */
+/*    display: flex; */
+/*    flex-flow: row wrap; */
+/* } */
+#torrent-table > *  * {
+   text-align: center;
+   height: 100%;
+   border-left: 1px solid grey;
+   border-right: 1px solid grey;
+   padding: 0;
+   margin: auto;
 }

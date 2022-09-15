@@ -13,6 +13,7 @@ const flash = require('express-flash');                                         
 const homeRoutes = require('./routes/home');                                      //Home routes
 const torrentRoutes = require('./routes/torrents.js')                             //Torrent client routes
 const { sequelize, connectDB }= require('./config/database');                     //Sqlite database
+const { startToucan } = require('./config/webtorrent');                           //Start WebTorrent client
 
 
 // Feathers Express init
@@ -51,6 +52,9 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session()); // login sessions
 app.use(flash()); // flash messages // requires sessions
+
+// WebTorrent client initialize
+startToucan(); // giving me issues here???
 
 // Routes
 app.use('/', homeRoutes);

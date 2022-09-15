@@ -15,4 +15,9 @@ router.get('/dashboard', ensureAuth, torrentsController.getClientDashboard);
 // @route // Post /
 router.post('/add', ensureAuth, torrentsController.postTorrent);
 
+
+// @desc  // Show Specific Torrent information if logged in
+// @route // GET /torrents/:id
+router.get('/:id', ensureAuth, torrentsController.viewTorrent);
+
 module.exports = router;

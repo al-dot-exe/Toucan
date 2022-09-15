@@ -1,30 +1,66 @@
-<h1>From Toucan Torrents Dashboard for <%=user.userName.replace(/\b\w/g, c => c.toUpperCase())%>!</h1>
+<h1>Dashboard</h1>
 <br>
 <br>
+
 <section>
-<h3>Torrent Client Data will go here</h3>
 
-<% if (locals.messages.info) { %>
-    <% messages.info.forEach( el => { %>
-        <div class="alert"><%= el.msg %></div>
-    <% }) %>    
+   <section>
+   <h4>Add Torrent</h3>
+      <form action="/torrents/add" method="POST">
+         <input type="text" name="torrentID" placeholder="magnet:uri" value="">
+         <input type="submit" value="submit" />
+         <!-- File upload doesn't work yet -->
+         <br>
+         <input id="dot-torrent" name='.torrent' type="file" />
+         <br>
+      </form>
+
+   <% if (locals.messages.info) { %>
+       <% messages.info.forEach( el => { %>
+           <div class="alert"><%= el.msg %></div>
+       <% }) %>    
+   <% } %>
+<% if (locals.messages.errors) { %>
+     <% messages.errors.forEach( el => { %>
+         <div class="alert alert-danger"><%= el.msg %></div>
+     <% }) %>    
 <% } %>
+   </section>
 
-<form action="/torrents/add" method="POST">
-   <button type="submit">Test Torrent Submission</button>
-</form>
+   <h4>Torrents Table</h4>
 
-<h4>Sample Torrent View</h4>
-<ul>
-   <% torrentsArray.forEach( torrent => { %>
-   <li>Name: <%= torrent.name %> </li>
-   <li>Author: <%= torrent.createdBy %> </li>
-   <li>Path: <%= torrent.path %> </li>
-   <li>Progress: <%= `${(torrent.progress * 100).toFixed(2)}%` %> </li> 
-   <li>Completion time remaining: <%= `${torrent.timeRemaining.toFixed(2)} seconds`%></li>
-   <li>Torrent ready to be used: <%= torrent.ready %></li>
-    <% }) %>    
-</ul>
+   <section id='torrent-table'>
+   <span>Rate: <%= `${(upRate / 1000).toFixed(2)}` %>/<%= `${(downRate / 1000).toFixed(2)}` %> KB/s</span>
+      <table>
+         <thead>
+            <tr>
+               <th></th>
+               <th>Name</th>
+               <th>Author</th>
+               <th>Uprate (KB/s)</th>
+               <th>Downrate (KB/s)</th>
+               <th>Peer Count</th>
+               <th>Status</th>
+            </tr>
+         </thead>
+         <tbody>
+            <% torrentsArray.forEach( torrent => { %>
+            <tr>
+               <td>
+               <a href='/torrents/<%= torrent.infoHash %>'>more</a>
+               </td>
+               <td><%= torrent.name %></td>
+               <td><%= torrent.createdBy %></td>
+               <td><%= `${(torrent.uploadSpeed / 1000).toFixed(2)}` %> KB/s</td>
+               <td><%= `${(torrent.downloadSpeed / 1000).toFixed(2)}` %> KB/s</td>
+               <td><%= torrent.numPeers %></td>
+               <td><%= !torrent.done ? `Leeching: ${(torrent.progress * 100).toFixed(2)}%` : 'Seeding :)' %></td> 
+             </tr>
+             <% }) %>    
+         </tbody>
+      </table>
+   </section>
 </section>
+
 <br>
 <br>

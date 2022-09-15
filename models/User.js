@@ -4,6 +4,7 @@ const bcrypt = require('sequelize-bcrypt');
 
 // User Schema
 class User extends Model {}
+
 const UserSchema = User.init({
    id: {
       type: DataTypes.UUID,
@@ -32,8 +33,5 @@ const UserSchema = User.init({
 
 // Password hashing middleware
 bcrypt(UserSchema)
-
-UserSchema.sync();
-console.log('Synchronizing User Schema');
 
 module.exports = ('User', UserSchema);
