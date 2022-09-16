@@ -1,4 +1,8 @@
 const { Sequelize } = require('sequelize');
+const ExtendedDataTypes = require('./datatypes').default;
+
+// Provides extended data type for handling torrent ids
+ExtendedDataTypes(Sequelize);
 
 // sqlite instance
 const sequelize = new Sequelize({
@@ -6,7 +10,6 @@ const sequelize = new Sequelize({
    host: 'localhost',
    dialect: 'sqlite',
 });
-
 
 const connectDB = async _ => {
    try {
@@ -16,5 +19,6 @@ const connectDB = async _ => {
       console.error(`Database connection failed\nError: err`);
    }
 }
+
 
 module.exports = { sequelize, connectDB };

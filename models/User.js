@@ -31,6 +31,9 @@ const UserSchema = User.init({
       sequelize
 });
 
+const sync = async () => await UserSchema.sync();
+console.log('Synchronizing user database...');
+sync()
 // Password hashing middleware
 bcrypt(UserSchema)
 

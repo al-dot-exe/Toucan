@@ -5,14 +5,15 @@
 <section>
 
    <section>
-   <h4>Add Torrent</h3>
-      <form action="/torrents/add" method="POST">
-         <input type="text" name="torrentID" placeholder="magnet:uri" value="">
-         <input type="submit" value="submit" />
+      <h4>Add Torrent</h3>
+      <form action="/torrents/magnet-upload" method="POST">
+         <input type="text" name="magnet" placeholder="magnet:uri" value="">
+         <input type="submit" value="submit magnet" />
+      </form>
          <!-- File upload doesn't work yet -->
-         <br>
+      <form action="/torrents/file-upload" method="POST" enctype="multipart/form-data">
          <input id="dot-torrent" name='.torrent' type="file" />
-         <br>
+         <input type="submit" value="upload" />
       </form>
 
    <% if (locals.messages.info) { %>

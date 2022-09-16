@@ -15,30 +15,38 @@ const client = new WebTorrent({
    utp: true,
 });
 
-//query database for all torrentIDs and store in array
 const startToucan = async _ => {
-   console.log('Synchronizing Torrent database model...');
+   console.log('Initiliazing Client');
+
+   console.log('Synchronizing Torrent database...');
    await Torrent.sync();
 
-   console.log('Initiliazing WebTorrent')
-   const torrentList = await Torrent.findAll();
-   torrentList.forEach(torrent => {
-      client.add(torrent.torrentID, {
+   console.log('Loading torrents back...');
+   const torrents = await Torrent.findAll();
+   torrents.forEach(torrent => {
+      if (torrent.torrentID.toString().startsWith('magnet')){
+         parsedTorrent = torrent.torrentID.toString();
+         console.log(`Torrent: ${torrent.name}\nMagnetURI: ${parsedTorrent}\n`);
+      } else {
+         parsedTorrent = torrent.torrentID;
+         console.log(`Torrent: ${torrent.name}\nfile: ${torrent.name}.torrent\n`);
+      }
+      client.add(parsedTorrent, {
          path: 'database/torrents/'
       }, () => {
       });
    });
 
-   console.log("Torrents loaded back");
+   console.log("Checking for WEBRTC support...");
    try {
       if (client.WEBRTC_SUPPORT) {
-         console.log('We are rolling with WebRTC!')
+         console.log('We are rolling with WebRTC!');
       } else {
-         console.log('No WebRTC support, figure out later');
+         console.log('No WebRTC support');
       }
    } catch (err) {
-      console.error(err)
-      console.log('Something is going wrong with web torrent rtc support :/')
+      console.error(err);
+      console.log('Something is going wrong with web torrent rtc support :/');
    }
 }
 

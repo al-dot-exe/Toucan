@@ -13,7 +13,7 @@
       </section>
       <section id="account-nav">
          <ul>
-            <li>Signed in as: <%= user.userName.replace(/\b\w/g, c => c.toUpperCase()) %></li>
+            <li id="user">Signed in as: <%= user.userName.replace(/\b\w/g, c => c.toUpperCase()) %></li>
             <li><a href="/settings">Settings</a></li>
             <li> 
                <form action="/logout" method="POST">

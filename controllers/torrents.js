@@ -4,7 +4,6 @@ const { client } = require('../config/webtorrent');
 
 module.exports = {
    getClientDashboard: async (req, res) => {
-      // just trying things out but all of this would go inside a post request later
       try {
          const user = await User.findByPk(req.user.id);
          let upRate = client.uploadSpeed;
@@ -26,36 +25,24 @@ module.exports = {
       try {
          const user = await User.findByPk(req.user.id);
          const torrentModel = await Torrent.findByPk(req.params.id);
-         const torrent = client.get(torrentModel.torrentID);
+         const torrent = client.get(torrentModel.id);
+         console.log(torrentModel);
          res.render("viewTorrent", {
             user,
             torrent
          });
       } catch (err) {
-         console.error(err); res.status().send(':(');
+         console.error(err);
+         res.status('500').send(':(');
       }
    },
 
    postTorrent: async (req, res) => {
       try {
-         const torrentID = req.body.torrentID.trim();
-
-         const torrentExists = await Torrent.findOne({
-            where: {
-               torrentID: torrentID
-            }
-         });
-
-         if(torrentID.startsWith("'")){
+         let torrentID = (req.file) ? req.file.path : req.body.magnet;
+         if (torrentID.startsWith("'") || (torrentID.endsWith("'"))) {
             req.flash("errors", {
                msg: "Invalid TorrentID"
-            });
-            return res.redirect('dashboard');
-         }
-
-         if (torrentExists) {
-            req.flash("errors", {
-               msg: "Torrent file already exists in database"
             });
             return res.redirect('dashboard');
          }
@@ -63,18 +50,16 @@ module.exports = {
          client.add(torrentID, {
             path: 'database/torrents/'
          }, async (torrent) => {
+            torrentID = (req.file) ? torrent.torrentFile : torrentID;
             const newTorrent = Torrent.build({
                id: torrent.infoHash,
                name: torrent.name,
                torrentID: torrentID,
                folderPath: `database/torrents/${torrent.name}`,
-               //category: eventually,
             });
-            console.log(`Torrent file succesfully downloading, saving metadata to DB`)
             await newTorrent.save();
+            console.log(`Torrent file ${torrent.name} succesfully downloading, saving metadata to DB`)
          });
-
-         const user = await User.findByPk(req.user.id);
 
          req.flash("info", { msg: "added new torrent" });
          return res.redirect("dashboard");

@@ -10,19 +10,15 @@ const TorrentSchema = Torrent.init({
       allowNull: false,
       unique: true,
       primaryKey: true
-      // type: DataTypes.UUID,
-      // defaultValue: DataTypes.UUIDV4,
-      // allowNull: false,
-      // unique: true,
-      // primaryKey: true
    },
    name: {
       type: DataTypes.STRING,
       allowedNull: false,
    },
    torrentID: {
-      type: DataTypes.TEXT,
+      type: DataTypes.TORRENTID,
       allowNull: false,
+      unique: true
    },
    folderPath: {
       type: DataTypes.TEXT // path to grab torrent files later
@@ -31,8 +27,8 @@ const TorrentSchema = Torrent.init({
       type: DataTypes.STRING
    },
 }, {
-      sequelize,
-      paranoid: true, // won't delete torrent database even if DELETE From is accidently called
+   sequelize,
+   paranoid: true, // won't delete torrent database even if DELETE From is accidently called
 });
 
 module.exports = ('Torrent', TorrentSchema);
