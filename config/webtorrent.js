@@ -16,9 +16,9 @@ const client = new WebTorrent({
 });
 
 const startToucan = async _ => {
-   console.log('Initiliazing Client');
+   console.log('Starting Toucan Torrent client!');
 
-   console.log('Synchronizing Torrent database...');
+   console.log('Synchronizing Torrents table...');
    await Torrent.sync();
 
    console.log('Loading torrents back...');
@@ -26,18 +26,17 @@ const startToucan = async _ => {
    torrents.forEach(torrent => {
       if (torrent.torrentID.toString().startsWith('magnet')){
          parsedTorrent = torrent.torrentID.toString();
-         console.log(`Torrent: ${torrent.name}\nMagnetURI: ${parsedTorrent}\n`);
       } else {
          parsedTorrent = torrent.torrentID;
-         console.log(`Torrent: ${torrent.name}\nfile: ${torrent.name}.torrent\n`);
       }
+      console.log(`\nTorrent: ${torrent.name}\nInfo Hash: ${torrent.id}`);
       client.add(parsedTorrent, {
          path: 'database/torrents/'
       }, () => {
       });
    });
 
-   console.log("Checking for WEBRTC support...");
+   console.log("\nChecking for WEBRTC support...");
    try {
       if (client.WEBRTC_SUPPORT) {
          console.log('We are rolling with WebRTC!');

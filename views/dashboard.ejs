@@ -48,7 +48,8 @@
             <% torrentsArray.forEach( torrent => { %>
             <tr>
                <td>
-               <a href='/torrents/<%= torrent.infoHash %>'>more</a>
+               <a href='/torrents/download/<%= torrent.infoHash %>'>v</a> |
+               <a href='/torrents/<%= torrent.infoHash %>'>+</a>
                </td>
                <td><%= torrent.name %></td>
                <td><%= torrent.createdBy %></td>

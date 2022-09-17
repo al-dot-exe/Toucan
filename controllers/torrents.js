@@ -1,6 +1,10 @@
 const Torrent = require("../models/Torrent");
 const User = require("../models/User");
 const { client } = require('../config/webtorrent');
+const fs = require('fs-extra');
+const JSZip = require('jszip');
+const { createTorrentArchive } = require('../middleware/archive.js')
+
 
 module.exports = {
    getClientDashboard: async (req, res) => {
@@ -24,9 +28,9 @@ module.exports = {
    viewTorrent: async (req, res) => {
       try {
          const user = await User.findByPk(req.user.id);
-         const torrentModel = await Torrent.findByPk(req.params.id);
-         const torrent = client.get(torrentModel.id);
-         console.log(torrentModel);
+         const torrentRecord = await Torrent.findByPk(req.params.id);
+         const torrent = client.get(torrentRecord.id);
+         console.log(torrentRecord);
          res.render("viewTorrent", {
             user,
             torrent
@@ -68,6 +72,52 @@ module.exports = {
          console.error(err);
          req.flash("errors", { msg: "error while adding torrent to database" });
          return res.redirect('dashboard');
+      }
+   },
+
+   downloadTorrent: async (req, res) => {
+      try {
+         const torrentRecord = await Torrent.findByPk(req.params.id);
+         let torrentPath = torrentRecord.folderPath;
+         if (!fs.existsSync(torrentPath)) {
+            console.log("\nCan't find requested torrent\nRegenerating file path for torrent record...");
+            torrentPath = `database/torrents/${torrentRecord.name}`;
+         }
+
+         const status = client.get(torrentRecord.id);
+         const torrentIsDir = fs.statSync(torrentPath).isDirectory();
+
+         if (status.done) {
+            if (torrentIsDir) {
+               const zip = new JSZip();
+               const torrentArchive = zip.folder(torrentRecord.name);
+               createTorrentArchive(torrentRecord.name, torrentPath, torrentArchive);
+
+               console.log('\nGenerating Torrent .zip...')
+               zip.generateNodeStream({ type: "nodebuffer", streamFiles: true })
+                  .pipe(fs.createWriteStream(`${torrentPath}/${torrentRecord.name}.zip`))
+                  .on('finish', () => {
+                     //updating path first will ensure next time is faster
+                     torrentPath = `${torrentPath}/${torrentRecord.name}.zip`;
+                     Torrent.update({ folderPath: torrentPath }, {
+                        where: {
+                           id: req.params.id
+                        }
+                     })
+                     console.log('\nSuccess! sending done torrent to user!');
+                     req.flash("info", { msg: "Downloaded torrent" });
+                     res.download(torrentPath);
+                  });
+            } else {
+               console.log('\nSending done torrent to user!')
+               req.flash("info", { msg: "Downloaded torrent" });
+               res.download(torrentPath);
+            }
+         }
+      } catch (err) {
+         console.error(err);
+         req.flash("errors", { msg: "Error couldn't download torrent file from database" });
+         return res.redirect('../dashboard');
       }
    }
 };

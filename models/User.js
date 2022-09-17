@@ -32,7 +32,8 @@ const UserSchema = User.init({
 });
 
 const sync = async () => await UserSchema.sync();
-console.log('Synchronizing user database...');
+console.log('Synchronizing Users table...');
+
 sync()
 // Password hashing middleware
 bcrypt(UserSchema)
