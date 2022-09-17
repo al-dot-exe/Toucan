@@ -1,28 +1,51 @@
-<h1>Torrent View</h1>
-<br>
-
+<h1>Torrent</h1>
 <h2><%=torrent.name%></h2>
-<h4>Hash:<%=torrent.infoHash%></h4>
 
 <section>
+  <h3>Hash:<%=torrent.infoHash%></h3>
    <p>Author: <%=torrent.createdBy %><br>Comments: <%=torrent.comment %></p>
    <span>Date: <%= torrent.created %></span>
-   <h5>Files</h5>
-   <ul>
-      <% torrent.files.forEach( file => { %>
-          <li>
-             <%= file.name %>: 
+         <p>
+           <%= torrent.received %>    
+         </p>
+         <p>
+           <%= torrent.downloaded %>Bytes Downloaded
+         </p>
+         <p>
+           <%= torrent.uploaded %>Bytes Uploaded    
+         </p>
+         <p>
+         Seed ratio: <%= torrent.ratio %>
+         </p>
 
-           <% if (file.length >= (1024 ** 3)) { %>
-              <%= (file.length / (1024 ** 3)).toFixed(2) %> GB
-           <% } else if (file.length >= (1024 ** 2)) { %>
-              <%= (file.length / (1024 ** 2)).toFixed(2) %> MB
-           <% } else if(file.length >= 1024) { %>
-              <%= (file.length / 1024).toFixed(2) %> KB
-           <% } else { %>
-              <%=  file.length %>B
-           <% } %>
-          </li>
-       <% }) %>    
-   </ul>
+   <section id="tracker-list">
+     <h4>Tracker List</h4>
+     <ul>
+        <% torrent.announce.forEach( tracker => { %>
+            <li>
+               <%= tracker %>: 
+            </li>
+         <% }) %>    
+     </ul>
+   </section>
+
+   <section id="file-list">
+     <h4>Files</h4>
+     <ul>
+        <% torrent.files.forEach( file => { %>
+            <li>
+               <%= file.name %>: 
+             <% if (file.length >= (1024 ** 3)) { %>
+                <%= (file.length / (1024 ** 3)).toFixed(2) %> GB
+             <% } else if (file.length >= (1024 ** 2)) { %>
+                <%= (file.length / (1024 ** 2)).toFixed(2) %> MB
+             <% } else if(file.length >= 1024) { %>
+                <%= (file.length / 1024).toFixed(2) %> KB
+             <% } else { %>
+                <%=  file.length %>B
+             <% } %>
+            </li>
+         <% }) %>    
+     </ul>
+   </section>
 </section>

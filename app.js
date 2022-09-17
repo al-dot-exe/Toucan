@@ -1,6 +1,7 @@
 const express = require('@feathersjs/express');                                   //MVC framework
 const feathers = require('@feathersjs/feathers');                                 //Realtime framework
 const expressLayouts = require('express-ejs-layouts');                            //Ejs layouts structure
+const methodOverride = require('method-override');                                //Override http methods
 const logger = require('morgan');                                                 //Logging
 const path = require('path');                                                     //directory traversal
 const multer = require('multer');                                                 //file uploads
@@ -41,6 +42,17 @@ app.set('layout', 'layouts/loggedIn');
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+
+// Method Override middleware
+app.use(methodOverride((req, res) => {
+   if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+      // look in urlencoded POST bodies and replaces it with another method
+      let method = req.body._method;
+      delete req.body._method;
+      return method;
+   }
+}));
 
 // Session middleware
 app.use(cookieParser())

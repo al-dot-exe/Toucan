@@ -30,37 +30,47 @@
 
    <h4>Torrents Table</h4>
 
-   <section id='torrent-table'>
-   <span>Rate: <%= `${(upRate / 1000).toFixed(2)}` %>/<%= `${(downRate / 1000).toFixed(2)}` %> KB/s</span>
-      <table>
-         <thead>
-            <tr>
-               <th></th>
-               <th>Name</th>
-               <th>Author</th>
-               <th>Uprate (KB/s)</th>
-               <th>Downrate (KB/s)</th>
-               <th>Peer Count</th>
-               <th>Status</th>
-            </tr>
-         </thead>
-         <tbody>
-            <% torrentsArray.forEach( torrent => { %>
-            <tr>
-               <td>
-               <a href='/torrents/download/<%= torrent.infoHash %>'>v</a> |
-               <a href='/torrents/<%= torrent.infoHash %>'>+</a>
-               </td>
-               <td><%= torrent.name %></td>
-               <td><%= torrent.createdBy %></td>
-               <td><%= `${(torrent.uploadSpeed / 1000).toFixed(2)}` %> KB/s</td>
-               <td><%= `${(torrent.downloadSpeed / 1000).toFixed(2)}` %> KB/s</td>
-               <td><%= torrent.numPeers %></td>
-               <td><%= !torrent.done ? `Leeching: ${(torrent.progress * 100).toFixed(2)}%` : 'Seeding :)' %></td> 
-             </tr>
-             <% }) %>    
-         </tbody>
-      </table>
+  <%- include('partials/torrentsNav') %>
+   
+  <section id='torrent-table'>
+     <span>Rate: <%= `${(upRate / 1000).toFixed(2)}` %>/<%= `${(downRate / 1000).toFixed(2)}` %> KB/s</span>
+        <table>
+           <thead>
+              <tr>
+                 <th></th>
+                 <th>Name</th>
+                 <th>Author</th>
+                 <th>Uprate (KB/s)</th>
+                 <th>Downrate (KB/s)</th>
+                 <th>Peer Count</th>
+                 <th>Status</th>
+              </tr>
+           </thead>
+           <tbody>
+              <% torrentsArray.forEach( torrent => { %>
+              <tr>
+                 <td>
+                  <form action="/torrents/<%= torrent.infoHash %>" method="POST" id="delete-from">
+                      <input type="hidden" name="_method" value="DELETE">
+                      <button type="submit" class="btn btn-small red">
+                         <i class="fas fa-trash trip-delete">x</i>
+                    </button>
+                  </form> 
+                  |
+                  <a href='/torrents/download/<%= torrent.infoHash %>'>v</a>
+                  |
+                  <a href='/torrents/<%= torrent.infoHash %>'>+</a>
+                 </td>
+                 <td><%= torrent.name %></td>
+                 <td><%= torrent.createdBy %></td>
+                 <td><%= `${(torrent.uploadSpeed / 1000).toFixed(2)}` %> KB/s</td>
+                 <td><%= `${(torrent.downloadSpeed / 1000).toFixed(2)}` %> KB/s</td>
+                 <td><%= torrent.numPeers %></td>
+                 <td><%= !torrent.done ? `Leeching: ${(torrent.progress * 100).toFixed(2)}%` : 'Seeding :)' %></td> 
+               </tr>
+               <% }) %>    
+           </tbody>
+        </table>
    </section>
 </section>
 

@@ -55,11 +55,15 @@ nav section {
 /*    display: flex; */
 /*    flex-flow: row wrap; */
 /* } */
-#torrent-table > *  * {
+#torrent-table > *  td {
    text-align: center;
    height: 100%;
    border-left: 1px solid grey;
    border-right: 1px solid grey;
    padding: 0;
    margin: auto;
+}
+
+#torrent-table > * td form {
+  display: inline;
 }

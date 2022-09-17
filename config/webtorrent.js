@@ -12,7 +12,7 @@ const client = new WebTorrent({
 
    // the following I am not to familiar with
    webSeeds: true,
-   utp: true,
+   // utp: true, // this didn't work for ubuntu iso and don't know why ???
 });
 
 const startToucan = async _ => {
