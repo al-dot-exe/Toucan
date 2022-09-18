@@ -21,6 +21,14 @@ router.get('/seeding', ensureAuth, torrentsController.getSeeding);
 // @route // GET /torrents/seeding
 router.get('/leeching', ensureAuth, torrentsController.getLeeching);
 
+// @desc  // Show Specific Torrent information if logged in
+// @route // GET /torrents/:id 
+router.get('/:id', ensureAuth, torrentsController.viewTorrent); // might be issue with reading
+
+// @desc  // Download completed Torrent folders to user machine
+// @route // Get /torrents/download/:id
+router.get('/download/:id', ensureAuth, torrentsController.downloadTorrent); // might not be safe method
+
 // @desc  // Upload .torrent to Torrent client
 // @route // Post /torrents/file-upload
 router.post('/file-upload', ensureAuth, uploads.single('.torrent'), torrentsController.postTorrent);
@@ -29,14 +37,17 @@ router.post('/file-upload', ensureAuth, uploads.single('.torrent'), torrentsCont
 // @route // Post /torrents/magnet-upload
 router.post('/magnet-upload', ensureAuth, uploads.none(), torrentsController.postTorrent);
 
+// @desc  // Toggle seeding torrents on button click
+// @route // Post /torrents/toggle/:id
+router.put('/toggle/:id', ensureAuth, torrentsController.toggleTorrent);
 
-// @desc  // Show Specific Torrent information if logged in
-// @route // GET /torrents/:id
-router.get('/:id', ensureAuth, torrentsController.viewTorrent);
+// @desc  // Change upload rate of torrents on button click
+// @route // Post /torrents/upload-throttle
+router.put('/upload-throttle/:id', ensureAuth, torrentsController.throttleUploadSpeed);
 
-// @desc  // Download completed Torrent folders to user machine
-// @route // Post /torrents/download/:id
-router.get('/download/:id', ensureAuth, torrentsController.downloadTorrent);
+// @desc  // Change download rate of torrents on button click
+// @route // Post /torrents/download-throttle
+router.put('/download-throttle/:id', ensureAuth, torrentsController.throttleDownloadSpeed);
 
 // @desc  // Delete TorrentID from database (torrent download will still remain on system)
 // @route // Post /torrents/:id

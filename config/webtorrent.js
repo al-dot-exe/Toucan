@@ -15,6 +15,26 @@ const client = new WebTorrent({
    // utp: true, // this didn't work for ubuntu iso and don't know why ???
 });
 
+// This is REALLY ugly but the only way right now until this is offered in the API
+client._uploadLimit = 529408;
+client._downloadLimit = 307200;
+
+//getters and setters for Upload rate max
+client.getUploadLimit = () => client._uploadLimit;
+client.setUploadLimit = (n) => {
+  client._uploadLimit = (n + client._uploadLimit < -1)
+  ?  -1
+  : client._uploadLimit + n;
+}
+
+//getters and setters for Download rate max
+client.getDownloadLimit = () => client._downloadLimit;
+client.setDownloadLimit = (n) => {
+  client._downloadLimit = (n + client._downloadLimit) < -1 
+  ?  -1
+  : client._downloadLimit + n;
+}
+
 const startToucan = async _ => {
    console.log('Starting Toucan Torrent client!');
 

@@ -9,6 +9,8 @@ module.exports = {
   getClientDashboard: async (req, res) => {
     try {
       const user = await User.findByPk(req.user.id);
+      let upMax = client.getUploadLimit();
+      let downMax = client.getDownloadLimit();
       let upRate = client.uploadSpeed;
       let downRate = client.downloadSpeed;
       let torrentsArray = client.torrents;
@@ -17,6 +19,8 @@ module.exports = {
         torrentsArray,
         upRate,
         downRate,
+        upMax,
+        downMax
       });
     } catch (err) {
       console.error(err);
@@ -27,6 +31,8 @@ module.exports = {
   getSeeding: async (req, res) => {
     try {
       const user = await User.findByPk(req.user.id);
+      let upMax = client.getUploadLimit();
+      let downMax = client.getDownloadLimit();
       let upRate = client.uploadSpeed;
       let downRate = client.downloadSpeed;
       let torrentsArray = client.torrents.filter((torrent) => torrent.done);
@@ -35,6 +41,8 @@ module.exports = {
         torrentsArray,
         upRate,
         downRate,
+        upMax,
+        downMax
       });
     } catch (err) {
       console.error(err);
@@ -45,6 +53,8 @@ module.exports = {
   getLeeching: async (req, res) => {
     try {
       const user = await User.findByPk(req.user.id);
+      let upMax = client.getUploadLimit();
+      let downMax = client.getDownloadLimit();
       let upRate = client.uploadSpeed;
       let downRate = client.downloadSpeed;
       let torrentsArray = client.torrents.filter((torrent) => !torrent.done);
@@ -53,6 +63,8 @@ module.exports = {
         torrentsArray,
         upRate,
         downRate,
+        upMax,
+        downMax
       });
     } catch (err) {
       console.error(err);
@@ -116,6 +128,51 @@ module.exports = {
     }
   },
 
+  toggleTorrent: async (req, res) => {
+    try {
+      const torrentRecord = await Torrent.findByPk(req.params.id);
+      const torrent = client.get(torrentRecord.id);
+      torrent.paused ? torrent.resume() : torrent.pause();
+      req.flash("info", {
+        msg: torrent.paused
+          ? `${torrent.name} paused!`
+          : `${torrent.name} resumed!`,
+      });
+      res.redirect("../dashboard");
+    } catch (err) {
+      console.error(err);
+      res.redirect("../dashboard");
+    }
+  },
+
+  throttleUploadSpeed: async (req, res) => {
+    try {
+      (req.params.id === 'up')
+      ? client.setUploadLimit(1000)
+      : client.setUploadLimit(-1000);
+
+      client.throttleUploadSpeed(client.getUploadLimit())
+      res.redirect('..');
+    } catch (err) {
+      console.error(err);
+      res.redirect("..");
+    }
+  },
+
+  throttleDownloadSpeed: async (req, res) => {
+    try {
+      (req.params.id === 'up')
+      ? client.setDownloadLimit(1000)
+      : client.setDownloadLimit(-1000);
+
+      client.throttleDownloadSpeed(client.getDownloadLimit())
+      res.redirect('..');
+    } catch (err) {
+      console.error(err);
+      res.redirect('..');
+    }
+  },
+
   downloadTorrent: async (req, res) => {
     try {
       const torrentRecord = await Torrent.findByPk(req.params.id);
@@ -162,10 +219,11 @@ module.exports = {
           req.flash("info", { msg: "Downloaded torrent" });
           res.download(torrentPath);
         }
-      }
-      else {
-          req.flash("info", { msg: "Torrent file is not complete. It may have too few seeders..." });
-          return res.redirect('../dashboard');
+      } else {
+        req.flash("info", {
+          msg: "Torrent file is not complete. It may have too few seeders...",
+        });
+        return res.redirect("../dashboard");
       }
     } catch (err) {
       console.error(err);

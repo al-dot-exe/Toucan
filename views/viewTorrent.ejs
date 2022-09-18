@@ -1,3 +1,5 @@
+<a href="/torrents/dashboard">Back to dashboard</a>
+
 <h1>Torrent</h1>
 <h2><%=torrent.name%></h2>
 
@@ -24,6 +26,17 @@
         <% torrent.announce.forEach( tracker => { %>
             <li>
                <%= tracker %>: 
+            </li>
+         <% }) %>    
+     </ul>
+   </section>
+
+   <section id="peers">
+     <h4>Peers List</h4>
+     <ul>
+        <% torrent.swarm.wires.forEach( wire => { %>
+            <li>
+               <%= wire.remoteAddress %> 
             </li>
          <% }) %>    
      </ul>

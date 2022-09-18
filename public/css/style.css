@@ -44,17 +44,12 @@ nav section {
    display: flex;
    flex-flow: column nowrap;
    align-items: stretch;
-   /* justify-content: center; */
    border: 1px solid green;
 }
 
 #torrent-table thead {
    background-color: lightgrey;
 }
-/* #torrent-table tbody { */
-/*    display: flex; */
-/*    flex-flow: row wrap; */
-/* } */
 #torrent-table > *  td {
    text-align: center;
    height: 100%;
@@ -64,6 +59,9 @@ nav section {
    margin: auto;
 }
 
+#torrent-table tr.paused {
+  color: lightgrey;
+}
 #torrent-table > * td form {
   display: inline;
 }

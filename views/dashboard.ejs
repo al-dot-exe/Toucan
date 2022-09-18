@@ -33,6 +33,40 @@
   <%- include('partials/torrentsNav') %>
    
   <section id='torrent-table'>
+    <span style="display:inline">
+        Upload rate limit
+        <form action="/torrents/upload-throttle/up" style="display:inline" method="POST">
+            <input type="hidden" name="_method" value="PUT">
+            <button type="submit" class="btn btn-small">
+                <i>&#8593;</i>
+          </button>
+        </form> 
+       <span><%= `${(upMax / 1000).toFixed(2)}` %> KB/s</span>
+        <form action="/torrents/upload-throttle/down" style="display:inline" method="POST">
+            <input type="hidden" name="_method" value="PUT">
+            <button type="submit" class="btn btn-small">
+                <i>&#x2193;</i>
+          </button>
+        </form> 
+    </span>
+
+    <span style="display:inline">
+        Download rate limit
+        <form action="/torrents/download-throttle/up" style="display:inline" method="POST">
+            <input type="hidden" name="_method" value="PUT">
+            <button type="submit" class="btn btn-small">
+                <i>&#8593;</i>
+          </button>
+        </form> 
+       <span><%= `${(downMax / 1000).toFixed(2)}` %> KB/s</span>
+        <form action="/torrents/download-throttle/down" style="display:inline" method="POST">
+            <input type="hidden" name="_method" value="PUT">
+            <button type="submit" class="btn btn-small">
+                <i>&#x2193;</i>
+          </button>
+        </form> 
+    </span>
+
      <span>Rate: <%= `${(upRate / 1000).toFixed(2)}` %>/<%= `${(downRate / 1000).toFixed(2)}` %> KB/s</span>
         <table>
            <thead>
@@ -48,7 +82,8 @@
            </thead>
            <tbody>
               <% torrentsArray.forEach( torrent => { %>
-              <tr>
+
+              <tr class="<%= torrent.paused ? 'paused' : '' %>" >
                  <td>
                   <form action="/torrents/<%= torrent.infoHash %>" method="POST" id="delete-from">
                       <input type="hidden" name="_method" value="DELETE">
@@ -66,9 +101,30 @@
                  <td><%= `${(torrent.uploadSpeed / 1000).toFixed(2)}` %> KB/s</td>
                  <td><%= `${(torrent.downloadSpeed / 1000).toFixed(2)}` %> KB/s</td>
                  <td><%= torrent.numPeers %></td>
-                 <td><%= !torrent.done ? `Leeching: ${(torrent.progress * 100).toFixed(2)}%` : 'Seeding :)' %></td> 
+                 <td>
+                   <% if (torrent.paused) { %>
+                     Paused
+                   <% } else { %>
+                     <%= !torrent.done ? `Leeching: ${(torrent.progress * 100).toFixed(2)}%` : 'Seeding :)' %>
+                   <% } %>
+
+                 </td> 
+                 <td>
+                  <form action="/torrents/toggle/<%= torrent.infoHash %>" method="POST" id="toggle-torrent">
+                      <input type="hidden" name="_method" value="PUT">
+                      <button type="submit" class="btn btn-small">
+                        <% if (torrent.paused) { %>
+                          <i>&#62;</i>
+                        <% } else { %>
+                          <i>&#8718;</i>
+                        <% } %>
+                    </button>
+                  </form> 
+                 </td>
                </tr>
+
                <% }) %>    
+
            </tbody>
         </table>
    </section>
