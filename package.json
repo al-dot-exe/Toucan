@@ -45,6 +45,7 @@
     "express-flash": "^0.0.2",
     "express-session": "^1.17.3",
     "express-session-sequelize": "^2.3.0",
+    "feathers-sequelize": "^6.3.4",
     "fs-extra": "^10.1.0",
     "helmet": "^6.0.0",
     "jszip": "^3.10.1",

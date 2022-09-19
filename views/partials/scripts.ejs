@@ -1,3 +1,8 @@
-<script src="/js/main.js" type="text/javascript"></script>
 <!-- WebRTC support for client -->
-<script src="https://cdn.jsdelivr.net/npm/webtorrent@latest/webtorrent.min.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/npm/webtorrent@latest/webtorrent.min.js"></script>
+
+<!-- These tags are required for Realtime updates! -->
+<script src="https://unpkg.com/@feathersjs/client@^4.3.0/dist/feathers.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+
+<script src="/js/main.js" type="module" async></script>
