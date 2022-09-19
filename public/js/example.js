@@ -1,6 +1,9 @@
+// require("dotenv").config({ path: "config/.env" });
+// const PORT = process.env.PORT || 5000;
+
 function exampleServiceStart() {
    // Socket.io setup
-   const socket = io("http://localhost:3131/");
+   const socket = io(`http://localhost:3000/`);
 
    // Init feathers app
    const app = feathers();
@@ -21,7 +24,7 @@ function exampleServiceStart() {
       app.service("example").create({
          text: text.value,
          tech: tech.value,
-         viewer: viewer.value,
+         viewer: viewer.value
       });
 
       // Clear inputs

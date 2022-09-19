@@ -35,37 +35,44 @@
   <section id='torrent-table'>
     <span style="display:inline">
         Upload rate limit
-        <form action="/torrents/upload-throttle/up" style="display:inline" method="POST">
-            <input type="hidden" name="_method" value="PUT">
-            <button type="submit" class="btn btn-small">
-                <i>&#8593;</i>
+
+     <form id='upload-throttle-up' style="display:inline">
+         <input type="hidden" />
+         <button type="submit" class="btn btn-small">
+             <i>&#8593;</i>
           </button>
-        </form> 
-       <span><%= `${(upMax / 1000).toFixed(2)}` %> KB/s</span>
-        <form action="/torrents/upload-throttle/down" style="display:inline" method="POST">
-            <input type="hidden" name="_method" value="PUT">
-            <button type="submit" class="btn btn-small">
-                <i>&#x2193;</i>
-          </button>
-        </form> 
-    </span>
+     </form> 
+
+     <span id='upload-throttle'><%= `${(upMax / 1000).toFixed(2)}` %></span>KB/s
+    
+     <form id='upload-throttle-down' style="display:inline">
+         <input type="hidden" />
+         <button type="submit" class="btn btn-small">
+             <i>&#x2193;</i>
+       </button>
+     </form> 
 
     <span style="display:inline">
         Download rate limit
-        <form action="/torrents/download-throttle/up" style="display:inline" method="POST">
-            <input type="hidden" name="_method" value="PUT">
-            <button type="submit" class="btn btn-small">
-                <i>&#8593;</i>
+
+     <form id='download-throttle-up' style="display:inline">
+         <input type="hidden" />
+         <button type="submit" class="btn btn-small">
+             <i>&#8593;</i>
           </button>
-        </form> 
-       <span><%= `${(downMax / 1000).toFixed(2)}` %> KB/s</span>
-        <form action="/torrents/download-throttle/down" style="display:inline" method="POST">
-            <input type="hidden" name="_method" value="PUT">
-            <button type="submit" class="btn btn-small">
-                <i>&#x2193;</i>
-          </button>
-        </form> 
+     </form> 
+
+     <span id='download-throttle'><%= `${(downMax / 1000).toFixed(2)}` %></span>KB/s
+    
+     <form id='download-throttle-down' style="display:inline">
+         <input type="hidden" />
+         <button type="submit" class="btn btn-small">
+             <i>&#x2193;</i>
+       </button>
+     </form> 
+
     </span>
+
 
      <span>Rate: <%= `${(upRate / 1000).toFixed(2)}` %>/<%= `${(downRate / 1000).toFixed(2)}` %> KB/s</span>
         <table>

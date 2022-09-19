@@ -37,17 +37,17 @@ router.post('/file-upload', ensureAuth, uploads.single('.torrent'), torrentsCont
 // @route // Post /torrents/magnet-upload
 router.post('/magnet-upload', ensureAuth, uploads.none(), torrentsController.postTorrent);
 
-// @desc  // Toggle seeding torrents on button click
-// @route // Post /torrents/toggle/:id
+// // @desc  // Toggle seeding torrents on button click
+// // @route // Post /torrents/toggle/:id
 router.put('/toggle/:id', ensureAuth, torrentsController.toggleTorrent);
 
-// @desc  // Change upload rate of torrents on button click
-// @route // Post /torrents/upload-throttle
-router.put('/upload-throttle/:id', ensureAuth, torrentsController.throttleUploadSpeed);
-
-// @desc  // Change download rate of torrents on button click
-// @route // Post /torrents/download-throttle
-router.put('/download-throttle/:id', ensureAuth, torrentsController.throttleDownloadSpeed);
+// // @desc  // Change upload rate of torrents on button click
+// // @route // Post /torrents/upload-throttle
+// router.put('/upload-throttle/:id', ensureAuth, torrentsController.throttleUploadSpeed);
+//
+// // @desc  // Change download rate of torrents on button click
+// // @route // Post /torrents/download-throttle
+// router.put('/download-throttle/:id', ensureAuth, torrentsController.throttleDownloadSpeed);
 
 // @desc  // Delete TorrentID from database (torrent download will still remain on system)
 // @route // Post /torrents/:id

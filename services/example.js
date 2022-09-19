@@ -1,7 +1,5 @@
-const feathers = require('@feathersjs/feathers');                                 //Realtime framework
-const socketio = require('@feathersjs/socketio');                                 //Realtime APIs with websockets
 const moment = require('moment');
-//
+
 // Example service class
 class ExampleService {
    constructor() {
@@ -27,11 +25,6 @@ class ExampleService {
    }
 }
 
-// app.service('ideas').create({
-//    text: 'Build a cool app',
-//    tech: 'Node js',
-//    viewer: 'al.exe'
-// })
 
 service = new ExampleService;
 module.exports = service;

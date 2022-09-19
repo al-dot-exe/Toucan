@@ -16,24 +16,28 @@ const client = new WebTorrent({
 });
 
 // This is REALLY ugly but the only way right now until this is offered in the API
-client._uploadLimit = 529408;
-client._downloadLimit = 307200;
+client.maxUpRate = 529408;
+client.maxDownRate = 307200;
 
 //getters and setters for Upload rate max
-client.getUploadLimit = () => client._uploadLimit;
+client.getUploadLimit = () => client.maxUpRate;
 client.setUploadLimit = (n) => {
-  client._uploadLimit = (n + client._uploadLimit < -1)
-  ?  -1
-  : client._uploadLimit + n;
+   client.maxUpRate = (n + client.maxUpRate < -1)
+      ? -1
+      : client.maxUpRate + n;
+   client.throttleUpload(client.getUploadLimit());
 }
 
 //getters and setters for Download rate max
-client.getDownloadLimit = () => client._downloadLimit;
+client.getDownloadLimit = () => client.maxDownRate;
 client.setDownloadLimit = (n) => {
-  client._downloadLimit = (n + client._downloadLimit) < -1 
-  ?  -1
-  : client._downloadLimit + n;
+   client.maxDownRate = (n + client.maxDownRate) < -1
+      ? -1
+      : client.maxDownRate + n;
+   console.log(client.getDownloadLimit());
+   client.throttleDownload(client.getDownloadLimit());
 }
+
 
 const startToucan = async _ => {
    console.log('Starting Toucan Torrent client!');
@@ -44,7 +48,7 @@ const startToucan = async _ => {
    console.log('Loading torrents back...');
    const torrents = await Torrent.findAll();
    torrents.forEach(torrent => {
-      if (torrent.torrentID.toString().startsWith('magnet')){
+      if (torrent.torrentID.toString().startsWith('magnet')) {
          parsedTorrent = torrent.torrentID.toString();
       } else {
          parsedTorrent = torrent.torrentID;

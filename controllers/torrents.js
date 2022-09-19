@@ -145,34 +145,6 @@ module.exports = {
     }
   },
 
-  throttleUploadSpeed: async (req, res) => {
-    try {
-      (req.params.id === 'up')
-      ? client.setUploadLimit(1000)
-      : client.setUploadLimit(-1000);
-
-      client.throttleUploadSpeed(client.getUploadLimit())
-      res.redirect('..');
-    } catch (err) {
-      console.error(err);
-      res.redirect("..");
-    }
-  },
-
-  throttleDownloadSpeed: async (req, res) => {
-    try {
-      (req.params.id === 'up')
-      ? client.setDownloadLimit(1000)
-      : client.setDownloadLimit(-1000);
-
-      client.throttleDownloadSpeed(client.getDownloadLimit())
-      res.redirect('..');
-    } catch (err) {
-      console.error(err);
-      res.redirect('..');
-    }
-  },
-
   downloadTorrent: async (req, res) => {
     try {
       const torrentRecord = await Torrent.findByPk(req.params.id);

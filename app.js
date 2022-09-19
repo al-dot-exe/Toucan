@@ -13,9 +13,12 @@ const session = require("express-session"); //login session middleware
 const sessionStorage = require("express-session-sequelize")(session.Store); //Session storage
 const cookieParser = require("cookie-parser"); //Session cookie parser
 const flash = require("express-flash"); //pop up messages
-const service = require("./services/example"); // example real time service
 const homeRoutes = require("./routes/home"); //Home routes
 const torrentRoutes = require("./routes/torrents"); //Torrent client routes;
+// const homeServices = require('./services/home') // Main services
+const service = require("./services/example"); //Example service
+const torrentServices = require("./services/torrents.services"); //Torrent services
+const clientServices = require("./services/client.services"); //Torrent client services
 const { sequelize, connectDB } = require("./config/database"); //Sqlite database
 const { startToucan } = require("./config/webtorrent"); //Start WebTorrent client
 
@@ -58,9 +61,13 @@ app.use(
             "https://unpkg.com/@feathersjs/client@%5E4.3.0/dist/feathers.js",
             "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js",
          ],
+         // "script-src-attr": null
       },
    })
 );
+
+// HTTPS will be next here
+
 
 //Front end middleware
 app.set("view engine", "ejs");
@@ -107,12 +114,15 @@ app.on("connection", (conn) => app.channel("stream").join(conn));
 //Publish events to 'stream' channel
 app.publish((data) => app.channel("stream"));
 
-// Routes
-app.use("/", homeRoutes);
-app.use("/torrents", torrentRoutes);
 
 // Services
 app.use("/example", service);
+app.use("/torrent-services", torrentServices);
+app.use("/client-services", clientServices);
+
+// Routes
+app.use("/", homeRoutes);
+app.use("/torrents", torrentRoutes);
 
 // App start
 if (process.env.NODE_ENV === "development") logger("dev");
