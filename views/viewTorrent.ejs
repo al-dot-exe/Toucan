@@ -34,7 +34,7 @@
    <section id="peers">
      <h4>Peers List</h4>
      <ul>
-        <% torrent.swarm.wires.forEach( wire => { %>
+        <% torrent.wires.forEach( wire => { %>
             <li>
                <%= wire.remoteAddress %> 
             </li>

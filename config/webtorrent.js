@@ -7,8 +7,8 @@ const client = new WebTorrent({
    maxConns: 250,
    dht: false,
    lsd: true,
-   downloadLimit: 307200,
-   uploadLimit: 529408,
+   downloadLimit: 307000,
+   uploadLimit: 529000,
 
    // the following I am not to familiar with
    webSeeds: true,
@@ -16,8 +16,8 @@ const client = new WebTorrent({
 });
 
 // This is REALLY ugly but the only way right now until this is offered in the API
-client.maxUpRate = 529408;
-client.maxDownRate = 307200;
+client.maxUpRate = 529000;
+client.maxDownRate = 307000;
 
 //getters and setters for Upload rate max
 client.getUploadLimit = () => client.maxUpRate;

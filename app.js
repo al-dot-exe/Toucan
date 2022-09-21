@@ -17,7 +17,7 @@ const homeRoutes = require("./routes/home"); //Home routes
 const torrentRoutes = require("./routes/torrents"); //Torrent client routes;
 // const homeServices = require('./services/home') // Main services
 const service = require("./services/example"); //Example service
-const torrentServices = require("./services/torrents.services"); //Torrent services
+const torrentServices = require("./services/torrent.services"); //Torrent services
 const clientServices = require("./services/client.services"); //Torrent client services
 const { sequelize, connectDB } = require("./config/database"); //Sqlite database
 const { startToucan } = require("./config/webtorrent"); //Start WebTorrent client
@@ -42,7 +42,7 @@ app.use(cors());
 app.use(
    helmet({
       //Feathers js CORSP is currently not set on their end
-      crossOriginEmbedderPolicy: false,
+      crossOriginEmbedderPolicy: false, // band-aid
    })
 );
 app.use(
@@ -57,6 +57,7 @@ app.use(
          ],
          "script-src": [
             "'self'",
+            "eval",
             "https://cdn.jsdelivr.net/npm/webtorrent@latest/webtorrent.min.js",
             "https://unpkg.com/@feathersjs/client@%5E4.3.0/dist/feathers.js",
             "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js",

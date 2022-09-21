@@ -76,9 +76,7 @@ module.exports = {
     try {
       const user = await User.findByPk(req.user.id);
       const torrentRecord = await Torrent.findByPk(req.params.id);
-      console.log(req);
       const torrent = client.get(torrentRecord.id);
-      // console.log(torrentRecord);
       res.render("viewTorrent", {
         user,
         torrent,
@@ -96,7 +94,7 @@ module.exports = {
         req.flash("errors", {
           msg: "Invalid TorrentID",
         });
-        return res.redirect("dashboard");
+        return res.render("dashboard");
       }
 
       client.add(
@@ -128,22 +126,6 @@ module.exports = {
     }
   },
 
-  toggleTorrent: async (req, res) => {
-    try {
-      const torrentRecord = await Torrent.findByPk(req.params.id);
-      const torrent = client.get(torrentRecord.id);
-      torrent.paused ? torrent.resume() : torrent.pause();
-      req.flash("info", {
-        msg: torrent.paused
-          ? `${torrent.name} paused!`
-          : `${torrent.name} resumed!`,
-      });
-      res.redirect("../dashboard");
-    } catch (err) {
-      console.error(err);
-      res.redirect("../dashboard");
-    }
-  },
 
   downloadTorrent: async (req, res) => {
     try {

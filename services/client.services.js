@@ -1,41 +1,77 @@
 // Services to give real time updates on Torrent client
-const Torrent = require("../models/Torrent");
-const User = require("../models/User");
+// const Torrent = require("../models/Torrent");
+// const User = require("../models/User");
 const { client } = require("../config/webtorrent");
 
 class ClientServices {
    constructor() {
-      // this.client = client;
-      // this.torrents = client.torrents;
-      this.settings = {};
+      this.status = {};
    }
 
    async find() {
-      return this.settings;
+      return this.status
    }
 
-   async create(data) {
-      maxDownloadRate: client.getDownloadLimit();
-      maxUploadRate: client.getUploadLimit();
+   async create() {
+      // needs to grab current upload and download speeds from the torrent table
+      this.status = {
+         paused: false,
+         currentUploadRate: client.uploadSpeed,
+         currentDownloadRate: client.downloadSpeed,
+         maxDownloadRate: client.getDownloadLimit(),
+         maxUploadRate: client.getUploadLimit(),
+         torrents: [],
+      }
+      client.torrents.forEach(torrent => this.status.torrents.push(torrent.infoHash));
+      return this.status;
    }
 
 
    async update(id, data, params) {
-      console.log('In update service');
-      console.log(id);
-      // console.log(params);
 
-      // console.log(this.settings)
-      if (id === 'download-throttle-down') decreaseDownloadSpeedLimit(this.settings);
-      if (id === 'download-throttle-up') increaseDownloadSpeedLimit(this.settings);
+      if (id === 'client-rate') {
+         this.status.currentUploadRate = client.uploadSpeed;
+         this.status.currentDownloadRate = client.downloadSpeed;
+      }
 
-      if (id === 'upload-throttle-down') decreaseUploadSpeedLimit(this.settings);
-      if (id === 'upload-throttle-up') increaseUploadSpeedLimit(this.settings);
+      // Pause or Resume
+      if (id === 'client-toggle') toggleClient(this.status);
 
-      function decreaseUploadSpeedLimit(settings) {
+      // Max rate throttle services
+      if (id === 'download-throttle-down') decreaseDownloadSpeedLimit(this.status);
+      if (id === 'download-throttle-up') increaseDownloadSpeedLimit(this.status);
+
+      if (id === 'upload-throttle-down') decreaseUploadSpeedLimit(this.status);
+      if (id === 'upload-throttle-up') increaseUploadSpeedLimit(this.status);
+
+
+      function toggleClient(status) {
+         try {
+            const pausedTorrents = client.torrents.filter(torrent => torrent.paused);
+            const halfOfTorrents = Math.floor(status.torrents.length / 2);
+
+            if (pausedTorrents.length > halfOfTorrents) {
+               client.torrents.forEach(torrent => torrent.resume())
+               status.paused = false
+            } else if (pausedTorrents.length < halfOfTorrents) {
+               client.torrents.forEach(torrent => torrent.pause());
+               status.paused = true
+            } else {
+               (status.paused)
+                  ? client.torrents.forEach(torrent => torrent.resume())
+                  : client.torrents.forEach(torrent => torrent.pause());
+               if (status.paused) status.paused = false;
+            }
+         } catch (err) {
+            console.log("Couldn't pause all torrents");
+            console.error(err);
+         }
+      }
+
+      function decreaseUploadSpeedLimit(status) {
          try {
             client.setUploadLimit(-1000);
-            settings.maxUploadRate = client.getUploadLimit();
+            status.maxUploadRate = client.getUploadLimit();
             console.log('New upload limit set')
          } catch (err) {
             console.error(err);
@@ -43,10 +79,10 @@ class ClientServices {
          }
       }
 
-      function increaseUploadSpeedLimit(settings) {
+      function increaseUploadSpeedLimit(status) {
          try {
             client.setUploadLimit(1000);
-            settings.maxUploadRate = client.getUploadLimit();
+            status.maxUploadRate = client.getUploadLimit();
             console.log('New upload limit set')
          } catch (err) {
             console.error(err);
@@ -54,20 +90,20 @@ class ClientServices {
          }
       }
 
-      function decreaseDownloadSpeedLimit(settings) {
+      function decreaseDownloadSpeedLimit(status) {
          try {
             client.setDownloadLimit(-1000);
-            settings.maxDownloadRate = client.getDownloadLimit();
+            status.maxDownloadRate = client.getDownloadLimit();
             console.log('New download limit set')
          } catch (err) {
             console.error(err);
             console.log("Didn't get download limit")
          }
       }
-      function increaseDownloadSpeedLimit(settings) {
+      function increaseDownloadSpeedLimit(status) {
          try {
             client.setDownloadLimit(1000);
-            settings.maxDownloadRate = client.getDownloadLimit();
+            status.maxDownloadRate = client.getDownloadLimit();
             console.log('New download limit set')
          } catch (err) {
             console.error(err);
@@ -76,44 +112,6 @@ class ClientServices {
       }
    }
 
-
-   // async pause() {
-   //    this.torrents.forEach(torrent => {
-   //       if (!torrent.paused) {
-   //          torrent.pause();
-   //       }
-   //    });
-   // }
-   //
-   // async resume() {
-   //    this.torrents.forEach(torrent => {
-   //       if (torrent.paused) {
-   //          torrent.resume();
-   //       }
-   //    });
-   // }
-   //
-   // async updateProgress() {
-   //    return this.client.progress;
-   // }
-   //
-   // async updateUploadSpeed() {
-   //    try {
-   //       return this.client.uploadSpeed;
-   //    } catch (err) {
-   //       console.error(err);
-   //    }
-   // }
-   //
-   // async updateDownloadSpeed() {
-   //    try {
-   //       return this.client.downloadSpeed;
-   //    } catch (err) {
-   //       console.error(err);
-   //    }
-   // }
-   //
-   //
 }
 
 const serviceClient = new ClientServices;
