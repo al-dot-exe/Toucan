@@ -79,9 +79,13 @@
 
       <form id="client-toggle" style="display:inline" >
           <input type="hidden" />
-          <button type="submit" class="btn btn-small">
+        <button type="submit" class="btn btn-small">
              Toggle client
-              <i>&#62;</i>
+         <% if (upRate == 0 && downRate == 0) { %>
+           <i>&#62;</i>
+         <% } else { %>
+           <i>&#8718;</i>
+         <% } %>
         </button>
       </form> 
      </section>

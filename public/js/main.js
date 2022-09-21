@@ -6,6 +6,8 @@ if (window.location.pathname === "/traversy") {
    exampleServiceStart();
 }
 
-if (window.location.pathname === "/torrents/dashboard") {
+if (window.location.pathname === "/torrents/dashboard" ||
+   window.location.pathname === "/torrents/seeding" ||
+   window.location.pathname === "/torrents/leeching") {
    renderDashboardServices();
 }

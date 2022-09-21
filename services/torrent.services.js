@@ -59,8 +59,14 @@ class TorrentServices {
          }
 
          function toggleTorrent(torrentId, torrents) {
+            console.log("backend")
+            console.log(elementId);
+            console.log(`Passed in data`);
+            console.log(data);
             let currentTorrent = client.get(torrentId);
-            currentTorrent.paused ? currentTorrent.resume() : currentTorrent.pause();
+            console.log(`Backend paused status: ${currentTorrent.paused}`);
+            data.paused ? currentTorrent.pause() : currentTorrent.resume();
+            console.log(`Updated backend paused status: ${currentTorrent.paused}`);
 
             // band-aid
             torrents.forEach(torrent => {

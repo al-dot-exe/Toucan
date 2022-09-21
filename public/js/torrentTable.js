@@ -49,15 +49,16 @@ async function renderDashboardServices() {
       if (clientStatus.paused) {
          torrentRows.forEach(row => {
             row.className = "torrent-row paused"
-            row.childNodes[row.childNodes.length - 4].innerText = 'Paused';
+            row.childNodes[row.childNodes.length - 2].childNodes[1].childNodes[1].childNodes[1].childNodes[0].data = ">";
          });
-         clientToggle.childNodes[3].childNodes[1].textContent = 'paused';
+         clientToggle.childNodes[3].childNodes[1].textContent = ">";
       }
       else {
          torrentRows.forEach(row => {
             row.className = "torrent-row";
-            row.childNodes[row.childNodes.length - 4].innerText = 'running';
+            row.childNodes[row.childNodes.length - 2].childNodes[1].childNodes[1].childNodes[1].childNodes[0].data = "∎";
          });
+         clientToggle.childNodes[3].childNodes[1].textContent = "∎";
       }
    }
 
@@ -91,8 +92,10 @@ async function renderDashboardServices() {
       if (currentData.paused) {
          row.className = 'torrent-row paused'
          row.childNodes[row.childNodes.length - 4].innerText = 'Paused';
+         row.childNodes[row.childNodes.length - 2].childNodes[1].childNodes[1].childNodes[1].childNodes[0].data = ">";
       } else {
          row.className = "torrent-row";
+         row.childNodes[row.childNodes.length - 2].childNodes[1].childNodes[1].childNodes[1].childNodes[0].data = "∎";
       }
    }
 
@@ -113,20 +116,32 @@ async function renderDashboardServices() {
    async function toggleClient(e) {
       e.preventDefault();
       await app.service('client-services').update(e.srcElement.id, clientToggle);
+      const torrentsArray = await app.service('torrent-services').find();
+      torrentsArray.forEach(async torrent => {
+         (torrent.paused) = torrent.paused ? false : true;
+         console.log(`Front end\n${torrent}`);
+         await app.service('torrent-services').update('torrent-toggle', torrent);
+         // changeTorrentPausedStatus(torrentRow, currentTorrent);
+      })
       renderClientPausedStatus();
+
    }
 
    // Toggle torrent pause or resume
    async function toggleTorrent(e) {
       e.preventDefault();
+      const clientStatus = await app.service('client-services').find();
+
+      if (!clientStatus.paused) {
       // band-aid
-      const torrentRow = e.srcElement.parentElement.parentElement.parentElement.parentElement
-      const id = torrentRow.id
-      const torrentsArray = await app.service('torrent-services').find();
-      const currentTorrent = torrentsArray.find(torrent => torrent.id === id);
-      currentTorrent.paused = currentTorrent.paused ? false : true;
-      await app.service('torrent-services').update('torrent-toggle', currentTorrent);
-      changeTorrentPausedStatus(torrentRow, currentTorrent);
+         const torrentRow = e.srcElement.parentElement.parentElement.parentElement.parentElement
+         const id = torrentRow.id
+         const torrentsArray = await app.service('torrent-services').find();
+         const currentTorrent = torrentsArray.find(torrent => torrent.id === id);
+         currentTorrent.paused = currentTorrent.paused ? false : true;
+         await app.service('torrent-services').update('torrent-toggle', currentTorrent);
+         changeTorrentPausedStatus(torrentRow, currentTorrent);
+      }
    }
 
    async function throttleUploadUp(e) {
