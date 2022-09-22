@@ -28,7 +28,7 @@ const TorrentSchema = Torrent.init({
    },
 }, {
    sequelize,
-   paranoid: true, // won't delete torrent database even if DELETE From is accidently called
+   // paranoid: true, // won't delete torrent database even if DELETE From is accidently called
 });
 
 module.exports = ('Torrent', TorrentSchema);

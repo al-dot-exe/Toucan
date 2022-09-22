@@ -1,9 +1,7 @@
 const fs = require('fs-extra');
-const JSZip = require('jszip');
-const Torrent = require("../models/Torrent");
 
 module.exports = {
-   createTorrentArchive: async (archiveName, folder, zip) => {
+   createTorrentArchive: async (folder, zip) => {
       try {
          const directoryContents = fs.readdirSync(folder, {
             withFileTypes: true

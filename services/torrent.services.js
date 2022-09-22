@@ -1,6 +1,5 @@
 // Services to give real time updates on individual torrents
 const Torrent = require("../models/Torrent");
-// const User = require("../models/User");
 const { client } = require("../config/webtorrent");
 
 class TorrentServices {
@@ -10,11 +9,15 @@ class TorrentServices {
 
    async create(data) {
       try {
-         let torrentRecord = await Torrent.findByPk(data.id)
+         let torrentRecord;
+
+         do { // loop to ensure the torrent record exists before its service is created
+            torrentRecord = await Torrent.findByPk(data.id);
+         } while (torrentRecord === null)
+
          const newTorrent = client.get(torrentRecord.id);
-         if (this.torrents.map(torrent => (torrent.id)).includes(newTorrent.infoHash)) {
-         } else {
-            const torrentEntry = {
+         if (!(this.torrents.map(torrent => (torrent.id)).includes(newTorrent.infoHash))) {
+            const torrentService = {
                id: newTorrent.infoHash,
                paused: newTorrent.paused,
                progress: newTorrent.done ? 'Seeding' : newTorrent.progress,
@@ -25,10 +28,10 @@ class TorrentServices {
                currentDownloadSpeed: newTorrent.downloadSpeed,
                currentUploadSpeed: newTorrent.uploadSpeed
             }
-            this.torrents.push(torrentEntry);
+            this.torrents.push(torrentService);
          }
       } catch (err) {
-         console.log('Something went wrong when creating a torrent service');
+         console.log('Error when creating a torrent service');
          console.error(err);
       }
    }
@@ -37,40 +40,31 @@ class TorrentServices {
       return this.torrents;
    }
 
-   async update(elementId, data, params) {
+   async update(elementId, data) {
       try {
-         // update a specific torrent
          if (elementId === 'all') statusUpdates(this.torrents);
-         if (elementId === 'torrent-toggle') toggleTorrent(data.id, this.torrents);
+         if (elementId === 'torrent-toggle') toggleTorrent(data, this.torrents);
 
          async function statusUpdates(torrents) {
             torrents.forEach(torrent => {
-
                let currentTorrent = client.get(torrent.id);
                if (currentTorrent) {
-                  torrent.progress = currentTorrent.done ? 'Seeding' : currentTorrent.progress;
+                  torrent.progress = currentTorrent.done ? ' Seeding ' : currentTorrent.progress;
                   torrent.peerCount = currentTorrent.numPeers;
                   torrent.ready = currentTorrent.ready;
                   torrent.done = currentTorrent.done;
-                  torrent.currentDownloadSpeed = currentTorrent.downloadSpeed,
-                     torrent.currentUploadSpeed = currentTorrent.uploadSpeed;
+                  torrent.currentDownloadSpeed = currentTorrent.downloadSpeed;
+                  torrent.currentUploadSpeed = currentTorrent.uploadSpeed;
                }
             });
          }
 
-         function toggleTorrent(torrentId, torrents) {
-            console.log("backend")
-            console.log(elementId);
-            console.log(`Passed in data`);
-            console.log(data);
-            let currentTorrent = client.get(torrentId);
-            console.log(`Backend paused status: ${currentTorrent.paused}`);
-            data.paused ? currentTorrent.pause() : currentTorrent.resume();
-            console.log(`Updated backend paused status: ${currentTorrent.paused}`);
-
+         function toggleTorrent(data, torrents) {
+            let backendOfTorrent = client.get(data.id);
+            data.paused ? backendOfTorrent.pause() : backendOfTorrent.resume();
             // band-aid
             torrents.forEach(torrent => {
-               if (torrent.id === data.id) torrent.paused = currentTorrent.paused;
+               if (torrent.id === data.id) torrent.paused = backendOfTorrent.paused;
             });
          }
       } catch (err) {
@@ -79,18 +73,16 @@ class TorrentServices {
       }
    }
 
-   // Currently not working as intended
-   async remove(call, query) {
+   async remove() {
       try {
-         console.log('\nMade it to remove\n');
-         console.log(query);
-         this.torrents = this.torrents.filter(torrent => {
-            console.log(torrent.done)
+         this.torrents = this.torrents.filter(async torrent => {
+            const torrentStillExists = await Torrent.findByPk(torrent.id);
+            torrentStillExists;
          });
-         return this.torrents
+         return this.torrents;
       } catch (err) {
          console.log('Something went wrong with removing torrent services');
-         console.error(err)
+         console.error(err);
       }
    }
 }

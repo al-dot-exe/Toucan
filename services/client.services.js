@@ -13,7 +13,6 @@ class ClientServices {
    }
 
    async create() {
-      // needs to grab current upload and download speeds from the torrent table
       this.status = {
          paused: false,
          currentUploadRate: client.uploadSpeed,
@@ -40,7 +39,6 @@ class ClientServices {
       // Max rate throttle services
       if (id === 'download-throttle-down') decreaseDownloadSpeedLimit(this.status);
       if (id === 'download-throttle-up') increaseDownloadSpeedLimit(this.status);
-
       if (id === 'upload-throttle-down') decreaseUploadSpeedLimit(this.status);
       if (id === 'upload-throttle-up') increaseUploadSpeedLimit(this.status);
 
@@ -63,7 +61,7 @@ class ClientServices {
                if (status.paused) status.paused = false;
             }
          } catch (err) {
-            console.log("Couldn't pause all torrents");
+            console.log("Couldn't pause all torrents.");
             console.error(err);
          }
       }
@@ -111,7 +109,6 @@ class ClientServices {
          }
       }
    }
-
 }
 
 const serviceClient = new ClientServices;

@@ -1,7 +1,8 @@
 // client side js file for working with torrent client screen table
-async function renderDashboardServices() {
+async function startDashboardServices() {
 
-   const socket = io(`http://localhost:3000/`);
+   // Declare web sockets
+   const socket = io(`http://localhost:3000/`); // band-aid
 
    // Init feathers app
    const app = feathers();
@@ -14,7 +15,6 @@ async function renderDashboardServices() {
 
    // Event Listeners
    const clientToggle = document.getElementById('client-toggle');
-   const torrentRows = document.querySelectorAll('.torrent-row');
    const clientRate = document.getElementById('client-rate');
    const uploadThrottleUp = document.getElementById("upload-throttle-up")
    const uploadThrottleDown = document.getElementById("upload-throttle-down")
@@ -22,20 +22,21 @@ async function renderDashboardServices() {
    const downloadThrottleDown = document.getElementById("download-throttle-down")
    const upMax = document.getElementById('upload-throttle')
    const downMax = document.getElementById('download-throttle')
-
+   const torrentRows = document.querySelectorAll('.torrent-row');
 
    clientToggle.addEventListener('submit', toggleClient);
    uploadThrottleUp.addEventListener('submit', throttleUploadUp);
    uploadThrottleDown.addEventListener('submit', throttleUploadDown);
    downloadThrottleUp.addEventListener("submit", throttleDownloadUp);
    downloadThrottleDown.addEventListener("submit", throttleDownloadDown);
-
-   torrentRows.forEach((row, index) => {
+   torrentRows.forEach((row) => {
       row.childNodes[row.childNodes.length - 2].addEventListener('click', toggleTorrent);
    });
 
 
-   // Client side renderers
+   /*
+   * Front End Updaters
+   */
    async function renderClientRate() {
       await app.service('client-services').update(clientRate.id, clientRate);
       const clientStatus = await app.service('client-services').find();
@@ -80,7 +81,7 @@ async function renderDashboardServices() {
                      row.childNodes[row.childNodes.length - 4].innerText =
                         `${(torrent.progress * 100).toFixed(2)}%`;
                   } else {
-                     row.childNodes[row.childNodes.length - 4].innerText = 'Seeding';
+                     row.childNodes[row.childNodes.length - 4].innerText = torrent.progress;
                   }
                }
             }
@@ -111,36 +112,36 @@ async function renderDashboardServices() {
       downMax.innerText = `${(clientStatus.maxDownloadRate / 1000)}`
    }
 
-   // Services
+   /*
+   * Backend Services
+   */
+
    // Toggle client pause or resume
    async function toggleClient(e) {
       e.preventDefault();
       await app.service('client-services').update(e.srcElement.id, clientToggle);
-      const torrentsArray = await app.service('torrent-services').find();
-      torrentsArray.forEach(async torrent => {
-         (torrent.paused) = torrent.paused ? false : true;
-         console.log(`Front end\n${torrent}`);
+      const clientStatus = await app.service('client-services').find();
+      const data = await app.service('torrent-services').find();
+      data.forEach(async torrent => {
+         torrent.paused = clientStatus.paused
          await app.service('torrent-services').update('torrent-toggle', torrent);
-         // changeTorrentPausedStatus(torrentRow, currentTorrent);
       })
       renderClientPausedStatus();
-
    }
 
    // Toggle torrent pause or resume
    async function toggleTorrent(e) {
       e.preventDefault();
       const clientStatus = await app.service('client-services').find();
+      const torrentRow = e.srcElement.parentElement.parentElement.parentElement.parentElement
+      const id = torrentRow.id
+      const torrentsArray = await app.service('torrent-services').find();
+      const data = torrentsArray.find(torrent => torrent.id === id);
 
       if (!clientStatus.paused) {
-      // band-aid
-         const torrentRow = e.srcElement.parentElement.parentElement.parentElement.parentElement
-         const id = torrentRow.id
-         const torrentsArray = await app.service('torrent-services').find();
-         const currentTorrent = torrentsArray.find(torrent => torrent.id === id);
-         currentTorrent.paused = currentTorrent.paused ? false : true;
-         await app.service('torrent-services').update('torrent-toggle', currentTorrent);
-         changeTorrentPausedStatus(torrentRow, currentTorrent);
+         data.paused = data.paused ? false : true;
+         await app.service('torrent-services').update('torrent-toggle', data);
+         changeTorrentPausedStatus(torrentRow, data);
       }
    }
 
@@ -156,7 +157,6 @@ async function renderDashboardServices() {
       renderNewUploadLimit();
    }
 
-
    async function throttleDownloadUp(e) {
       e.preventDefault();
       await app.service('client-services').update(e.srcElement.id, downloadThrottleUp);
@@ -171,16 +171,14 @@ async function renderDashboardServices() {
 
    async function init() {
       await app.service('client-services').create(document.getElementById('torrent-table'));
-      torrentRows.forEach(async row => await app.service('torrent-services').create({ id: row.id }));
-      const torrents = await app.service('torrent-services').find()
-
+      torrentRows.forEach(async row => {
+         await app.service('torrent-services').create({ id: row.id })
+      });
+      await app.service('torrent-services').remove(null);
+      setInterval(renderTorrentUpdates, 1000)
       setInterval(renderClientRate, 500);
-      torrents.forEach(torrent => {
-         setInterval(renderTorrentUpdates, 1000);
-      })
    }
 
 }
 
-
-export { renderDashboardServices }
+export { startDashboardServices }

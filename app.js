@@ -22,22 +22,34 @@ const clientServices = require("./services/client.services"); //Torrent client s
 const { sequelize, connectDB } = require("./config/database"); //Sqlite database
 const { startToucan } = require("./config/webtorrent"); //Start WebTorrent client
 
-// Feathers Express init
+/*
+* Feathers|Express init
+*/
 const app = express(feathers());
 
-// .env config
+/*
+* .ENV config
+*/
 require("dotenv").config({ path: "config/.env" });
 
-// Passport init
+/*
+* Passport init
+*/
 require("./config/passport")(passport);
 
-// Database init
+/*
+* Database init
+*/
 connectDB();
 
-// Toucan Torrent init
+/*
+* Toucan init
+*/
 startToucan();
 
-// Security middleware
+/*
+* Security middleware
+*/
 app.use(cors());
 app.use(
    helmet({
@@ -62,25 +74,27 @@ app.use(
             "https://unpkg.com/@feathersjs/client@%5E4.3.0/dist/feathers.js",
             "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js",
          ],
-         // "script-src-attr": null
       },
    })
 );
+/*HTTPS will be here*/
 
-// HTTPS will be next here
-
-
-//Front end middleware
+/*
+* Frontend middleware
+*/
 app.set("view engine", "ejs");
 app.use(expressLayouts);
-app.set("layout", "layouts/loggedIn");
+app.set("layout", "layouts/loggedIn"); // default layout
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.configure(socketio());
-app.configure(express.rest()); //Might not need this since I have rest.nvim
+app.configure(express.rest()); // to view services json, can also use rest.nvim
 
-// Method Override middleware
+
+/*
+* Method Override middleware
+*/
 app.use(
    methodOverride((req, res) => {
       if (req.body && typeof req.body === "object" && "_method" in req.body) {
@@ -92,7 +106,9 @@ app.use(
    })
 );
 
-// Session middleware
+/*
+* Session middleware
+*/
 app.use(cookieParser());
 app.use(
    session({
@@ -103,29 +119,39 @@ app.use(
    })
 );
 
-// Authentication Middleware
+/*
+* Authentication middleware
+*/
 app.use(passport.initialize());
 app.use(passport.session()); // login sessions
-app.use(flash()); // flash messages // requires sessions
+app.use(flash());
 
-// Feathers middleware
-// Feathers connection to connect stream channel
+/*
+* Feathers middleware
+*/
+// connection to connect stream channel
 app.on("connection", (conn) => app.channel("stream").join(conn));
 
 //Publish events to 'stream' channel
 app.publish((data) => app.channel("stream"));
 
 
-// Services
+/*
+* Services
+*/
 app.use("/example", service);
 app.use("/torrent-services", torrentServices);
 app.use("/client-services", clientServices);
 
-// Routes
+/*
+* Routes
+*/
 app.use("/", homeRoutes);
 app.use("/torrents", torrentRoutes);
 
-// App start
+/*
+* App start
+*/
 if (process.env.NODE_ENV === "development") logger("dev");
 const PORT = process.env.PORT || 5000;
 app
