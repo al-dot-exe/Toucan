@@ -8,6 +8,14 @@ const { ensureAuth, ensureGuest } = require('../middleware/auth');
 // @route // GET /
 router.get('/', ensureAuth, homeController.getIndex);
 
+// @desc  // Hiding example page
+// @route // GET /
+// router.get('/example', ensureAuth, homeController.redirectExample);
+
+// @desc  // Show traversy example page
+// @route // GET /
+router.get('/traversy', ensureAuth, homeController.getTraversyExample);
+
 // @desc  // Show Settings Page if logged in
 // @route // GET /settings
 router.get('/settings', ensureAuth, homeController.getSettings);
