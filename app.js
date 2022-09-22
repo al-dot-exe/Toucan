@@ -16,7 +16,6 @@ const flash = require("express-flash"); //pop up messages
 const homeRoutes = require("./routes/home"); //Home routes
 const torrentRoutes = require("./routes/torrents"); //Torrent client routes;
 // const homeServices = require('./services/home') // Main services
-const service = require("./services/example"); //Example service
 const torrentServices = require("./services/torrent.services"); //Torrent services
 const clientServices = require("./services/client.services"); //Torrent client services
 const { sequelize, connectDB } = require("./config/database"); //Sqlite database
@@ -139,7 +138,6 @@ app.publish((data) => app.channel("stream"));
 /*
 * Services
 */
-app.use("/example", service);
 app.use("/torrent-services", torrentServices);
 app.use("/client-services", clientServices);
 
