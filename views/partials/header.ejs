@@ -1,23 +1,17 @@
 <header>
-   <nav>
-      <section id="logo">
-         <a href="/">Toucan Torrent</a>
-      </section>
-      <section id="header-nav">
+   <nav class="navbar navbar-expand">
+      <div class="container-fluid">
          <ul>
-            <li><a href="/torrents/dashboard">Torrents</a></li>
-         </ul>
-      </section>
-      <section id="account-nav">
-         <ul>
-            <li id="user">Signed in as: <%= user.userName.replace(/\b\w/g, c => c.toUpperCase()) %></li>
-            <li><a href="/settings">Settings</a></li>
-            <li> 
-               <form action="/logout" method="POST">
-                  <button type="submit">Logout</button>
-                 </form>
+            <li>
+               <button class='btn btn-lg'>
+                  <i class="bi bi-list"></i>
+               </button>
+            </li>
+            <li class="navbar-brand">
+               <img src="" alt="">
             </li>
          </ul>
-      </section>
+
+      </div>
    </nav>
 </header>

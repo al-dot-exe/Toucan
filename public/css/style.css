@@ -1,67 +1,11 @@
-* {
-   box-sizing: border-box;
+body {
+   background-color: #2f2e2e;
 }
-
-.container {
-   display: flex;
-   flex-flow: column wrap;
-   align-items: stretch;
-   width: 80%;
-   margin-left: 10%;
-   height: 100%;
-
-}
-
 header,
-footer{
-   background: lightgrey;
-}
 footer {
-  display: flex;
-  justify-content: flex-end;
-}
-nav {
-   display: flex;
-   flex-flow: row wrap;
-   justify-content: space-between;
-}
-nav section {
-   width: 30%;
-   display: flex;
-   flex-flow: row wrap;
-   justify-content: space-around;
-   align-items: center;
-}
-#header-nav ul {
-   width: 100%;
-   display: flex;
-   flex-flow: row;
-   justify-content: space-around;
-   align-items: stretch;
+   background-color: #fcfbf7;
 }
 
-#torrent-table {
-   display: flex;
-   flex-flow: column nowrap;
-   align-items: stretch;
-   border: 1px solid green;
-}
-
-#torrent-table thead {
-   background-color: lightgrey;
-}
-#torrent-table > *  td {
-   text-align: center;
-   height: 100%;
-   border-left: 1px solid grey;
-   border-right: 1px solid grey;
-   padding: 0;
-   margin: auto;
-}
-
-#torrent-table tr.paused {
-  color: lightgrey;
-}
-#torrent-table > * td form {
-  display: inline;
+.bi-list {
+   color: #000;
 }

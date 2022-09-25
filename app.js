@@ -59,12 +59,13 @@ app.use(
 app.use(
    helmet.contentSecurityPolicy({
       directives: {
-         "default-src": [
+         "default-src": [ // might need bootstrap icons link added
             "'self'",
-            "data:",
+            "data:", 
             "https://cdn.jsdelivr.net/npm/webtorrent@latest/webtorrent.min.js",
             "https://unpkg.com/@feathersjs/client@%5E4.3.0/dist/feathers.js",
             "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js",
+            "https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js",
          ],
          "script-src": [
             "'self'",
@@ -72,6 +73,7 @@ app.use(
             "https://cdn.jsdelivr.net/npm/webtorrent@latest/webtorrent.min.js",
             "https://unpkg.com/@feathersjs/client@%5E4.3.0/dist/feathers.js",
             "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js",
+            "https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js",
          ],
       },
    })
