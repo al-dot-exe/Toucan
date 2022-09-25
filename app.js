@@ -75,6 +75,11 @@ app.use(
             "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js",
             "https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js",
          ],
+         "img-src": [
+            "'self'",
+            "eval",
+            "https://images.unsplash.com/photo-1532503353673-585dcc16ad86?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
+         ],
       },
    })
 );

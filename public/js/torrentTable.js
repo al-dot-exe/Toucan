@@ -2,7 +2,7 @@
 async function startDashboardServices() {
 
    // Declare web sockets
-   const socket = io(`http://localhost:3000/`); // band-aid
+   const socket = io(`http://localhost:3131/`); // band-aid
 
    // Init feathers app
    const app = feathers();
