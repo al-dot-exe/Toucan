@@ -12,15 +12,15 @@
          </div>
          <div class="modal-body d-flex align-items-center">
             <div class="container d-flex flex-column align-items-start justify-content-center">
-               <section class="pb-3">
-                  <h3>Submit a magnet link</h3>
+               <section class="pb-5">
+                  <h3 class="pb-3">Submit a magnet link</h3>
                   <form id='magnet-upload-form' action="/torrents/magnet-upload" method="POST">
                      <input id="magnet-uri-input" type="text" name="magnet" placeholder="magnet:uri" value="">
                   </form>
                </section>
                <small>or...</small>
-               <section class="pt-3">
-                  <h3>Upload a .torrent</h3>
+               <section class="pt-5">
+                  <h3 class="pb-3">Upload a .torrent</h3>
                   <form class="toucan-forms" id=dot-torrent-upload-form action="/torrents/file-upload" method="POST" enctype="multipart/form-data">
                      <label for="dot-torrent" class="btn btn-toucan-text">
                         <input id="dot-torrent" hidden='true' name='.torrent' type="file" />
@@ -61,8 +61,6 @@
          </div>
          <div class="modal-body d-flex align-items-center">
             <div class="container torrent-submit-body d-flex flex-column align-items-start justify-content-center">
-               <section>
-               </section>
             </div>
          </div>
          <div class="modal-footer">
@@ -71,8 +69,8 @@
                  Back
                  <i class="bi bi-arrow-left"></i>
               </button> 
-               <button form=type="button" id="upload-submit" class="btn btn-toucan-text" data-bs-target= "#torrent-submit-modal" data-bs-toggle="modal" data-bs-dismiss="modal">
-                 Submit 
+               <button type="submit" id="upload-submit" class="btn btn-toucan-text">
+                 Start Leeching
                </button>
             </div>
          </div>

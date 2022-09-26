@@ -15,6 +15,12 @@
    --toucan-outlines: #422A40;
 }
 
+/* 
+*
+* Button styling
+*
+*/
+
 .btn-toucan {
    color: var(--toucan-green);
    transition: 0.3s;
@@ -22,7 +28,6 @@
 
 .btn-toucan-text {
    background-color: var(--toucan-green);
-   font-weight: bold;
    color: var(--modal-background);
 }
 
@@ -33,6 +38,12 @@
 
 .btn-delete {
    color: var(--toucan-red);
+}
+
+.new-torrent-row {
+   width: 100%;
+   background: var(--modal-background);
+   border: 1px solid var(--toucan-outlines);
 }
 
 
@@ -65,17 +76,33 @@ small {
 #home-page {
    background: linear-gradient(rgba(255,255,255, 0.7), rgba(255,255,255, 0.7)), url("https://images.unsplash.com/photo-1532503353673-585dcc16ad86?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80") center center;
    background-size: 260%;
-   /* width: 100%; */
-   /* height: 100%; */
+}
+
+.torrents-page {
+   background: linear-gradient(rgba(255,255,255, 0.7), rgba(255,255,255, 0.7)), url("https://images.unsplash.com/photo-1516421417223-d0c0551e1031?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1219&q=80") center center;
+   background-size: 260%;
 }
 
 section#title {
    height: 40%;
 }
 
+section#torrents-page-title {
+   height: 15%
+}
+section#torrents-page-body {
+   height: 80%;
+}
+
+#torrent-table-headers {
+   border-bottom: 1px solid gray;
+   background-color: var(--background);
+}
+
 
 input {
    background-color: var(--background);
+   padding-left: 5px;
    border: 1px solid var(--toucan-outlines);
    border-radius: 10px;
    width: 100%
@@ -140,6 +167,35 @@ input {
    width: 50%;
 }
 
+.torrent-submit-body {
+   width: 100%;
+   height: 100%;
+}
+
+#torrent-submit-info {
+   width: 100%;
+   height: 100%;
+   background-color: var(--background);
+   border: 1px solid var(--toucan-outlines);
+   border-radius: 7px;
+   color: rgba(0, 0, 0, .7);
+}
+#torrent-submit-info section {
+   height: 100%;
+   width: 100%;
+   border-bottom: 1px solid grey;
+   padding-left: 10px;
+   padding-right: 10px;
+}
+#torrent-name {
+   padding-left: 10px;
+}
+#client-toggle,
+button.torrent-toggle{
+   background: none;
+}
+
+
 /* 
 *
 * Font Styling 
@@ -161,11 +217,43 @@ h2 {
 }
 
 h3 {
-   font-size: 2.5rem;
+   font-size: 2.8rem;
 }
 
+h4 {
+   font-size: 2.0rem;
+}
+
+
 span {
+   font-size: 1.5rem;
+}
+
+span#client-rate {
+   font-size: 1.8rem;
+   color: rgba(0, 0, 0, 0.33);
+}
+
+.torrent-submit-body span {
    font-size: 1.2rem;
+}
+.bi {
+   font-size: 2rem;
+}
+
+small {
+   font-size: 1.8rem;
+}
+span small {
+   font-size: 1.1rem;
+}
+input {
+   font-size: 2.0rem;
+}
+.btn-toucan-text,
+#upload-cancel{
+   font-size: 1.8rem;
+   font-weight: bold;
 }
 
 .nav-menu li a {
@@ -173,4 +261,13 @@ span {
    text-decoration: none;
    color: rgba(0, 0, 0, 0.63);
    transition: 0.3s;
+}
+
+/* 
+* 
+* Icon styling 
+*
+*/
+i.bi-check-circle-fill {
+   color: var(--toucan-green);
 }

@@ -79,6 +79,7 @@ app.use(
             "'self'",
             "eval",
             "https://images.unsplash.com/photo-1532503353673-585dcc16ad86?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
+            "https://images.unsplash.com/photo-1516421417223-d0c0551e1031?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1219&q=80"
          ],
       },
    })

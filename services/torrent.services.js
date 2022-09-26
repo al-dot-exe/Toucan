@@ -2,6 +2,7 @@
 const Torrent = require("../models/Torrent");
 const { client } = require("../config/webtorrent");
 const parseTorrent = require("parse-torrent");
+const moment = require("moment");
 
 class TorrentServices {
    constructor() {
@@ -83,7 +84,18 @@ class TorrentServices {
          // if (torrentID.startsWith("'") || torrentID.endsWith("'")) {
          //    return "Couldn't parse magnet";
          // };
-         return parseTorrent(torrentID)
+         const parsedTorrent = parseTorrent(torrentID)
+         parsedTorrent.created = moment(parsedTorrent.created).format('MMMM Do YYYY, hh:mm:ss a');
+         if (parsedTorrent.length >= (1024 ** 3)) {
+            parsedTorrent.length = `${(parsedTorrent.length / (1024 ** 3)).toFixed(2)} GB`
+         } else if (parsedTorrent.length >= (1024 ** 2)) {
+            parsedTorrent.length = `${(parsedTorrent.length / (1024 ** 2)).toFixed(2)} MB`
+         } else if (parsedTorrent.length >= 1024) {
+            parsedTorrent.length = `${(parsedTorrent.length / (1024)).toFixed(2)} KB`
+         } else {
+            parsedTorrent.length = `${parsedTorrent.length} B`
+         }
+         return parsedTorrent;
       } catch (err) {
          console.error(err);
       }

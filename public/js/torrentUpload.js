@@ -18,6 +18,7 @@ async function startTorrentUploadProcess() {
    const nextButton = document.getElementById('upload-continue')
    const backButton = document.getElementById('upload-back');
    const cancelButton = document.getElementById('upload-cancel');
+   const submitButton = document.getElementById('upload-submit');
    const modalClose = document.getElementById('upload-menu-close')
    const uploadPage = document.getElementById('torrent-upload-modal');
    const submissionPage = document.getElementById('torrent-submit-modal');
@@ -25,8 +26,6 @@ async function startTorrentUploadProcess() {
    const fileUploadStatus = document.getElementById('file-status');
    const fileDeleteButton = document.getElementById('file-delete');
 
-   dotTorrentForm.addEventListener('submit', e => e.preventDefault());
-   magnetURIForm.addEventListener('submit', e => e.preventDefault());
    nextButton.addEventListener('click', continueUpload);
    cancelButton.addEventListener('click', clearUpload);
    modalClose.addEventListener('click', clearUpload);
@@ -52,7 +51,10 @@ async function startTorrentUploadProcess() {
 
       fileDeleteButton.innerHTML = !(fileStatus == 'no file selected...')
          ? `<i class="bi bi-x-circle-fill bg-none"></i>`
-         : ''
+         : '';
+      (dotTorrent.value)
+         ? submitButton.setAttribute('form', 'dot-torrent-upload-form')
+         : submitButton.setAttribute('form', 'magnet-upload-form');
    }
 
 
@@ -73,13 +75,15 @@ async function startTorrentUploadProcess() {
       data.comment = (!data.comment) ? '...' : data.comment;
       submissionBody.innerHTML =
          `
-          <section><h3>${data.name}</h3></section>
-<section><h3>Info Hash:<br><br></h3><span>${data.infoHash}</span></section>
-         <section><h3>Size:</h3><span>${data.length}</span></section>
-         <section><h3>Date:</h3><span>${data.created}</span></section>
-         <section><h3>Piece Length:</h3><span>${data.pieceLength}</span></section>
-         <section><h3>Author:</h3><span>${data.createdBy}</span></section>
-         <section><h3>Comments:</h3><span>${data.comment}</span></section>
+          <h3 id="torrent-name">${data.name}</h3>
+         <div id="torrent-submit-info" class="d-flex flex-column justify-content-center pt-2">
+            <section><h4>Info Hash:<br></h4><span>${data.infoHash}</span></section>
+            <section><h4>Size:</h4><span>${data.length}</span></section>
+            <section><h4>Date:</h4><span>${data.created}</span></section>
+            <section><h4>Piece Length:</h4><span>${data.pieceLength}</span></section>
+            <section><h4>Author:</h4><span>${data.createdBy}</span></section>
+            <section class="border-none"><h4>Comments:</h4><span>${data.comment}</span></section>
+         </div>
          `
    }
 
@@ -88,15 +92,17 @@ async function startTorrentUploadProcess() {
          const parsedTorrent = (magnetURI.value)
             ? await app.service('torrent-services').get(magnetURI.value)
             : await app.service('torrent-services').get(await dotTorrent.files[0].arrayBuffer());
-         insertParsedTorrentData(parsedTorrent);
          if (!parsedTorrent) {
             alert('Invalid torrentId submitted');
             backButton.click(); // band-aid
+         } else {
+            insertParsedTorrentData(parsedTorrent);
          }
       } else {
          alert('Submit either a magnet link or a .torrent file');
          backButton.click(); // band-aid
       }
+      updateFileStatus();
    }
 }
 

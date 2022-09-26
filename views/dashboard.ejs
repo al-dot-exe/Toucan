@@ -1,158 +1,170 @@
-<h1>Dashboard</h1>
-<br>
-<br>
-
-<section>
-
-   <section>
-      <h4>Add Torrent</h3>
-      <form action="/torrents/magnet-upload" method="POST">
-         <input id="magnet-uri" type="text" name="magnet" placeholder="magnet:uri" value="">
-         <input type="submit" value="submit magnet" />
-      </form>
-      <form action="/torrents/file-upload" method="POST" enctype="multipart/form-data">
-         <input id="dot-torrent" name='.torrent' type="file" />
-         <input type="submit" value="upload" />
-      </form>
-
-      <% if (locals.messages.info) { %>
-          <% messages.info.forEach( el => { %>
-              <div class="alert"><%= el.msg %></div>
-          <% }) %>    
-      <% } %>
-      <% if (locals.messages.errors) { %>
-           <% messages.errors.forEach( el => { %>
-               <div class="alert alert-danger"><%= el.msg %></div>
-           <% }) %>    
-      <% } %>
+<section class='torrents-page'>
+   <section id='torrents-page-title'>
+      <div class="container d-flex flex-row justify-content-between align-items-center">
+         <h1 class='py-2 ps-1'>Dashboard</h1>
+      </div>
    </section>
 
-   <h4>Torrents Table</h4>
+   <section id= "torrents-page-body">
+      <div class="container">
 
-  <%- include('partials/torrentsNav') %>
-   
-  <section id='torrent-table'>
 
-     <section id='torrent-table-header'>
-       <span style="display:inline">
-           Upload rate limit
+      <section id="torrent-table-headers" class="d-flex flex-row justify-content-between align-items-center">
+         <%- include('partials/torrentsNav') %>
 
-        <form id='upload-throttle-up' style="display:inline">
-            <input type="hidden" />
-            <button type="submit" class="btn btn-small">
-                <i>&#8593;</i>
-             </button>
-        </form> 
+            <div id="throttle" class="btn-group">
+               <button class="btn btn-dropdown btn-sm" type="button" id="throttle-dropdown-btn" data-bs-toggle="dropdown" aria-expanded="true">
+                   <i class="bi bi-speedometer2"></i>
+               </button>
 
-        <span id='upload-throttle'><%= `${(upMax / 1000)}` %></span>KB/s
-       
-        <form id='upload-throttle-down' style="display:inline">
-            <input type="hidden" />
-            <button type="submit" class="btn btn-small">
-                <i>&#x2193;</i>
-          </button>
-        </form> 
-       </span>
+               <ul id="throttle-dropdown" class="dropdown-menu">
+                  <section class="d-flex flex-row justify-content-between align-items-center">
+                     <h5>Upload Throttle:</h5>
+                     <div class="d-flex flex-row justify-content-center align-items-center">
+                       <form id='upload-throttle-up' style="display:inline">
+                           <input type="hidden" />
+                           <button type="submit" class="btn btn-small">
+                              <i class="bi bi-chevron-double-up"></i>    
+                            </button>
+                       </form> 
+                       <span id='upload-throttle'><%= `${(upMax / 1000)}` %><small>KB/s</small></span>
+                       <form id='upload-throttle-down' style="display:inline">
+                           <input type="hidden" />
+                           <button type="submit" class="btn btn-sm">
+                              <i class="bi bi-chevron-double-down"></i>    
+                         </button>
+                       </form> 
+                     </div>
+                  </section>
 
-       <span style="display:inline">
-           Download rate limit
+                  <section class="d-flex flex-row justify-content-between align-items-center">
+                     <h5>Download Throttle:</h5>
+                     <div class="d-flex flex-row justify-content-center align-items-center">
+                       <form id='download-throttle-up' style="display:inline">
+                           <input type="hidden" />
+                           <button type="submit" class="btn btn-small">
+                              <i class="bi bi-chevron-double-up"></i>    
+                            </button>
+                       </form> 
+                       <span id='download-throttle'><%= `${(downMax / 1000)}` %><small>KB/s</small></span>
+                       <form id='download-throttle-down' style="display:inline">
+                           <input type="hidden" />
+                           <button type="submit" class="btn btn-small">
+                              <i class="bi bi-chevron-double-down"></i>    
+                         </button>
+                       </form> 
+                     </div>
+                  </section>
+               </ul>
+            </div>
 
-        <form id='download-throttle-up' style="display:inline">
-            <input type="hidden" />
-            <button type="submit" class="btn btn-small">
-                <i>&#8593;</i>
-             </button>
-        </form> 
 
-        <span id='download-throttle'><%= `${(downMax / 1000)}` %></span>KB/s
-       
-        <form id='download-throttle-down' style="display:inline">
-            <input type="hidden" />
-            <button type="submit" class="btn btn-small">
-                <i>&#x2193;</i>
-          </button>
-        </form> 
-       </span>
+            <button class="btn btn-toucan" data-bs-toggle="modal" data-bs-target="#torrent-upload-modal" type="button">
+               <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+     <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+   </svg>
+            </button>
+
+            <form id="client-toggle" style="display:inline" >
+                <input type="hidden" />
+              <button type="submit" class="btn">
+               <% if (upRate == 0 && downRate == 0) { %>
+                 <i class="bi bi-play-fill"></i>
+               <% } else { %>
+                 <i class='bi bi-pause-fill'></i>
+               <% } %>
+              </button>
+            </form> 
+      </section>
          
-      <span id="client-rate">Rate: <%= `${(upRate / 1000).toFixed(2)}` %>/<%= `${(downRate / 1000).toFixed(2)}` %> KB/s</span>
+      <section id='torrent-table'>
 
-      <form id="client-toggle" style="display:inline" >
-          <input type="hidden" />
-        <button type="submit" class="btn btn-small">
-             Toggle client
-         <% if (upRate == 0 && downRate == 0) { %>
-           <i>&#62;</i>
-         <% } else { %>
-           <i>&#8718;</i>
-         <% } %>
-        </button>
-      </form> 
-     </section>
+           <section id="table">
+              <table>
+                 <thead>
+                    <tr>
+                       <th></th>
+                       <th>Name</th>
+                       <th>Author</th>
+                       <th>Uprate (KB/s)</th>
+                       <th>Downrate (KB/s)</th>
+                       <th>Peer Count</th>
+                       <th>Status</th>
+                    </tr>
+                 </thead>
 
-     <section id="table">
-        <table>
-           <thead>
-              <tr>
-                 <th></th>
-                 <th>Name</th>
-                 <th>Author</th>
-                 <th>Uprate (KB/s)</th>
-                 <th>Downrate (KB/s)</th>
-                 <th>Peer Count</th>
-                 <th>Status</th>
-              </tr>
-           </thead>
+                 <tbody>
+                    <% torrentsArray.forEach( torrent => { %>
+               <div class="container new-torrent-row d-flex flex-row align-items-center justify-content-between mb-3">
+                   <% if (!torrent.done) { %>
+                   <div>
+                     <div class="spinner-border text-info" role="status">
+                        <span class="visually-hidden">
+                        </span>
+                     </div>
+                     <%= `${(torrent.progress * 100).toFixed(2)}%` %>
+                   </div>
+                   <% } else { %>
+                     <i class="bi bi-check-circle-fill"></i>
+                   <% } %>
+                     <h5>
+                        <%= torrent.name %>
+                     </h5>
+                     <button class="btn btn-torrent-view" data-bs-toggle="modal" data-bs-target="#torrent-upload-modal" type="button">
+                        <i class="bi bi-node-plus"></i>
+                     </button> 
+               </div>
 
-           <tbody>
 
-              <% torrentsArray.forEach( torrent => { %>
+                    <tr id="<%= torrent.infoHash %>" class="<%=torrent.paused ? 'torrent-row paused' : 'torrent-row'; %>" >
+                          <td>
+                           <form action="/torrents/<%= torrent.infoHash %>" method="POST" id="delete-from">
+                               <input type="hidden" name="_method" value="DELETE">
+                               <button type="submit" class="btn btn-small red">
+                                  <i class="fas fa-trash trip-delete">x</i>
+                             </button>
+                           </form> 
+                           |
+                           <a href='/torrents/download/<%= torrent.infoHash %>'>v</a>
+                           |
+                           <a href='/torrents/<%= torrent.infoHash %>'>+</a>
+                          </td>
+                          <td><%= torrent.name %></td>
+                          <td><%= torrent.createdBy %></td>
+                          <td><%= `${(torrent.uploadSpeed / 1000).toFixed(2)}` %> KB/s</td>
+                          <td><%= `${(torrent.downloadSpeed / 1000).toFixed(2)}` %> KB/s</td>
+                          <td><%= torrent.numPeers %></td>
+                          <td>
+                            <% if (torrent.paused) { %>
+                              Paused
+                            <% } else { %>
+                              <%= !torrent.done ? `${(torrent.progress * 100).toFixed(2)}%` : 'Seeding' %>
+                            <% } %>
+                          </td> 
 
-              <tr id="<%= torrent.infoHash %>" class="<%=torrent.paused ? 'torrent-row paused' : 'torrent-row'; %>" >
-                    <td>
-                     <form action="/torrents/<%= torrent.infoHash %>" method="POST" id="delete-from">
-                         <input type="hidden" name="_method" value="DELETE">
-                         <button type="submit" class="btn btn-small red">
-                            <i class="fas fa-trash trip-delete">x</i>
-                       </button>
-                     </form> 
-                     |
-                     <a href='/torrents/download/<%= torrent.infoHash %>'>v</a>
-                     |
-                     <a href='/torrents/<%= torrent.infoHash %>'>+</a>
-                    </td>
-                    <td><%= torrent.name %></td>
-                    <td><%= torrent.createdBy %></td>
-                    <td><%= `${(torrent.uploadSpeed / 1000).toFixed(2)}` %> KB/s</td>
-                    <td><%= `${(torrent.downloadSpeed / 1000).toFixed(2)}` %> KB/s</td>
-                    <td><%= torrent.numPeers %></td>
-                    <td>
-                      <% if (torrent.paused) { %>
-                        Paused
-                      <% } else { %>
-                        <%= !torrent.done ? `${(torrent.progress * 100).toFixed(2)}%` : 'Seeding' %>
-                      <% } %>
-                    </td> 
+                          <td class="torrent-toggle">
+                           <form class="torrent-toggle">
+                               <button class="torrent-toggle btn" type="submit">
+                                 <% if (torrent.paused) { %>
+                                   <i class="bi bi-play-circle-fill"></i>
+                                 <% } else { %>
+                                   <i class='bi bi-pause-circle-fill'></i>
+                                 <% } %>
+                             </button>
+                           </form> 
+                          </td>
+                        </tr>
+                     
+                     <% }) %>    
 
-                    <td class="torrent-toggle">
-                     <form class="torrent-toggle">
-                         <button class="torrent-toggle" type="submit" class="btn">
-                           <% if (torrent.paused) { %>
-                             <i>&#62;</i>
-                           <% } else { %>
-                             <i>&#8718;</i>
-                           <% } %>
-                       </button>
-                     </form> 
-                    </td>
-                  </tr>
-               
-               <% }) %>    
-
-           </tbody>
-        </table>
-     </section>
+                 </tbody>
+              </table>
+           </section>
+      </div>
    </section>
+   <div class="fixed-bottom mb-4 ms-1">
+            <span id="client-rate"><%= `${(upRate / 1000).toFixed(2)}` %>/<%= `${(downRate / 1000).toFixed(2)}` %><small>KB/s</small></span>
+   </div>
 </section>
 
-<br>
-<br>
+<%- include('partials/uploadModal') %>

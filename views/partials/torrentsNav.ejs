@@ -1,17 +1,22 @@
-<ul>
-  <li>
-    <a href="/torrents/dashboard">all</a>
-  </li>
-  <li>
-    <a href="/torrents/seeding">seeding</a>
-  </li>
-  <li>
-    <a href="/torrents/leeching">leeching</a>
-  </li>
-  <!-- <li> -->
-  <!--   <a href="/torrents/hashing">hashing</a> -->
-  <!-- </li> -->
-  <!-- <li> -->
-  <!--   <a href="/torrents/seeding">active</a> -->
-  <!-- </li> -->
-</ul>
+<div class="btn-group">
+   <button class="btn btn-dropdown btn-sm" type="button" id="defaultDropdown" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false">
+       <i class="bi bi-filter"></i>
+   </button>
+   <ul class="dropdown-menu" aria-labelledby='defaultDropDown'>
+     <li>
+       <a class="dropdown-item" href="/torrents/dashboard">all</a>
+     </li>
+     <li>
+       <a class="dropdown-item" href="/torrents/seeding">seeding</a>
+     </li>
+     <li>
+       <a class="dropdown-item" href="/torrents/leeching">leeching</a>
+     </li>
+     <li>
+       <a class="dropdown-item" href="/torrents/hashing">hashing</a>
+     </li>
+     <li>
+       <a class="dropdown-item" href="/torrents/seeding">active</a>
+     </li>
+   </ul>
+</div>

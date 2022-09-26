@@ -16,6 +16,8 @@ async function startDashboardServices() {
    // Event Listeners
    const clientToggle = document.getElementById('client-toggle');
    const clientRate = document.getElementById('client-rate');
+   const throttleDropDown = document.getElementById('throttle-dropdown')
+   const throttleDropDownButton = document.getElementById('throttle-dropdown-btn')
    const uploadThrottleUp = document.getElementById("upload-throttle-up")
    const uploadThrottleDown = document.getElementById("upload-throttle-down")
    const downloadThrottleUp = document.getElementById("download-throttle-up")
@@ -33,6 +35,7 @@ async function startDashboardServices() {
       row.childNodes[row.childNodes.length - 2].addEventListener('click', toggleTorrent);
    });
 
+   throttleDropDown.addEventListener('click', (e) => e.stopPropagation());
 
    /*
    * Front End Updaters
@@ -42,7 +45,7 @@ async function startDashboardServices() {
       const clientStatus = await app.service('client-services').find();
       const upRate = clientStatus.currentUploadRate;
       const downRate = clientStatus.currentDownloadRate;
-      clientRate.innerText = `Rate: ${(upRate / 1000).toFixed(2)}/${(downRate / 1000).toFixed(2)} KB/s`
+      clientRate.innerHTML = `${(upRate / 1000).toFixed(2)}/${(downRate / 1000).toFixed(2)}<small>KB/s</small>`
    }
 
    async function renderClientPausedStatus() {
@@ -50,16 +53,16 @@ async function startDashboardServices() {
       if (clientStatus.paused) {
          torrentRows.forEach(row => {
             row.className = "torrent-row paused"
-            row.childNodes[row.childNodes.length - 2].childNodes[1].childNodes[1].childNodes[1].childNodes[0].data = ">";
+            row.childNodes[row.childNodes.length - 2].childNodes[1].childNodes[1].childNodes[1].innerHTML = "<i class='bi bi-play-fill'></i>"
          });
-         clientToggle.childNodes[3].childNodes[1].textContent = ">";
+         clientToggle.childNodes[3].innerHTML = "<i class='bi bi-play-fill'></i>";
       }
       else {
          torrentRows.forEach(row => {
             row.className = "torrent-row";
-            row.childNodes[row.childNodes.length - 2].childNodes[1].childNodes[1].childNodes[1].childNodes[0].data = "∎";
+            row.childNodes[row.childNodes.length - 2].childNodes[1].childNodes[1].childNodes[1].innerHTML = "<i class='bi bi-pause-fill'></i>"
          });
-         clientToggle.childNodes[3].childNodes[1].textContent = "∎";
+         clientToggle.childNodes[3].innerHTML = "<i class='bi bi-pause-fill'></i>";
       }
    }
 
@@ -103,13 +106,13 @@ async function startDashboardServices() {
    // Upload limit updater
    async function renderNewUploadLimit() {
       const clientStatus = await app.service('client-services').find();
-      upMax.innerText = `${(clientStatus.maxUploadRate / 1000)}`
+      upMax.innerHTML = `${(clientStatus.maxUploadRate / 1000)}<small>KB/s</small>`
    }
 
    //Download limit updater
    async function renderNewDownloadLimit() {
       const clientStatus = await app.service('client-services').find();
-      downMax.innerText = `${(clientStatus.maxDownloadRate / 1000)}`
+      downMax.innerHTML = `${(clientStatus.maxDownloadRate / 1000)}<small>KB/s</small>`
    }
 
    /*
