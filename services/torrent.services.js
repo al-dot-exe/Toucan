@@ -1,6 +1,7 @@
-// Services to give real time updates on individual torrents
+// Services to give real time services on individual torrents
 const Torrent = require("../models/Torrent");
 const { client } = require("../config/webtorrent");
+const parseTorrent = require("parse-torrent");
 
 class TorrentServices {
    constructor() {
@@ -69,6 +70,21 @@ class TorrentServices {
          }
       } catch (err) {
          console.log('Something went wrong with torrent update services');
+         console.error(err);
+      }
+   }
+
+   async get(torrentID) {
+      try {
+         if (typeof torrentID === 'string') {
+            torrentID = torrentID.split("'").join('');
+            torrentID = torrentID.split(" ").join('').trim();
+         }
+         // if (torrentID.startsWith("'") || torrentID.endsWith("'")) {
+         //    return "Couldn't parse magnet";
+         // };
+         return parseTorrent(torrentID)
+      } catch (err) {
          console.error(err);
       }
    }

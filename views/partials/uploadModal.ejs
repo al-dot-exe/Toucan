@@ -1,0 +1,82 @@
+<!-- Upload Modal -->
+<div id="torrent-upload-modal" aria-hidden="true" class="modal fade" tabindex="-1">
+   <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content">
+         <div class='modal-header'>
+            <button type="button" id="upload-menu-close" class="close btn-lg ms-10" data-bs-dismiss="modal">
+                <i class="bi bi-x-lg"></i>  
+            </button>
+            <a href="/" id="modal-logo" class="navbar-brand">
+               <img src="/assets/images/logo.png" width="65" alt="" />
+            </a>
+         </div>
+         <div class="modal-body d-flex align-items-center">
+            <div class="container d-flex flex-column align-items-start justify-content-center">
+               <section class="pb-3">
+                  <h3>Submit a magnet link</h3>
+                  <form id='magnet-upload-form' action="/torrents/magnet-upload" method="POST">
+                     <input id="magnet-uri-input" type="text" name="magnet" placeholder="magnet:uri" value="">
+                     
+                  </form>
+               </section>
+               <small>or...</small>
+               <section class="pt-3">
+                  <h3>Upload a .torrent</h3>
+                  <form class="toucan-forms" id=dot-torrent-upload-form action="/torrents/file-upload" method="POST" enctype="multipart/form-data">
+                     <label for="dot-torrent" class="btn btn-toucan-text">
+                        <input id="dot-torrent" hidden='true' name='.torrent' type="file" />
+                        Browse
+                     </label>
+                     <br>
+                     <span id='file-status'></span>
+                     <button id="file-delete" type='button' class="btn btn-lg btn-delete">
+                     </button>
+                  </form>
+               </section>
+            </div>
+         </div>
+         <div class="modal-footer">
+            <div class="container d-flex flex-row justify-content-between">
+              <button type="button" id="upload-cancel" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button> 
+              <button type="button" id="upload-continue" class="btn btn-toucan-text" data-bs-target= "#torrent-submit-modal"  data-bs-toggle='modal' data-bs-dismiss="modal">
+                 Next 
+                 <i class="bi bi-arrow-right"></i>
+              </button> 
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+<!-- Submit Modal -->
+<div id="torrent-submit-modal" aria-hidden="true" class="modal fade" tabindex="-1" >
+   <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content">
+         <div class='modal-header'>
+            <button type="button" id="upload-menu-close" class="close btn-lg ms-10" data-bs-dismiss="modal">
+                <i class="bi bi-x-lg"></i>  
+            </button>
+            <a href="/" id="modal-logo" class="navbar-brand">
+               <img src="/assets/images/logo.png" width="65" alt="" />
+            </a>
+         </div>
+         <div class="modal-body d-flex align-items-center">
+            <div class="container torrent-submit-body d-flex flex-column align-items-start justify-content-center">
+               <section>
+               </section>
+            </div>
+         </div>
+         <div class="modal-footer">
+            <div class="container d-flex flex-row justify-content-between">
+               <button type="button" id="upload-back" class="btn btn-toucan-text" data-bs-target="#torrent-upload-modal" data-bs-toggle="modal" data-bs-dismiss="modal">
+                 Back
+                 <i class="bi bi-arrow-left"></i>
+              </button> 
+               <button form=type="button" id="upload-submit" class="btn btn-toucan-text" data-bs-target= "#torrent-submit-modal" data-bs-toggle="modal" data-bs-dismiss="modal">
+                 Submit 
+               </button>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

@@ -1,3 +1,4 @@
+/* might change later */
 /*  CUSTOM CSS */
 * {
   box-sizing: border-box;
@@ -6,9 +7,12 @@
 }
 
 :root{
-   --background: #fcfbf7;
+   --background: #EDEBE4;
+   --modal-background: #fcfbf7;
    --toucan-green: #1EBC6E;
    --toucan-orange: #F4AA15;
+   --toucan-red: #E42E47;
+   --toucan-outlines: #422A40;
 }
 
 .btn-toucan {
@@ -16,15 +20,28 @@
    transition: 0.3s;
 }
 
-.btn-toucan:hover {
+.btn-toucan-text {
+   background-color: var(--toucan-green);
+   font-weight: bold;
+   color: var(--modal-background);
+}
+
+.btn-toucan:hover,
+.btn-toucan-text:hover {
    color: var(--toucan-orange);
 }
+
+.btn-delete {
+   color: var(--toucan-red);
+}
+
 
 body {
    height: 100vh;
    display: flex;
    flex-direction: column;
    background-color: var(--background);
+   font-family: "Kiwi Maru";
 }
 
 body > * {
@@ -40,15 +57,29 @@ footer {
    background-color: var(--background);
 }
 
+small {
+   
+   color: rgba(0, 0, 0, .5);
+}
+
 #home-page {
    background: linear-gradient(rgba(255,255,255, 0.7), rgba(255,255,255, 0.7)), url("https://images.unsplash.com/photo-1532503353673-585dcc16ad86?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80") center center;
-   background-size: 1050px;
-   width: 100%;
-   height: 100%;
+   background-size: 260%;
+   /* width: 100%; */
+   /* height: 100%; */
 }
 
 section#title {
-   height: 55%;
+   height: 40%;
+}
+
+
+input {
+   background-color: var(--background);
+   border: 1px solid var(--toucan-outlines);
+   border-radius: 10px;
+   width: 100%
+   color: rgba(0, 0, 0, .7);
 }
 
 .bi-list {
@@ -61,18 +92,30 @@ section#title {
    color: var(--toucan-green);
 }
 
+.modal-content {
+   background-color: var(--modal-background);
+}
 .modal-header {
-   max-width: 64%;
+   max-width: 67.25%;
    width: 100%;
    border: 0;
 }
+.modal-footer {
+   border: 0;
+}
 
-#main-menu-close {
-   background-color: #fff;
+.modal-body > div.container {
+   height: 100%;
+}
+
+#main-menu-close,
+#upload-menu-close {
+   background-color: var(--modal-background);
    border: 0;
    transition: 0.3s;
 }
-#main-menu-close:hover {
+#main-menu-close:hover,
+#upload-menu-close:hover {
    color: var(--toucan-green);
 }
 
@@ -81,24 +124,53 @@ section#title {
    margin: 50px 10px 0 0;
 }
 
-.nav-menu li a {
-   font-size: 32px;
-   text-decoration: none;
-   color: rgba(0, 0, 0, 0.63);
-   transition: 0.3s;
-}
 
 .nav-menu li a:hover {
    text-decoration: none;
    color: var(--toucan-green);
 }
 
+
+#dot-torrent {
+   width: 50%;
+   max-width: 50%;
+}
+
+#file-status {
+   width: 50%;
+}
+
+/* 
+*
+* Font Styling 
+*
+* */
+
+html {
+   font-size: 62.5%;
+}
+
 h1 {
-   font-size: 36px;
+   font-size: 3.6rem;
    color: rgba(0, 0, 0, 0.33);
 }
 
 h2 {
-   font-size: 32px;
+   font-size: 3.2rem;
    color: rgba(0, 0, 0, 0.95);
+}
+
+h3 {
+   /* font-size: 2.5rem; */
+}
+
+span {
+   font-size: 1.2rem;
+}
+
+.nav-menu li a {
+   font-size: 3.2rem;
+   text-decoration: none;
+   color: rgba(0, 0, 0, 0.63);
+   transition: 0.3s;
 }

@@ -1,4 +1,4 @@
-// client side js file for working with torrent client screen table
+// client side js file for working with Torrent client in real time
 async function startDashboardServices() {
 
    // Declare web sockets
