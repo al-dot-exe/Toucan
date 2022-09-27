@@ -41,11 +41,11 @@ class TorrentServices {
    }
 
    async find(params) {
-      if (params === 'all') {
-         return this.torrents
+      if (!params.query.id) {
+         return this.torrents;
       } else {
          const filteredTorrents = this.torrents.filter(torrent => params.query.id === torrent.id);
-         return filteredTorrents
+         return filteredTorrents;
       }
    }
 

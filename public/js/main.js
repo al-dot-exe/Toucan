@@ -12,7 +12,7 @@ if (window.location.pathname === "/torrents/dashboard" ||
 
 if(window.location.pathname === "/") startTorrentUploadProcess();
 
-startTorrentViewServices();
+startTorrentViewServices(); //band-aid
 
 // inputs are dragging and not selecting correclty <,<
 // document.querySelectorAll('input').forEach(input => {

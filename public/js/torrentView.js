@@ -11,6 +11,7 @@ async function startTorrentViewServices() {
    app.configure(feathers.socketio(socket));
 
    // Select DOM items and Event Listeners
+try {
    const infoHash = document.getElementById('hash-value').textContent;
    const progressStatus = document.getElementById("progress-status");
    const torrentUploadSpeed = document.getElementById("upload-speed");
@@ -19,6 +20,10 @@ async function startTorrentViewServices() {
    const leeched = document.getElementById('data-leeched');
    const peersList = document.getElementById('peers-list');
    const announceList = document.getElementById('announce-list');
+} catch (err) {
+      //band-aid
+      console.log("Not in torrent view");
+}
 
 
 
