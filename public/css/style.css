@@ -13,6 +13,9 @@
    --toucan-orange: #F4AA15;
    --toucan-red: #E42E47;
    --toucan-outlines: #422A40;
+   --toucan-info: #2D8CC1;
+   --toucan-download: #9C6097;
+   --toucan-general: #9c9c9a;
 }
 
 /* 
@@ -36,16 +39,20 @@
    color: var(--toucan-orange);
 }
 
-.btn-delete {
+.btn-toucan-throttle {
+   color: var(--toucan-general);
+}
+.btn-toucan-info {
+   color: var(--toucan-orange);
+}
+
+.btn-toucan-download {
+   color: var(--toucan-download);
+}
+
+.btn-toucan-delete {
    color: var(--toucan-red);
 }
-
-.new-torrent-row {
-   width: 100%;
-   background: var(--modal-background);
-   border: 1px solid var(--toucan-outlines);
-}
-
 
 body {
    height: 100vh;
@@ -55,7 +62,7 @@ body {
    font-family: "Kiwi Maru";
 }
 
-body > * {
+body > section {
    height: 100%;
 }
 
@@ -97,6 +104,15 @@ section#torrents-page-body {
 #torrent-table-headers {
    border-bottom: 1px solid gray;
    background-color: var(--background);
+   border: 1px solid var(--toucan-outlines);
+   border-radius: 4px;
+}
+
+.torrent-row {
+   max-width: 100%;
+   width: 100%;
+   background: var(--modal-background);
+   border-radius: 4px;
 }
 
 
@@ -104,7 +120,7 @@ input {
    background-color: var(--background);
    padding-left: 5px;
    border: 1px solid var(--toucan-outlines);
-   border-radius: 10px;
+   border-radius: 7px;
    width: 100%
    color: rgba(0, 0, 0, .7);
 }
@@ -187,9 +203,7 @@ input {
    padding-left: 10px;
    padding-right: 10px;
 }
-#torrent-name {
-   padding-left: 10px;
-}
+
 #client-toggle,
 button.torrent-toggle{
    background: none;
@@ -224,6 +238,10 @@ h4 {
    font-size: 2.0rem;
 }
 
+h5 {
+   color: #000;
+}
+
 
 span {
    font-size: 1.5rem;
@@ -247,6 +265,10 @@ small {
 span small {
    font-size: 1.1rem;
 }
+
+.torrent-rate small {
+   font-size: 1.2rem;
+}
 input {
    font-size: 2.0rem;
 }
@@ -263,6 +285,16 @@ input {
    transition: 0.3s;
 }
 
+.dropdown-menu {
+   border: 1px solid var(--toucan-outlines);
+   border-radius: 4px solid;
+   padding: 3px;
+}
+
+#torrents-filter ul li a{
+   font-size: 1.5rem;
+}
+
 /* 
 * 
 * Icon styling 
@@ -271,3 +303,8 @@ input {
 i.bi-check-circle-fill {
    color: var(--toucan-green);
 }
+
+.btn  small {
+   color: #000;
+   font-size: 1rem;
+   margin-left: 5px; }

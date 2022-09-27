@@ -11,13 +11,12 @@ async function startDashboardServices() {
    app.configure(feathers.socketio(socket));
 
    // Initialize services
-   init();
 
    // Event Listeners
+   const currentView = document.getElementById('current-view');
    const clientToggle = document.getElementById('client-toggle');
    const clientRate = document.getElementById('client-rate');
    const throttleDropDown = document.getElementById('throttle-dropdown')
-   const throttleDropDownButton = document.getElementById('throttle-dropdown-btn')
    const uploadThrottleUp = document.getElementById("upload-throttle-up")
    const uploadThrottleDown = document.getElementById("upload-throttle-down")
    const downloadThrottleUp = document.getElementById("download-throttle-up")
@@ -32,7 +31,11 @@ async function startDashboardServices() {
    downloadThrottleUp.addEventListener("submit", throttleDownloadUp);
    downloadThrottleDown.addEventListener("submit", throttleDownloadDown);
    torrentRows.forEach((row) => {
-      row.childNodes[row.childNodes.length - 2].addEventListener('click', toggleTorrent);
+      row.childNodes[9].childNodes[3].childNodes[3].childNodes[1].addEventListener('click', toggleTorrent);
+   });
+   const torrentControls = document.querySelectorAll('.torrent-controls');
+   torrentControls.forEach(torrentControl => {
+      torrentControl.addEventListener('click', (e) => e.stopPropagation());
    });
 
    throttleDropDown.addEventListener('click', (e) => e.stopPropagation());
@@ -45,22 +48,28 @@ async function startDashboardServices() {
       const clientStatus = await app.service('client-services').find();
       const upRate = clientStatus.currentUploadRate;
       const downRate = clientStatus.currentDownloadRate;
-      clientRate.innerHTML = `${(upRate / 1000).toFixed(2)}/${(downRate / 1000).toFixed(2)}<small>KB/s</small>`
+      clientRate.innerHTML = `${(upRate / 1000).toFixed(2)}/${(downRate / 1000).toFixed(2)}<small>KB/s <i class="bi bi-arrow-up px-0"></i><i class="bi bi-arrow-down px-0"></i></small>`
    }
 
    async function renderClientPausedStatus() {
       const clientStatus = await app.service('client-services').find();
       if (clientStatus.paused) {
          torrentRows.forEach(row => {
-            row.className = "torrent-row paused"
-            row.childNodes[row.childNodes.length - 2].childNodes[1].childNodes[1].childNodes[1].innerHTML = "<i class='bi bi-play-fill'></i>"
+            row.className = "torrent-row paused container d-flex flex-row justify-content-between align-items-center  py-1 my-3 w-100"
+            row.childNodes[9].childNodes[3].childNodes[3].childNodes[1].childNodes[1].innerHTML =
+               `<i class="bi bi-play-circle-fill"></i><small>Resume</small>`
+            row.childNodes[3].innerHTML = `<span class="fs-5">Paused</span>`;
+            row.style.backgroundColor = '#BEBEBE';
          });
+
          clientToggle.childNodes[3].innerHTML = "<i class='bi bi-play-fill'></i>";
       }
       else {
          torrentRows.forEach(row => {
-            row.className = "torrent-row";
-            row.childNodes[row.childNodes.length - 2].childNodes[1].childNodes[1].childNodes[1].innerHTML = "<i class='bi bi-pause-fill'></i>"
+            row.className = "torrent-row container d-flex flex-row justify-content-between align-items-center  py-1 my-3 w-100"
+            row.childNodes[9].childNodes[3].childNodes[3].childNodes[1].childNodes[1].innerHTML =
+               `<i class="bi bi-pause-circle-fill"></i><small>Pause</small>`
+            row.style.backgroundColor = '#fcfbf7';
          });
          clientToggle.childNodes[3].innerHTML = "<i class='bi bi-pause-fill'></i>";
       }
@@ -73,18 +82,21 @@ async function startDashboardServices() {
       torrentRows.forEach(row => {
          torrents.forEach(torrent => {
             if (torrent.id == row.id) {
-               row.childNodes[row.childNodes.length - 6].childNodes[0].data =
-                  `${torrent.peerCount}`;
-               row.childNodes[row.childNodes.length - 8].childNodes[0].data =
-                  `${(torrent.currentDownloadSpeed / 1000).toFixed(2)}KB/s`
-               row.childNodes[row.childNodes.length - 10].childNodes[0].data =
-                  `${(torrent.currentUploadSpeed / 1000).toFixed(2)}KB/s `
+               // row.childNodes[row.childNodes.length - 6].childNodes[0].data =
+               //    `${torrent.peerCount}`;
+               row.childNodes[9].childNodes[3].childNodes[1].childNodes[1].innerHTML =
+                  `${(torrent.currentUploadSpeed / 1000).toFixed(2)}KB/s
+                       <i class="bi bi-arrow-up"></i>`
+               row.childNodes[9].childNodes[3].childNodes[1].childNodes[5].innerHTML =
+                  `${(torrent.currentDownloadSpeed / 1000).toFixed(2)}KB/s
+                       <i class="bi bi-arrow-down"></i>`
                if (!torrent.paused) {
                   if (torrent.done == false) {
-                     row.childNodes[row.childNodes.length - 4].innerText =
-                        `${(torrent.progress * 100).toFixed(2)}%`;
+                     row.childNodes[3].innerHTML =
+                        `<span class="fs-5">${(torrent.progress * 100).toFixed(2)}%</span>`
                   } else {
-                     row.childNodes[row.childNodes.length - 4].innerText = torrent.progress;
+                     row.childNodes[3].innerHTML =
+                        `<i class="bi bi-check-circle-fill"></i>`;
                   }
                }
             }
@@ -93,13 +105,18 @@ async function startDashboardServices() {
    }
 
    async function changeTorrentPausedStatus(row, currentData) {
+      //band-aid
       if (currentData.paused) {
-         row.className = 'torrent-row paused'
-         row.childNodes[row.childNodes.length - 4].innerText = 'Paused';
-         row.childNodes[row.childNodes.length - 2].childNodes[1].childNodes[1].childNodes[1].childNodes[0].data = ">";
+         row.className = 'torrent-row paused container d-flex flex-row justify-content-between align-items-center  py-1 my-3 w-100'
+         row.childNodes[9].childNodes[3].childNodes[3].childNodes[1].childNodes[1].innerHTML =
+            `<i class="bi bi-play-circle-fill"></i><small>Resume</small>`
+         row.childNodes[3].innerHTML = `<span class="fs-5">Paused</span>`;
+         row.style.backgroundColor = '#BEBEBE';
       } else {
-         row.className = "torrent-row";
-         row.childNodes[row.childNodes.length - 2].childNodes[1].childNodes[1].childNodes[1].childNodes[0].data = "∎";
+         row.className = 'torrent-row container d-flex flex-row justify-content-between align-items-center  py-1 my-3 w-100'
+         row.childNodes[9].childNodes[3].childNodes[3].childNodes[1].childNodes[1].innerHTML =
+            `<i class="bi bi-pause-circle-fill"></i><small>Pause</small>`
+         row.style.backgroundColor = '#fcfbf7';
       }
    }
 
@@ -136,10 +153,12 @@ async function startDashboardServices() {
    async function toggleTorrent(e) {
       e.preventDefault();
       const clientStatus = await app.service('client-services').find();
-      const torrentRow = e.srcElement.parentElement.parentElement.parentElement.parentElement
+      //band-aid
+      const torrentRow =
+         e.srcElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement
       const id = torrentRow.id
       const torrentsArray = await app.service('torrent-services').find();
-      const data = torrentsArray.find(torrent => torrent.id === id);
+      const data = await torrentsArray.find(torrent => torrent.id === id);
 
       if (!clientStatus.paused) {
          data.paused = data.paused ? false : true;
@@ -173,15 +192,21 @@ async function startDashboardServices() {
    }
 
    async function init() {
+      currentView.innerText =
+         window.location.pathname.split('/').pop() !== 'dashboard'
+            ? window.location.pathname.split('/').pop()
+            : 'all';
       await app.service('client-services').create(document.getElementById('torrent-table'));
       torrentRows.forEach(async row => {
          await app.service('torrent-services').create({ id: row.id })
       });
       await app.service('torrent-services').remove(null);
+
       setInterval(renderTorrentUpdates, 1000)
       setInterval(renderClientRate, 500);
    }
 
+   init();
 }
 
 export { startDashboardServices }

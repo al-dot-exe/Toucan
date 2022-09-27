@@ -75,7 +75,7 @@ async function startTorrentUploadProcess() {
       data.comment = (!data.comment) ? '...' : data.comment;
       submissionBody.innerHTML =
          `
-          <h3 id="torrent-name">${data.name}</h3>
+          <h3 id="torrent-name" class="ms-2">${data.name}</h3>
          <div id="torrent-submit-info" class="d-flex flex-column justify-content-center pt-2">
             <section><h4>Info Hash:<br></h4><span>${data.infoHash}</span></section>
             <section><h4>Size:</h4><span>${data.length}</span></section>
