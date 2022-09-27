@@ -64,6 +64,7 @@ body {
 
 body > section {
    height: 100%;
+   overflow: auto;
 }
 
 header{
@@ -76,7 +77,6 @@ footer {
 }
 
 small {
-   
    color: rgba(0, 0, 0, .5);
 }
 
@@ -162,10 +162,6 @@ input {
    color: var(--toucan-green);
 }
 
-.nav-menu li {
-   list-style-type: none;
-   margin: 50px 10px 0 0;
-}
 
 
 .nav-menu li a:hover {
@@ -188,20 +184,70 @@ input {
    height: 100%;
 }
 
+#torrent-info,
 #torrent-submit-info {
    width: 100%;
-   height: 100%;
+   max-height: 90%;
    background-color: var(--background);
    border: 1px solid var(--toucan-outlines);
    border-radius: 7px;
    color: rgba(0, 0, 0, .7);
 }
+#torrent-info section, 
 #torrent-submit-info section {
    height: 100%;
    width: 100%;
    border-bottom: 1px solid grey;
    padding-left: 10px;
    padding-right: 10px;
+}
+
+#torrent-info section {
+   max-height: 10%;
+   max-width: 100%;
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+   align-items: center;
+   padding: 10px 10px;
+}
+
+#torrent-info section#torrent-hash,
+#torrent-info section#tracker-list,
+#torrent-info section#peers,
+#torrent-info section#comments {
+   flex-direction: column;
+   align-items: flex-start;
+   justify-content: flex-start;
+}
+#torrent-info section#peers,
+#torrent-info section#tracker-list{
+   height: 20vh;
+}
+
+#torrent-info section#tracker-list ul,
+#torrent-info section#peers ul {
+   overflow-y: scroll;
+   height: 100%;
+   width: 100%;
+   padding-left: 0;
+   padding-right: 0;
+   background-color: var(--modal-background);
+   border: 1px solid var(--toucan-outlines);
+   border-radius: 4px;
+}
+#torrent-info section#peers ul {
+   column-count: 2;
+}
+
+#torrent-info section#peers ul {
+   width: 70%;
+}
+#torrent-view-header {
+   max-width: 100%;
+}
+#torrent-view-page {
+   background-color: var(--modal-background);
 }
 
 #client-toggle,
@@ -242,6 +288,21 @@ h5 {
    color: #000;
 }
 
+a {
+   text-decoration: none;
+}
+
+li {
+   font-size: 1.5rem;
+   list-style-type: none;
+}
+/* li:nth-of-type(1n+10) { */
+/*     display: none; */
+/* }  */
+.nav-menu li {
+   font-size: 1.8rem;
+   margin: 50px 10px 0 0;
+}
 
 span {
    font-size: 1.5rem;

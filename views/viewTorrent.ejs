@@ -1,64 +1,127 @@
-<a href="/torrents/dashboard">Back to dashboard</a>
-
-<h1>Torrent</h1>
-<h2><%=torrent.name%></h2>
-
-<section>
-  <h3>Hash:<%=torrent.infoHash%></h3>
-   <p>Author: <%=torrent.createdBy %><br>Comments: <%=torrent.comment %></p>
-   <span>Date: <%= torrent.created %></span>
-         <p>
-           <%= torrent.received %>    
-         </p>
-         <p>
-           <%= torrent.downloaded %>Bytes Downloaded
-         </p>
-         <p>
-           <%= torrent.uploaded %>Bytes Uploaded    
-         </p>
-         <p>
-         Seed ratio: <%= torrent.ratio %>
-         </p>
-
-   <section id="tracker-list">
-     <h4>Tracker List</h4>
-     <ul>
-        <% torrent.announce.forEach( tracker => { %>
-            <li>
-               <%= tracker %>: 
-            </li>
-         <% }) %>    
-     </ul>
+<section id="torrent-view-page">
+   <section id='torrents-page-title'>
+      <div class="container d-flex flex-row justify-content-between align-items-center mt-5">
+         <h1 id="torrent-name" class="ms-4 ps-1 mb-0"><%= torrent.name %></h1>
+      </div>
    </section>
 
-   <section id="peers">
-     <h4>Peers List</h4>
-     <ul>
-        <% torrent.wires.forEach( wire => { %>
-            <li>
-               <%= wire.remoteAddress %> 
-            </li>
-         <% }) %>    
-     </ul>
+   <!-- Everything below the title -->
+
+
+   <section id="torrent-view-header" class="px-5">
+      <div class="container d-flex flex-row justify-content-between align-items-center">
+         <% if (torrent.done) { %>
+         <span id="progress-status" class="fs-2">Seeding: <i class="bi bi-check-circle-fill"></i></span>
+          <% } else { %>
+           <span id="progress-status" class="fs-5">Leeching: <%= `${(torrent.progress * 100).toFixed(2)}%` %></span>
+          <% } %>
+
+          <div class='d-flex flex-row justify-content-end align-items-center'>
+            <span id="upload-speed" class='d-flex flex-row justify-content-between align-items-center w-100 px-0'>
+               <%= `${(torrent.uploadSpeed / 1000).toFixed(2)}` %>KB/s
+               <i class="bi bi-arrow-up px-0"></i>
+            </span>
+            <span id="download-speed" class='d-flex flex-row justify-content-between align-items-center w-100 px-0'>
+               <%= `${(torrent.downloadSpeed / 1000).toFixed(2)}` %>KB/s
+               <i class="bi bi-arrow-down px-0"></i>
+            </span>
+          </div>
+      </div>
    </section>
 
-   <section id="file-list">
-     <h4>Files</h4>
-     <ul>
-        <% torrent.files.forEach( file => { %>
-            <li>
-               <%= file.name %>: 
-             <% if (file.length >= (1024 ** 3)) { %>
-                <%= (file.length / (1024 ** 3)).toFixed(2) %> GB
-             <% } else if (file.length >= (1024 ** 2)) { %>
-                <%= (file.length / (1024 ** 2)).toFixed(2) %> MB
-             <% } else if(file.length >= 1024) { %>
-                <%= (file.length / 1024).toFixed(2) %> KB
-             <% } else { %>
-                <%=  file.length %>B
-             <% } %>
-            </li>
-         <% }) %>    
-     </ul>
+   <section id="torrent-view-body" class="container d-flex flex-column align-items-start justify-content-center mb-3 px-5">
+         <div id="torrent-info" class="d-flex flex-column justify-content-center h-100 pt-2">
+
+            <!-- Info Hash -->
+            <section id="torrent-hash">
+               <div class='d-flex flex-row justify-content-between align-items-center pb-4 w-100'>
+                  <h4>Info Hash:</h4>
+                  <a href='/torrents/download/<%= torrent.infoHash %>' class="px-0">
+                      <button type="button" class="btn btn-toucan-download">
+                        <i class="bi bi-cloud-download-fill"></i>
+                     </button>
+                  </a>
+               </div>
+               <span id="hash-value" class="fs-5"><%= torrent.infoHash %></span>
+            </section>
+
+            <!-- Seed Ratio -->
+            <section id="seed-ratio">
+               <div class='d-flex flex-row justify-content-start align-items-center w-100'>
+                  <h4 class="w-100">Seed Ratio:</h4>
+                  <div id='ratio-box' class='d-flex flex-row justify-content-end align-items-center w-100'>
+                     <i class="fs-5 bi bi-arrow-up"></i>
+                     <span id='data-seeded' class='d-flex flex-row justify-content-center align-items-center'>
+                        <% if (torrent.uploaded >= (1024 ** 3)) { %>
+                            <%= (torrent.uploaded / (1024 ** 3)).toFixed(2) %>GB
+                         <% } else if (torrent.uploaded >= (1024 ** 2)) { %>
+                         <%= (torrent.uploaded / (1024 ** 2)).toFixed(2) %>MB
+                         <% } else if (torrent.uploaded >= 1024) { %>
+                         <%= (torrent.uploaded / 1024).toFixed(2) %>KB
+                         <% } else { %>
+                         <%= torrent.uploaded %>B
+                         <% } %>
+                     </span>
+                     <span class='fs-3 px-2'>:</span>
+                     <span id='data-leeched' class='d-flex flex-row justify-content-center align-items-center'>
+                        <% if (torrent.downloaded >= (1024 ** 3)) { %>
+                            <%= (torrent.downloaded / (1024 ** 3)).toFixed(2) %>GB
+                         <% } else if (torrent.downloaded >= (1024 ** 2)) { %>
+                         <%= (torrent.downloaded / (1024 ** 2)).toFixed(2) %>MB
+                         <% } else if (torrent.downloaded >= 1024) { %>
+                         <%= (torrent.downloaded / 1024).toFixed(2) %>KB
+                         <% } else { %>
+                         <%= torrent.downloaded %>B
+                         <% } %>
+                     </span>
+                     <i class="fs-5 bi bi-arrow-down"></i>
+                  </div>
+               </div>
+            </section>
+
+            <!-- Created Date -->
+            <section>
+               <h4>Date:</h4>
+               <span><%= createdDate %></span>
+            </section>
+
+               <!-- Peers List -->
+            <section id="peers">
+              <h4 class="pb-4">Peer List:</h4>
+              <ul id='peers-list' class="d-flex flex-column align-items-center w-100">
+                 <% torrent.wires.forEach( wire => { %>
+                     <li class="ps-0 border-bottom w-100">
+                        <%= wire.remoteAddress %> 
+                     </li>
+                  <% }) %>    
+              </ul>
+            </section>
+
+               <!-- Announce List -->
+            <section id="tracker-list">
+              <h4 class="pb-4">Tracker List:</h4>
+              <ul id="announce-list">
+                 <% torrent.announce.forEach( tracker => { %>
+                     <li class="ps-0 border-bottom w-100">
+                        <%= tracker %>: 
+                     </li>
+                  <% }) %>    
+              </ul>
+            </section>
+
+            <!-- Author -->
+            <section class="d-flex justify-content-between align-items-center w-100">
+               <h4>Author:</h4>
+               <span class="ms-5 "><%= torrent.createdBy %></span>
+            </section>
+
+            <!-- Author Comments -->
+            <section id="comments" class="border-none">
+               <h4 class="pb-4">Comments:</h4>
+               <span><%= torrent.comment %></span>
+            </section>
+
+         </div>
    </section>
 </section>
+

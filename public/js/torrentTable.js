@@ -10,7 +10,6 @@ async function startDashboardServices() {
    // Register socket.io to talk to server
    app.configure(feathers.socketio(socket));
 
-   // Initialize services
 
    // Event Listeners
    const currentView = document.getElementById('current-view');
@@ -59,7 +58,7 @@ async function startDashboardServices() {
             row.childNodes[9].childNodes[3].childNodes[3].childNodes[1].childNodes[1].innerHTML =
                `<i class="bi bi-play-circle-fill"></i><small>Resume</small>`
             row.childNodes[3].innerHTML = `<span class="fs-5">Paused</span>`;
-            row.style.backgroundColor = '#BEBEBE';
+            row.style.backgroundColor = 'rgba(190, 190, 190, .5)';
          });
 
          clientToggle.childNodes[3].innerHTML = "<i class='bi bi-play-fill'></i>";
@@ -111,7 +110,7 @@ async function startDashboardServices() {
          row.childNodes[9].childNodes[3].childNodes[3].childNodes[1].childNodes[1].innerHTML =
             `<i class="bi bi-play-circle-fill"></i><small>Resume</small>`
          row.childNodes[3].innerHTML = `<span class="fs-5">Paused</span>`;
-         row.style.backgroundColor = '#BEBEBE';
+         row.style.backgroundColor = 'rgba(190, 190, 190, .5)';
       } else {
          row.className = 'torrent-row container d-flex flex-row justify-content-between align-items-center  py-1 my-3 w-100'
          row.childNodes[9].childNodes[3].childNodes[3].childNodes[1].childNodes[1].innerHTML =
@@ -206,6 +205,7 @@ async function startDashboardServices() {
       setInterval(renderClientRate, 500);
    }
 
+   // Initialize services
    init();
 }
 

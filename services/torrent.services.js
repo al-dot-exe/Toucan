@@ -27,8 +27,10 @@ class TorrentServices {
                peerCount: newTorrent.numPeers,
                ready: newTorrent.ready,
                done: newTorrent.done,
+               dataLeeched: newTorrent.downloaded,
+               dataSeeded: newTorrent.uploaded,
                currentDownloadSpeed: newTorrent.downloadSpeed,
-               currentUploadSpeed: newTorrent.uploadSpeed
+               currentUploadSpeed: newTorrent.uploadSpeed,
             }
             this.torrents.push(torrentService);
          }
@@ -38,25 +40,33 @@ class TorrentServices {
       }
    }
 
-   async find() {
-      return this.torrents;
+   async find(params) {
+      if (params === 'all') {
+         return this.torrents
+      } else {
+         const filteredTorrents = this.torrents.filter(torrent => params.query.id === torrent.id);
+         return filteredTorrents
+      }
    }
 
    async update(elementId, data) {
       try {
          if (elementId === 'all') statusUpdates(this.torrents);
+         if (elementId === 'one') oneStatusUpdate(data.id);
          if (elementId === 'torrent-toggle') toggleTorrent(data, this.torrents);
 
          async function statusUpdates(torrents) {
             torrents.forEach(torrent => {
                let currentTorrent = client.get(torrent.id);
                if (currentTorrent) {
-                  torrent.progress = currentTorrent.done ? ' Seeding ' : currentTorrent.progress;
+                  torrent.progress = currentTorrent.progress;
                   torrent.peerCount = currentTorrent.numPeers;
                   torrent.ready = currentTorrent.ready;
                   torrent.done = currentTorrent.done;
                   torrent.currentDownloadSpeed = currentTorrent.downloadSpeed;
                   torrent.currentUploadSpeed = currentTorrent.uploadSpeed;
+                  torrent.dataSeeded = currentTorrent.uploaded;
+                  torrent.dataLeeched = currentTorrent.downloaded;
                }
             });
          }
