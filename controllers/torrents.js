@@ -5,6 +5,7 @@ const { createTorrentArchive } = require("../middleware/archive.js");
 const fs = require("fs-extra");
 const { client } = require("../config/webtorrent");
 const parseTorrent = require("parse-torrent");
+const moment = require("moment");
 
 module.exports = {
    getClientDashboard: async (req, res) => {
@@ -78,9 +79,12 @@ module.exports = {
          const user = await User.findByPk(req.user.id);
          const torrentRecord = await Torrent.findByPk(req.params.id);
          const torrent = client.get(torrentRecord.id);
+         const createdDate = moment(torrent.created).format('MMMM Do YYYY, hh:mm:ss a');
+
          res.render("viewTorrent", {
             user,
             torrent,
+            createdDate
          });
       } catch (err) {
          console.error(err);

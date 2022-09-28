@@ -1,23 +1,34 @@
 <header>
-   <nav>
-      <section id="logo">
-         <a href="/">Toucan Torrent</a>
-      </section>
-      <section id="header-nav">
-         <ul>
-            <li><a href="/torrents/dashboard">Torrents</a></li>
-         </ul>
-      </section>
-      <section id="account-nav">
-         <ul>
-            <li id="user">Signed in as: <%= user.userName.replace(/\b\w/g, c => c.toUpperCase()) %></li>
-            <li><a href="/settings">Settings</a></li>
-            <li> 
-               <form action="/logout" method="POST">
-                  <button type="submit">Logout</button>
-                 </form>
-            </li>
-         </ul>
-      </section>
+   <nav class="navbar">
+         <div id="header-container" class="container d-flex flex-row justify-content-between align-items-center">
+
+            <div id="menu-icon" class="d-flex flex-row justify-content-start">
+              <button class='btn ' data-bs-toggle="modal" data-bs-target="#nav-menu-overlay">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+  </svg>  
+              </button>
+            </div>
+
+            <div id="header-logo-container border border-primary" class="">
+              <a href="/" class="d-flex flex-row justify-content-center">
+                 <img src="/assets/images/logo.png" width="65" alt="" />
+              </a>
+            </div>
+
+            <div id="search-container" class="d-flex justify-content-end">
+               <div class='search-bar'>
+                 <input id="file-search" type="search" class="search-bar__input" placeholder="Torrent search" aria-label="search">
+                 <button id='btn-search' class='search-bar__submit pt-1 flex-row justify-content-center align-items-center' type="submit">
+                   <label for="file-search" class="d-flex flex-row justify-content-center align-items-center">
+                      <i class="bi bi-search"></i>
+                   </label>
+                 </button>
+               </div>
+            </div>
+
+      </div>
+      <%- include('mainMenuModal') %>
    </nav>
+
 </header>

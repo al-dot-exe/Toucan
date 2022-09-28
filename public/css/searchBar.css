@@ -1,0 +1,65 @@
+#search-container {
+  width: 40%;
+}
+
+.search-bar {
+  --size: 60px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  border-radius: 55px;
+  height: var(--size);
+  width: var(--size);
+  padding: 2px 2px 4px 2px;
+  margin-left: 5px;
+  position: relative;
+  transition: width 0.3s ease-in-out;
+  overflow: hidden;
+}
+.search-bar__input {
+  flex-grow: 1;
+  font-size: 1.5rem;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  border: 0;
+  line-height: calc(var(--size) - 1px);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+.search-bar:focus {
+  outline: 0;
+}
+.search-bar__submit {
+  position: absolute;
+  font-size: 1.5rem;
+  cursor: pointer;
+  border-radius: 50%;
+  background: var(--background);
+  width: calc(var(--size) - 10px);
+  height: calc(var(--size) - 10px);
+  transition: background 0.3s ease-in-out;
+}
+.search-bar_submit label i {
+  cursor: pointer;
+}
+.search-bar:focus-within {
+  width: 100%;
+}
+.search-bar:focus-within .search-bar__input {
+  outline: 0;
+  opacity: 1;
+  background: rgba(128, 128, 128, 0.2);
+}
+.search-bar:focus-within .search-bar__submit {
+  background: var(--toucan-outlines);
+  color: var(--modal-background);
+}
+.search-bar:focus-within .search-bar__submit:focus, .search-bar:focus-within .search-bar__submit:hover {
+  outline: 0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+/*# sourceMappingURL=searchBar.css.map */

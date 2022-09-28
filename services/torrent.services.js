@@ -1,6 +1,8 @@
-// Services to give real time updates on individual torrents
+// Services to give real time services on individual torrents
 const Torrent = require("../models/Torrent");
 const { client } = require("../config/webtorrent");
+const parseTorrent = require("parse-torrent");
+const moment = require("moment");
 
 class TorrentServices {
    constructor() {
@@ -21,12 +23,14 @@ class TorrentServices {
                id: newTorrent.infoHash,
                paused: newTorrent.paused,
                progress: newTorrent.done ? 'Seeding' : newTorrent.progress,
-               peerAddress: newTorrent.wires.map(wire => wire.remoteAddress),
+               peerAddresses: newTorrent.wires.map(wire => wire.remoteAddress),
                peerCount: newTorrent.numPeers,
                ready: newTorrent.ready,
                done: newTorrent.done,
+               dataLeeched: newTorrent.downloaded,
+               dataSeeded: newTorrent.uploaded,
                currentDownloadSpeed: newTorrent.downloadSpeed,
-               currentUploadSpeed: newTorrent.uploadSpeed
+               currentUploadSpeed: newTorrent.uploadSpeed,
             }
             this.torrents.push(torrentService);
          }
@@ -36,25 +40,34 @@ class TorrentServices {
       }
    }
 
-   async find() {
-      return this.torrents;
+   async find(params) {
+      if (!params.query.id) {
+         return this.torrents;
+      } else {
+         const filteredTorrents = this.torrents.filter(torrent => params.query.id === torrent.id);
+         return filteredTorrents;
+      }
    }
 
    async update(elementId, data) {
       try {
          if (elementId === 'all') statusUpdates(this.torrents);
+         if (elementId === 'one') oneStatusUpdate(data.id);
          if (elementId === 'torrent-toggle') toggleTorrent(data, this.torrents);
 
          async function statusUpdates(torrents) {
             torrents.forEach(torrent => {
                let currentTorrent = client.get(torrent.id);
                if (currentTorrent) {
-                  torrent.progress = currentTorrent.done ? ' Seeding ' : currentTorrent.progress;
+                  torrent.progress = currentTorrent.progress;
+                  torrent.peerAddresses = currentTorrent.wires.map(wire => wire.remoteAddress);
                   torrent.peerCount = currentTorrent.numPeers;
                   torrent.ready = currentTorrent.ready;
                   torrent.done = currentTorrent.done;
                   torrent.currentDownloadSpeed = currentTorrent.downloadSpeed;
                   torrent.currentUploadSpeed = currentTorrent.uploadSpeed;
+                  torrent.dataSeeded = currentTorrent.uploaded;
+                  torrent.dataLeeched = currentTorrent.downloaded;
                }
             });
          }
@@ -73,13 +86,39 @@ class TorrentServices {
       }
    }
 
-   async remove() {
+   async get(torrentID) {
       try {
-         this.torrents = this.torrents.filter(async torrent => {
-            const torrentStillExists = await Torrent.findByPk(torrent.id);
-            torrentStillExists;
+         if (typeof torrentID === 'string') {
+            torrentID = torrentID.split("'").join('');
+            torrentID = torrentID.split(" ").join('').trim();
+         }
+         // if (torrentID.startsWith("'") || torrentID.endsWith("'")) {
+         //    return "Couldn't parse magnet";
+         // };
+         const parsedTorrent = parseTorrent(torrentID)
+         parsedTorrent.created = moment(parsedTorrent.created).format('MMMM Do YYYY, hh:mm:ss a');
+         if (parsedTorrent.length >= (1024 ** 3)) {
+            parsedTorrent.length = `${(parsedTorrent.length / (1024 ** 3)).toFixed(2)} GB`
+         } else if (parsedTorrent.length >= (1024 ** 2)) {
+            parsedTorrent.length = `${(parsedTorrent.length / (1024 ** 2)).toFixed(2)} MB`
+         } else if (parsedTorrent.length >= 1024) {
+            parsedTorrent.length = `${(parsedTorrent.length / (1024)).toFixed(2)} KB`
+         } else {
+            parsedTorrent.length = `${parsedTorrent.length} B`
+         }
+         return parsedTorrent;
+      } catch (err) {
+         console.error(err);
+      }
+   }
+
+   async remove(params) {
+      try {
+         console.log('In try')
+         const torrents = this.torrents.forEach(async torrent => {
+            const torrentRecord = await Torrent.findByPk(torrent.id);
+            (torrentRecord) ? true : false;
          });
-         return this.torrents;
       } catch (err) {
          console.log('Something went wrong with removing torrent services');
          console.error(err);
