@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "cross-env NODE_ENV=production node app",
-    "dev": "cross-env NODE_ENV=development nodemon app"
+    "dev": "concurrently --kill-others \"sass --watch public/assets/scss/:public/css/\" \"cross-env NODE_ENV=development nodemon app\""
   },
   "repository": {
     "type": "git",
@@ -24,9 +24,11 @@
   },
   "homepage": "https://github.com/alEXE-tech/Toucan#readme",
   "devDependencies": {
+    "concurrently": "^7.4.0",
     "cross-env": "^7.0.3",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.19"
+    "nodemon": "^2.0.19",
+    "sass": "^1.55.0"
   },
   "dependencies": {
     "@feathersjs/express": "^4.5.15",

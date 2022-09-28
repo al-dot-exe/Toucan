@@ -23,7 +23,7 @@ class TorrentServices {
                id: newTorrent.infoHash,
                paused: newTorrent.paused,
                progress: newTorrent.done ? 'Seeding' : newTorrent.progress,
-               peerAddress: newTorrent.wires.map(wire => wire.remoteAddress),
+               peerAddresses: newTorrent.wires.map(wire => wire.remoteAddress),
                peerCount: newTorrent.numPeers,
                ready: newTorrent.ready,
                done: newTorrent.done,
@@ -60,6 +60,7 @@ class TorrentServices {
                let currentTorrent = client.get(torrent.id);
                if (currentTorrent) {
                   torrent.progress = currentTorrent.progress;
+                  torrent.peerAddresses = currentTorrent.wires.map(wire => wire.remoteAddress);
                   torrent.peerCount = currentTorrent.numPeers;
                   torrent.ready = currentTorrent.ready;
                   torrent.done = currentTorrent.done;
@@ -111,13 +112,13 @@ class TorrentServices {
       }
    }
 
-   async remove() {
+   async remove(params) {
       try {
-         this.torrents = this.torrents.filter(async torrent => {
-            const torrentStillExists = await Torrent.findByPk(torrent.id);
-            torrentStillExists;
+         console.log('In try')
+         const torrents = this.torrents.forEach(async torrent => {
+            const torrentRecord = await Torrent.findByPk(torrent.id);
+            (torrentRecord) ? true : false;
          });
-         return this.torrents;
       } catch (err) {
          console.log('Something went wrong with removing torrent services');
          console.error(err);
