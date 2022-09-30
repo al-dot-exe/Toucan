@@ -23,6 +23,10 @@
 * Button styling
 *
 */
+#upload-torrent-main div {
+  min-width: 250px;
+  max-width: 250px;
+}
 
 .btn {
   transition: 0.3s;
@@ -39,15 +43,19 @@
 .btn-toucan-text {
   background-color: var(--toucan-green);
   color: var(--modal-background);
+  transition: 0.3s;
 }
 
 .btn-toucan:hover,
-.btn-toucan-text:hover,
 #btn-torrents-filter:hover,
-.btn-toucan-text:focus,
 .btn-toucan:focus,
 #btn-torrents-filter:focus {
   color: var(--toucan-orange);
+}
+.btn-toucan-text:hover,
+.btn-toucan-text:focus {
+  background-color: var(--toucan-orange);
+  color: var(--modal-background);
 }
 
 #throttle-dropdown-btn:hover,
@@ -86,19 +94,25 @@ header {
   /* height: 10%; */
   background-color: var(--background);
 }
-nav div#header-container {
-  width: 100%;
+nav div#header-container,
+#footer-container,
+.torrents-page-body {
+  max-width: 90%;
 }
 
-#menu-icon {
-  max-width: 40%;
+.header-menu {
+  max-width: 35%;
   width: 100%;
   margin: 0;
+  padding: 0;
 }
 
-#header-logo-container {
+#mobile-logo-container {
   max-width: 20%;
   width: 100%;
+}
+#desktop-logo-container {
+  padding: 0;
 }
 
 footer {
@@ -110,15 +124,50 @@ small {
   color: rgba(0, 0, 0, 0.5);
 }
 
-#home-page {
+#home-page,
+#login-page,
+#signup-page {
   background: linear-gradient(
       rgba(255, 255, 255, 0.7),
       rgba(255, 255, 255, 0.7)
     ),
     url("https://images.unsplash.com/photo-1532503353673-585dcc16ad86?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80")
       center center;
-  background-size: 260%;
+  background-size: cover;
 }
+#login-form,
+#signup-link,
+#signup-form {
+  max-width: 250px;
+  min-width: 250px;
+}
+
+#login-form,
+#signup-form,
+#upload-card {
+  background-color: white;
+  border-radius: 5px;
+  padding: 5px;
+  box-shadow: 0 0 3px lightgrey;
+}
+
+#upload-card {
+  background-color: var(--modal-background);
+}
+
+#login-form input,
+#signup-form input {
+  background-color: var(--modal-background);
+  font-size: 1.2rem;
+  color: var(--toucan-general);
+}
+
+#password-hide-toggle span {
+  background-color: white;
+  border: 0;
+  color: rgba(0, 0, 0, 0.63);
+}
+
 
 .torrents-page {
   background: linear-gradient(
@@ -127,7 +176,7 @@ small {
     ),
     url("https://images.unsplash.com/photo-1516421417223-d0c0551e1031?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1219&q=80")
       center center;
-  background-size: 260%;
+  background-size: 250%;
 }
 
 section#title {
@@ -170,14 +219,28 @@ input {
   color: rgba(0, 0, 0, 0.7);
 }
 
-.bi-list {
+.bi-list,
+#menu-desktop * {
   padding: 0;
   margin: 0;
   transition: 0.3s;
 }
 
-.bi-list:hover .bi-list:focus {
+.bi-list:hover .bi-list:focus,
+#menu-desktop *:hover {
   color: var(--toucan-green);
+}
+
+#menu-desktop ul {
+  min-width: 500px;
+}
+
+#menu-desktop ul li {
+  justify-content: center;
+  align-items: center;
+  min-width: 20%;
+  margin-left: 0;
+  padding: 0;
 }
 
 .modal-content {
@@ -187,8 +250,21 @@ input {
   width: 100%;
   border: 0;
 }
-.modal-footer {
+
+.modal-header div {
+  max-width: 1200px;
+  width: 100%;
   border: 0;
+}
+.modal-footer {
+  max-width: 100vw;
+  border: 0;
+
+}
+.modal-body div,
+.modal-footer div {
+  max-width: 1200px;
+  padding: 0;
 }
 
 .modal-body > div.container {
@@ -201,6 +277,7 @@ input {
   border: 0;
   transition: 0.3s;
 }
+
 #main-menu-close:hover,
 #upload-menu-close:hover,
 #main-menu-close:focus,
@@ -279,11 +356,9 @@ input {
 }
 #torrent-info section#peers ul {
   column-count: 2;
-}
-
-#torrent-info section#peers ul {
   width: 70%;
 }
+
 #torrent-view-header {
   max-width: 100%;
   color: rgba(0, 0, 0, 0.63);
@@ -314,8 +389,9 @@ h1 {
 
 h2 {
   font-size: 3.2rem;
-  color: rgba(0, 0, 0, 0.95);
+  color: rgba(0, 0, 0, 0.70);
 }
+
 
 h3 {
   font-size: 2.8rem;
@@ -330,7 +406,13 @@ h5 {
 }
 
 a {
+  color: var(--toucan-outlines);
   text-decoration: none;
+  transition: 0.3s;
+}
+
+a:hover {
+  color: var(--toucan-general);
 }
 
 li {
@@ -374,6 +456,11 @@ span small {
 input {
   font-size: 2rem;
 }
+
+#password-hide-toggle * {
+  color: rgba(0, 0, 0, 0.50);
+  /* color: pink; */
+}
 .btn-toucan-text,
 #upload-cancel {
   font-size: 1.8rem;
@@ -385,6 +472,11 @@ input {
   text-decoration: none;
   color: rgba(0, 0, 0, 0.63);
   transition: 0.3s;
+}
+
+#menu-desktop * {
+  font-size: 1.4rem;
+  color: rgba(0, 0, 0, 0.63);
 }
 
 .dropdown-menu {
@@ -405,6 +497,7 @@ input {
 * Icon styling 
 *
 */
+
 i.bi-check-circle-fill {
   color: var(--toucan-green);
 }

@@ -2,7 +2,7 @@
    <nav class="navbar">
          <div id="header-container" class="container d-flex flex-row justify-content-between align-items-center">
 
-            <div id="menu-icon" class="d-flex flex-row justify-content-start">
+            <div id="menu-mobile" class="header-menu d-lg-none d-flex flex-row justify-content-start">
               <button class='btn ' data-bs-toggle="modal" data-bs-target="#nav-menu-overlay">
                   <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
     <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
@@ -10,13 +10,49 @@
               </button>
             </div>
 
-            <div id="header-logo-container border border-primary" class="">
-              <a href="/" class="d-flex flex-row justify-content-center">
+            <div id="mobile-logo-container" class="d-lg-none">
+              <a href="/" class="d-lg-none d-flex flex-row justify-content-center">
                  <img src="/assets/images/logo.png" width="65" alt="" />
               </a>
             </div>
 
-            <div id="search-container" class="d-flex justify-content-end">
+           <div id="menu-desktop" class="d-none d-lg-flex flex-row pt-3 mt-1 justify-content-start w-50 px-auto mx-0">
+              <ul class="d-lg-flex flex-row justify-content-start align-items-center ps-0">
+
+                <li id="desktop-logo-container" class="w-25">
+                    <a href="/" class="d-flex flex-row justify-content-center px-0 w-50">
+                       <img src="/assets/images/logo.png" width="65" alt="" class="py-0"/>
+                    </a>
+                </li>
+
+                 <li>
+                    <a href="/">
+                    Home
+                    </a>
+                 </li>
+
+                 <li>
+                    <a href="/torrents/dashboard">
+                    Torrents
+                    </a>
+                 </li>
+
+                 <li>
+                    <a href="/settings">
+                    Settings
+                    </a>
+                 </li>
+
+                 <li>
+                    <a href="/logout">
+                    Logout
+                    </a>
+                 </li>
+              </ul>
+           </div>
+
+
+            <div id="search-container" class="d-flex justify-content-end w-lg-25">
                <div class='search-bar'>
                  <input id="file-search" type="search" class="search-bar__input" placeholder="Torrent search" aria-label="search">
                  <button id='btn-search' class='search-bar__submit pt-1 flex-row justify-content-center align-items-center' type="submit">

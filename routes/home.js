@@ -36,13 +36,13 @@ router.post('/signup', authController.postSignup);
 // @route // POST /login
 router.post('/login', ensureGuest, authController.postLogin);
 
-// @desc  // Process logout request if logged in
-// @route // POST /logout
-router.post('/logout', ensureAuth, authController.postLogout);
+// @desc  // Logout of session
+// @route // GET /logout
+router.get('/logout', ensureAuth, authController.logout);
 
 // Will add these details later
 // // @desc  // Update Settings  if logged in
 // // @route // PUT /settings
-// router.put('/settings', ensureAuth, homeController.getSettings);
+// router.put('/settings', ensureAuth, homeController.updateSettings);
 
 module.exports = router;

@@ -1,23 +1,49 @@
-<h1>Login Page</h1>
-<div>
-   <% if (locals.messages.errors) { %>
-       <% messages.errors.forEach( el => { %>
-           <div class="alert alert-danger"><%= el.msg %></div>
-       <% }) %>    
-   <% } %>
-   <% if (locals.messages.info) { %>
-       <% messages.info.forEach( el => { %>
-           <div class="alert"><%= el.msg %></div>
-       <% }) %>    
-   <% } %>
+<section id="login-page" class="">
 
-   <form action="/login" method="POST">
-       <input type="text" name="account" placeholder="Username or Email">
-       <input type="password" name="password" placeholder="Password">
-       <input type="submit">
-   </form>
-</div>
+  <div id="login-page-body" class="container">
+      <section id='title' class="pt-5 mt-5 d-flex flex-row justify-content-md-start justify-content-center">
+         <div class="mt-5">
+               <h1 class='pt-2'>Toucan<br>Torrent</h1>
+         </div>
+      </section>
 
-<div>
-  <a href="/signup">Create an account</a>
-</div>
+
+    <div class="d-flex flex-column align-items-md-start align-items-center mt-5">
+      <div id="login-form" class="p-5 mt-5 ">
+         <% if (locals.messages.errors) { %>
+             <% messages.errors.forEach( el => { %>
+                 <div class="alert alert-danger"><%= el.msg %></div>
+             <% }) %>    
+         <% } %>
+         <% if (locals.messages.info) { %>
+             <% messages.info.forEach( el => { %>
+                 <div class="alert"><%= el.msg %></div>
+             <% }) %>    
+         <% } %>
+
+         <h4 class="mb-4">Login</h4>
+
+         <form action="/login" method="POST">
+             <input type="text" name="account" class="mb-4 form-control" placeholder="Username or Email">
+             <div class="input-group mb-4">
+               <input type="password" name="password" class="password-field form-control" placeholder="Password" />
+             </div>
+            <div id="password-hide-toggle" class="d-flex flex-row justify-content-start align-items-center mb-4 py-0">
+              <h5 id="hidden" class="me-2">show password</h5>
+             <span class="p-0 input-group-text">
+               <i class=" bi bi-eye-fill"></i>
+             </span>
+            </div>
+            <button type="submit" class=" mb-4 btn btn-toucan-text btn-block mb-4 w-50 fs-5 p-2">Sign in</button>
+         </form>
+
+      </div>
+        <div id="signup-link" class="mt-4 text-center">
+          <p class="fs-5 mb-1">Don't have an account yet?</p>
+          <a href="/signup" class="fs-5 btn-toucan">Create an account</a>
+        </div>
+    </div>
+  </div>
+
+    
+</section>

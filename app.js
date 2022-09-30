@@ -20,7 +20,6 @@ const clientServices = require("./services/client.services"); //Torrent client s
 const fileSearchServices = require("./services/fileSearch.services"); //File searching services
 const { sequelize, connectDB } = require("./config/database"); //Sqlite database
 const { startToucan } = require("./config/webtorrent"); //Start WebTorrent client
-// const sass = require('sass'); //sass compiler for css
 
 /*
  * Feathers|Express init

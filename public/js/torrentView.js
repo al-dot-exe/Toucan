@@ -87,7 +87,6 @@ async function startTorrentViewServices() {
         id: infoHash,
       },
     });
-    console.log(torrentQuery);
     if (!torrentQuery[0]) {
       await app.service("torrent-services").create({ id: infoHash });
     }

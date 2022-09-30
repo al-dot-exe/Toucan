@@ -23,3 +23,25 @@ startFileSearchServices();
 //    input.addEventListener('dblclick', () => this.select())
 //    input.addEventListener('click', () => this.select());
 // });
+
+if (
+  window.location.pathname === "/login" ||
+  window.location.pathname === "/signup"
+) {
+  const passwordFields = document.querySelectorAll(".password-field");
+  const passwordToggle = document.getElementById("password-hide-toggle");
+  
+  passwordToggle.addEventListener("click", (e) => {
+    if (passwordToggle.childNodes[1].id != "hidden") {
+      passwordToggle.childNodes[1].id = "hidden";
+      passwordToggle.childNodes[1].textContent = "show password";
+      passwordFields.forEach(field => field.type = "password");
+      passwordToggle.childNodes[3].childNodes[1].outerHTML = '<i class="bi bi-eye-slash-fill"></i>';
+    } else {
+      passwordToggle.childNodes[1].id = "visible";
+      passwordToggle.childNodes[1].textContent = "hide password";
+      passwordFields.forEach(field => field.type = "text");
+      passwordToggle.childNodes[3].childNodes[1].outerHTML = '<i class="bi bi-eye-fill"></i>';
+    }
+  });
+}
