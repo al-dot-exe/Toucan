@@ -86,14 +86,17 @@ header {
   /* height: 10%; */
   background-color: var(--background);
 }
-nav div#header-container {
-  width: 100%;
+nav div#header-container,
+#footer-container,
+.torrents-page-body {
+  max-width: 90%;
 }
 
-#menu-icon {
-  max-width: 40%;
+.header-menu {
+  max-width: 35%;
   width: 100%;
   margin: 0;
+  padding: 0;
 }
 
 #header-logo-container {
@@ -117,7 +120,7 @@ small {
     ),
     url("https://images.unsplash.com/photo-1532503353673-585dcc16ad86?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80")
       center center;
-  background-size: 260%;
+  background-size: cover;
 }
 
 .torrents-page {
@@ -170,13 +173,15 @@ input {
   color: rgba(0, 0, 0, 0.7);
 }
 
-.bi-list {
+.bi-list,
+#menu-desktop *{
   padding: 0;
   margin: 0;
   transition: 0.3s;
 }
 
-.bi-list:hover .bi-list:focus {
+.bi-list:hover .bi-list:focus,
+#menu-desktop *:hover {
   color: var(--toucan-green);
 }
 
@@ -279,11 +284,9 @@ input {
 }
 #torrent-info section#peers ul {
   column-count: 2;
-}
-
-#torrent-info section#peers ul {
   width: 70%;
 }
+
 #torrent-view-header {
   max-width: 100%;
   color: rgba(0, 0, 0, 0.63);
@@ -330,7 +333,13 @@ h5 {
 }
 
 a {
+  color: var(--toucan-outlines);
   text-decoration: none;
+  transition: 0.3s;
+}
+
+a:hover {
+  color: var(--toucan-general);
 }
 
 li {
@@ -385,6 +394,11 @@ input {
   text-decoration: none;
   color: rgba(0, 0, 0, 0.63);
   transition: 0.3s;
+}
+
+#menu-desktop * {
+  font-size: 2rem;
+  color: rgba(0, 0, 0, 0.63);
 }
 
 .dropdown-menu {
