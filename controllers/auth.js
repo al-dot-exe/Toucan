@@ -59,7 +59,7 @@ module.exports = {
     })(req, res, next);
   },
 
-  postLogout: async (req, res) => {
+  logout: async (req, res) => {
     const user = req.user.userName;
     try {
       await req.logout(() => {

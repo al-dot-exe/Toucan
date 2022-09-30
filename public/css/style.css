@@ -43,15 +43,19 @@
 .btn-toucan-text {
   background-color: var(--toucan-green);
   color: var(--modal-background);
+  transition: 0.3s;
 }
 
 .btn-toucan:hover,
-.btn-toucan-text:hover,
 #btn-torrents-filter:hover,
-.btn-toucan-text:focus,
 .btn-toucan:focus,
 #btn-torrents-filter:focus {
   color: var(--toucan-orange);
+}
+.btn-toucan-text:hover,
+.btn-toucan-text:focus {
+  background-color: var(--toucan-orange);
+  color: var(--modal-background);
 }
 
 #throttle-dropdown-btn:hover,
@@ -120,7 +124,9 @@ small {
   color: rgba(0, 0, 0, 0.5);
 }
 
-#home-page {
+#home-page,
+#login-page,
+#signup-page {
   background: linear-gradient(
       rgba(255, 255, 255, 0.7),
       rgba(255, 255, 255, 0.7)
@@ -129,6 +135,39 @@ small {
       center center;
   background-size: cover;
 }
+#login-form,
+#signup-link,
+#signup-form {
+  max-width: 250px;
+  min-width: 250px;
+}
+
+#login-form,
+#signup-form,
+#upload-card {
+  background-color: white;
+  border-radius: 5px;
+  padding: 5px;
+  box-shadow: 0 0 3px lightgrey;
+}
+
+#upload-card {
+  background-color: var(--modal-background);
+}
+
+#login-form input,
+#signup-form input {
+  background-color: var(--modal-background);
+  font-size: 1.2rem;
+  color: var(--toucan-general);
+}
+
+#password-hide-toggle span {
+  background-color: white;
+  border: 0;
+  color: rgba(0, 0, 0, 0.63);
+}
+
 
 .torrents-page {
   background: linear-gradient(
@@ -211,8 +250,21 @@ input {
   width: 100%;
   border: 0;
 }
-.modal-footer {
+
+.modal-header div {
+  max-width: 1200px;
+  width: 100%;
   border: 0;
+}
+.modal-footer {
+  max-width: 100vw;
+  border: 0;
+
+}
+.modal-body div,
+.modal-footer div {
+  max-width: 1200px;
+  padding: 0;
 }
 
 .modal-body > div.container {
@@ -337,8 +389,9 @@ h1 {
 
 h2 {
   font-size: 3.2rem;
-  color: rgba(0, 0, 0, 0.95);
+  color: rgba(0, 0, 0, 0.70);
 }
+
 
 h3 {
   font-size: 2.8rem;
@@ -403,6 +456,11 @@ span small {
 input {
   font-size: 2rem;
 }
+
+#password-hide-toggle * {
+  color: rgba(0, 0, 0, 0.50);
+  /* color: pink; */
+}
 .btn-toucan-text,
 #upload-cancel {
   font-size: 1.8rem;
@@ -439,6 +497,7 @@ input {
 * Icon styling 
 *
 */
+
 i.bi-check-circle-fill {
   color: var(--toucan-green);
 }

@@ -1,19 +1,59 @@
-<h1>Signup Page</h1>
-<% if (locals.messages.errors) { %>
-   <% messages.errors.forEach( el => { %>
-       <div class="alert alert-danger"><%= el.msg %></div>
-   <% }) %>    
-<% } %>
+<!-- <form action="/signup" method="POST"> -->
+<!-- </form> -->
+<!--  -->
+<!-- <div> -->
+<!-- <a href="/login">go to login</a> -->
+<!-- </div> -->
 
-<form action="/signup" method="POST">
-   <input type="text" name="userName" placeholder="User Name">
-   <input type="email" name="email" placeholder="Email">
-   <input type="password" name="password" placeholder="Password">
-   <input type="password" name="confirmPassword" placeholder="Confirm Password">
-   <input type="submit">
-</form>
+<section id="signup-page" class="">
 
-<div>
-<a href="/login">go to login</a>
-</div>
+  <div id="signup-page-body" class="container">
+      <section id='title' class="pt-5 mt-5 d-flex flex-row justify-content-md-start justify-content-center">
+         <div class="mt-5">
+               <h1 class='pt-2'>Toucan<br>Torrent</h1>
+         </div>
+      </section>
 
+
+    <div class="d-flex flex-column align-items-md-start align-items-center mt-5">
+      <div id="signup-form" class="p-5 mt-5 ">
+         <% if (locals.messages.errors) { %>
+             <% messages.errors.forEach( el => { %>
+                 <div class="alert alert-danger"><%= el.msg %></div>
+             <% }) %>    
+         <% } %>
+
+
+         <h4 class="mb-4">Sign Up</h4>
+
+         <form action="/signup" method="POST">
+             <input type="text" name="userName" class="mb-4 form-control" placeholder="Username">
+             <input type="email" name="email" class="mb-4 form-control" placeholder="Email">
+             <div class="input-group">
+               <div class="input-group mb-4">
+                 <input type="password" name="password" class="password-field form-control" placeholder="Password" />
+               </div>
+               <div class="input-group mb-4">
+                 <input type="password" name="confirmPassword" class="password-field form-control" placeholder="Confirm Password" />
+               </div>
+                <div id="password-hide-toggle" class="d-flex flex-row justify-content-start align-items-center mb-4 py-0">
+                  <h5 id="hidden" class="me-2">show password</h5>
+                 <span class="p-0 input-group-text">
+                   <i class=" bi bi-eye-fill"></i>
+                 </span>
+                </div>
+             </div>
+
+
+            <button type="submit" class=" mb-4 btn btn-toucan-text btn-block mb-4 w-50 fs-5 p-2">Sign Up</button>
+           </form>
+      </div>
+        <div id="signup-link" class="mt-4 text-center">
+          <p class="fs-5 mb-1">Already have an account?</p>
+          <a href="/login" class="fs-5 btn-toucan">Back to Login Page</a>
+        </div>
+    </div>
+  </div>
+
+    
+</section>
