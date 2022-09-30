@@ -23,6 +23,10 @@
 * Button styling
 *
 */
+#upload-torrent-main div {
+  min-width: 250px;
+  max-width: 250px;
+}
 
 .btn {
   transition: 0.3s;
@@ -99,9 +103,12 @@ nav div#header-container,
   padding: 0;
 }
 
-#header-logo-container {
+#mobile-logo-container {
   max-width: 20%;
   width: 100%;
+}
+#desktop-logo-container {
+  padding: 0;
 }
 
 footer {
@@ -130,7 +137,7 @@ small {
     ),
     url("https://images.unsplash.com/photo-1516421417223-d0c0551e1031?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1219&q=80")
       center center;
-  background-size: 260%;
+  background-size: 250%;
 }
 
 section#title {
@@ -174,7 +181,7 @@ input {
 }
 
 .bi-list,
-#menu-desktop *{
+#menu-desktop * {
   padding: 0;
   margin: 0;
   transition: 0.3s;
@@ -183,6 +190,18 @@ input {
 .bi-list:hover .bi-list:focus,
 #menu-desktop *:hover {
   color: var(--toucan-green);
+}
+
+#menu-desktop ul {
+  min-width: 500px;
+}
+
+#menu-desktop ul li {
+  justify-content: center;
+  align-items: center;
+  min-width: 20%;
+  margin-left: 0;
+  padding: 0;
 }
 
 .modal-content {
@@ -206,6 +225,7 @@ input {
   border: 0;
   transition: 0.3s;
 }
+
 #main-menu-close:hover,
 #upload-menu-close:hover,
 #main-menu-close:focus,
@@ -397,7 +417,7 @@ input {
 }
 
 #menu-desktop * {
-  font-size: 2rem;
+  font-size: 1.4rem;
   color: rgba(0, 0, 0, 0.63);
 }
 
