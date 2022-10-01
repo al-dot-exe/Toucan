@@ -35,7 +35,7 @@ class TorrentServices {
             this.torrents.push(torrentService);
          }
       } catch (err) {
-         console.log('Error when creating a torrent service');
+         console.log('\nError when creating a torrent service');
          console.error(err);
       }
    }
@@ -81,7 +81,7 @@ class TorrentServices {
             });
          }
       } catch (err) {
-         console.log('Something went wrong with torrent update services');
+         console.log('\nSomething went wrong with torrent update services');
          console.error(err);
       }
    }
@@ -114,13 +114,13 @@ class TorrentServices {
 
    async remove(params) {
       try {
-         console.log('In try')
+         console.log('\nCleaning torrent services')
          const torrents = this.torrents.forEach(async torrent => {
             const torrentRecord = await Torrent.findByPk(torrent.id);
             (torrentRecord) ? true : false;
          });
       } catch (err) {
-         console.log('Something went wrong with removing torrent services');
+         console.log('\nSomething went wrong with removing torrent services');
          console.error(err);
       }
    }

@@ -25,7 +25,6 @@ const { startToucan } = require("./config/webtorrent"); //Start WebTorrent clien
  * Feathers|Express init
  */
 const app = express(feathers());
-
 /*
  * .ENV config
  */
@@ -37,14 +36,23 @@ require("dotenv").config({ path: "config/.env" });
 require("./config/passport")(passport);
 
 /*
- * Database init
- */
-connectDB();
+* Start application syncrhonously once all middleware is loaded
+*/
+const appInit = async () => {
+  await connectDB(); // connect to db first
+  await startToucan(); // start torrent client
 
-/*
- * Toucan init
- */
-startToucan();
+   // Start listening
+  if (process.env.NODE_ENV === "development") logger("dev");
+  const PORT = process.env.PORT || 5000;
+  app
+    .listen(PORT)
+    .on("listening", () =>
+      console.log(
+        `\nA Toucan is now flying in ${process.env.NODE_ENV} mode on port ${PORT}!\n`
+      )
+    );
+};
 
 /*
  * Security middleware
@@ -155,15 +163,4 @@ app.use("/file-search-services", fileSearchServices);
 app.use("/", homeRoutes);
 app.use("/torrents", torrentRoutes);
 
-/*
- * App start
- */
-if (process.env.NODE_ENV === "development") logger("dev");
-const PORT = process.env.PORT || 5000;
-app
-  .listen(PORT)
-  .on("listening", () =>
-    console.log(
-      `Toucan flying in ${process.env.NODE_ENV} mode on port ${PORT}!`
-    )
-  );
+appInit();

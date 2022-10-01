@@ -1,34 +1,45 @@
-const { sequelize } = require('../config/database');
-const { DataTypes, Model } = require('sequelize');
+const { sequelize } = require("../config/database");
+const { DataTypes, Model } = require("sequelize");
 
 // Torrent Schema
-class Torrent extends Model {}
+class Torrent extends Model { }
 
-const TorrentSchema = Torrent.init({
-   id: {
+const TorrentSchema = Torrent.init(
+  {
+    id: {
       type: DataTypes.TEXT,
       allowNull: false,
       unique: true,
-      primaryKey: true
-   },
-   name: {
+      primaryKey: true,
+    },
+    name: {
       type: DataTypes.STRING,
-      allowedNull: false,
-   },
-   torrentID: {
+      allowNull: false,
+    },
+    torrentID: {
       type: DataTypes.TORRENTID,
       allowNull: false,
-      unique: true
-   },
-   folderPath: {
-      type: DataTypes.TEXT // path to grab torrent files later
-   },
-   category: {
-      type: DataTypes.STRING
-   },
-}, {
-   sequelize,
-   // paranoid: true, // won't delete torrent database even if DELETE From is accidently called
-});
+      unique: true,
+    },
+    folderPath: {
+      type: DataTypes.TEXT, // path to grab torrent files later
+    },
+    category: {
+      type: DataTypes.STRING,
+    },
+  },
+  {
+    sequelize,
+    // paranoid: true, // won't delete torrent database even if DELETE From is accidently called
+  }
+);
 
-module.exports = ('Torrent', TorrentSchema);
+// const syncTorrentTable = async () => {
+//   await Torrent.sync().then((data) => {
+//     console.log("Synchronized Torrent table");
+//   });
+// };
+
+// syncTorrentTable();
+
+module.exports = ("Torrent", TorrentSchema);

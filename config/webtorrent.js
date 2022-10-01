@@ -1,77 +1,103 @@
-const Torrent = require('../models/Torrent');
-const WebTorrent = require('webtorrent');
+const Torrent = require("../models/Torrent");
+const Client = require("../models/Client");
+const WebTorrent = require("webtorrent");
 
-//Webtorrent instance
-// default instance is optimized for a raspi3
-const client = new WebTorrent({
-   maxConns: 250,
-   dht: false,
-   lsd: true,
-   downloadLimit: 307000,
-   uploadLimit: 529000,
+// Create initial Webtorrent instance
+const client = new WebTorrent();
 
-   // the following I am not to familiar with
-   webSeeds: true,
-   // utp: true, // this didn't work for ubuntu iso and don't know why ???
-});
+const startToucan = async () => {
+  console.log("\nStarting Toucan Torrent client!");
 
-// This is REALLY ugly but the only way right now until this is offered in the API
-client.maxUpRate = 529000;
-client.maxDownRate = 307000;
+  // Load client settings first
+  // Default settings are optimized for a raspi 3 seedbox
+  try {
+    console.log("\nLoading Toucan client settings back...");
+    clientRecord = await Client.findOrCreate({ where: { id: 0 } });
+    console.log("\nApplying saved settings to client...");
 
-//getters and setters for Upload rate max
-client.getUploadLimit = () => client.maxUpRate;
-client.setUploadLimit = (n) => {
-   client.maxUpRate = (n + client.maxUpRate < -1)
-      ? -1
-      : client.maxUpRate + n;
-   client.throttleUpload(client.getUploadLimit());
-}
+    clientRecord = clientRecord[0];
+    console.log(clientRecord);
 
-//getters and setters for Download rate max
-client.getDownloadLimit = () => client.maxDownRate;
-client.setDownloadLimit = (n) => {
-   client.maxDownRate = (n + client.maxDownRate) < -1
-      ? -1
-      : client.maxDownRate + n;
-   console.log(client.getDownloadLimit());
-   client.throttleDownload(client.getDownloadLimit());
-}
+    client.throttleUpload(clientRecord.uploadLimit);
+    client.throttleDownload(clientRecord.downloadLimit);
+    client.maxConns = clientRecord.maxConns;
+    client.webSeeds = clientRecord.webSeeds;
+    client.tracker = clientRecord.tracker;
+    client.blockList = clientRecord.blockList;
+    client.dht = clientRecord.dht;
+    client.lsd = clientRecord.lsd;
 
+    // This is REALLY ugly but the only way right now until this is offered in the API
+    client.maxUpRate = clientRecord.uploadLimit;
+    client.maxDownRate = clientRecord.downloadLimit;
 
-const startToucan = async _ => {
-   console.log('Starting Toucan Torrent client!');
+    //getters and setters for Upload rate max
+    client.getUploadLimit = () => client.maxUpRate;
+    client.setUploadLimit = (n) => {
+      client.maxUpRate = n + client.maxUpRate < -1 ? -1 : client.maxUpRate + n;
+      client.throttleUpload(client.getUploadLimit());
+    };
 
-   console.log('Synchronizing Torrents table...');
-   await Torrent.sync();
+    //getters and setters for Download rate max
+    client.getDownloadLimit = () => client.maxDownRate;
 
-   console.log('Loading torrents back...');
-   const torrents = await Torrent.findAll();
-   torrents.forEach(torrent => {
-      if (torrent.torrentID.toString().startsWith('magnet')) {
-         parsedTorrent = torrent.torrentID.toString();
+    client.setDownloadLimit = (n) => {
+      client.maxDownRate =
+        n + client.maxDownRate < -1 ? -1 : client.maxDownRate + n;
+      console.log(client.getDownloadLimit());
+      client.throttleDownload(client.getDownloadLimit());
+    };
+
+    console.log("\nAll client settings loaded normally");
+  } catch (err) {
+    console.log(
+      "\nIt looks like there was an error while loading the client settings <.<"
+    );
+    console.error(err);
+  }
+
+  // Load Torrents back
+  try {
+    console.log("\nLoading torrents back...");
+    const torrents = await Torrent.findAll();
+    torrents.forEach((torrent) => {
+      if (torrent.torrentID.toString().startsWith("magnet")) {
+        parsedTorrent = torrent.torrentID.toString();
       } else {
-         parsedTorrent = torrent.torrentID;
+        parsedTorrent = torrent.torrentID;
       }
       console.log(`\nTorrent: ${torrent.name}\nInfo Hash: ${torrent.id}`);
-      client.add(parsedTorrent, {
-         path: 'database/torrents/'
-      }, () => {
-      });
-   });
+      client.add(
+        parsedTorrent,
+        {
+          path: "database/torrents/",
+        },
+        () => { }
+      );
+    });
 
-   console.log("\nChecking for WEBRTC support...");
-   try {
-      if (client.WEBRTC_SUPPORT) {
-         console.log('We are rolling with WebRTC!');
-      } else {
-         console.log('No WebRTC support');
-      }
-   } catch (err) {
-      console.error(err);
-      console.log('Something is going wrong with web torrent rtc support :/');
-   }
-}
+    torrents.length > 0
+      ? console.log("\nGrabbed all torrents")
+      : console.log("\nNo torrents in database yet");
+  } catch (err) {
+    console.log(
+      "\nIt looks like there was an error while loading the Torrents back <.<"
+    );
+    console.error(err);
+  }
 
+  // Check for WebRTC support
+  console.log("\nChecking for WEBRTC support...");
+  try {
+    if (client.WEBRTC_SUPPORT) {
+      console.log("We are rolling with WebRTC!");
+    } else {
+      console.log("No WebRTC support");
+    }
+  } catch (err) {
+    console.error(err);
+    console.log("Something is going wrong with web torrent rtc support :/");
+  }
+};
 
 module.exports = { client, startToucan };

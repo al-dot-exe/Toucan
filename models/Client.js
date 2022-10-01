@@ -16,30 +16,18 @@ const ClientSchema = Client.init(
     maxConns: {
       type: DataTypes.INTEGER,
       defaultValue: 250,
-      allowNull: false,
+      allowNull: true,
     },
     downloadLimit: {
       type: DataTypes.INTEGER,
       defaultValue: 307000,
-      allowNull: false,
+      allowNull: true,
     },
     uploadLimit: {
       type: DataTypes.INTEGER,
       defaultValue: 529000,
-      allowNull: false,
+      allowNull: true,
     },
-    webseeds: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: true,
-      allowNull: false,
-    },
-    utp: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: true,
-      allowNull: false,
-    },
-
-    // Advanced Settings
     tracker: {
       type: DataTypes.BOOLEAN,
       defaultValue: true,
@@ -60,6 +48,18 @@ const ClientSchema = Client.init(
       defaultValue: true,
       allowNull: true,
     },
+
+    // Advanced Settings
+    webSeeds: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+      allowNull: true,
+    },
+    utp: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+      allowNull: true,
+    },
     peerID: {
       type: DataTypes.TORRENTID,
       allowNull: true,
@@ -71,17 +71,8 @@ const ClientSchema = Client.init(
   },
   {
     sequelize,
-    // paranoid: true, // WILL be keeping this on so client instance is never deleted once started
+    // paranoid: true, // Keep this on so the client settings in the database are never deleted once created
   }
 );
-const settingsCheck = async () => {
-  console.log('Syncing client table')
-  await Client.sync();
-  console.log("Checking for client settings");
-  // await Client.findOrCreate({ where: { id: 0 } });
-  console.log('Client Settings check complete');
-};
-
-settingsCheck();
 
 module.exports = ("Client", ClientSchema);

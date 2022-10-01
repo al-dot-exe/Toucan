@@ -1,41 +1,40 @@
-const { sequelize } = require('../config/database');
-const { DataTypes, Model } = require('sequelize');
-const bcrypt = require('sequelize-bcrypt');
+const { sequelize } = require("../config/database");
+const { DataTypes, Model } = require("sequelize");
+const bcrypt = require("sequelize-bcrypt");
 
 // User Schema
-class User extends Model {}
+class User extends Model { }
 
-const UserSchema = User.init({
-   id: {
+const UserSchema = User.init(
+  {
+    id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       allowNull: false,
       unique: true,
-      primaryKey: true
-   },
-   email: {
+      primaryKey: true,
+    },
+    email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true
-   },
-   userName: {
+      unique: true,
+    },
+    userName: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true
-   },
-   password: {
+      unique: true,
+    },
+    password: {
       type: DataTypes.STRING,
-      allowNull: false
-   }
-}, {
-      sequelize
-});
+      allowNull: false,
+    },
+  },
+  {
+    sequelize,
+  }
+);
 
-const sync = async () => await UserSchema.sync();
-console.log('Synchronizing Users table...');
-
-sync()
 // Password hashing middleware
-bcrypt(UserSchema)
+bcrypt(UserSchema);
 
-module.exports = ('User', UserSchema);
+module.exports = ("User", UserSchema);

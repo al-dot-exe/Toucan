@@ -130,7 +130,7 @@ module.exports = {
                   });
                   await newTorrent.save();
                   console.log(
-                     `\nTorrent file ${torrent.name} succesfully downloading, saving metadata to DB\n`
+                     `\nTorrent file ${torrent.name} succesfully leeching, saving metadata to DB\n`
                   );
                }
             );
@@ -215,18 +215,13 @@ module.exports = {
 
    deleteTorrent: async (req, res) => {
       try {
-         console.log(req.params.id);
          const torrentRecord = await Torrent.findByPk(req.params.id);
-         console.log(client.torrents)
-         console.log(torrentRecord);
-         console.log(`Removing torrent record ${torrentRecord.id} from database...`);
+         console.log(`\nRemoving torrent record ${torrentRecord.id} from database...`);
          await torrentRecord.destroy();
-         console.log(client.torrents);
          client.remove(req.params.id);
          req.flash("info", {
             msg: `Torrent record ${req.params.id} has been deleted`,
          });
-         console.log(client.torrents);
          res.redirect("dashboard");
       } catch (err) {
          console.error(err);
