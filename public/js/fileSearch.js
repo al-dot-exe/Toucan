@@ -166,7 +166,6 @@ async function startFileSearchServices() {
     torrentFolders.forEach((folder) =>
       folderNames.push(folder.folderPath.split("/").pop())
     );
-    console.log(folderNames);
   }
 }
 

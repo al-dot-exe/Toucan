@@ -46,6 +46,14 @@
   transition: 0.3s;
 }
 
+.btn-danger {
+  transition: 0.3s;
+}
+
+.btn-danger:hover {
+  background-color: black;
+}
+
 .btn-toucan:hover,
 #btn-torrents-filter:hover,
 .btn-toucan:focus,
@@ -151,10 +159,23 @@ small {
   box-shadow: 0 0 3px lightgrey;
 }
 
+div#torrent-category select {
+  border: 1px solid var(--toucan-outlines);
+  transition: 0.3s;
+}
+div#torrent-category select:active,
+div#torrent-category select:focus,
+div#torrent-category select:hover {
+  background-color: var(--toucan-outlines);
+  color: white;
+  box-shadow: 0 0 0 black;
+}
+
 #upload-card {
   background-color: var(--modal-background);
 }
 
+#updating-settings input,
 #login-form input,
 #signup-form input {
   background-color: var(--modal-background);

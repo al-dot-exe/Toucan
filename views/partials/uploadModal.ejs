@@ -15,10 +15,24 @@
          </div>
          <div class="modal-body d-flex align-items-center container">
             <div class="container d-flex flex-column align-items-start justify-content-center mx-5 ps-5">
+              <section class="pb-4">
+                <div id="torrent-category" class="category form d-flex flex-row justify-content-start align-items-center">
+                  <h4 class="me-4 fs-3">Set the Category</h4>
+                  <select class="bg-none form-control rounded">
+                    <option value="others">Default</option>
+                    <option value="apps">Apps</option>
+                    <option value="books">Books</option>
+                    <option value="films">Films</option>
+                    <option value="games">Games</option>
+                    <option value="music">Music</option>
+                  </select>
+                </div>
+              </section>
                <section class="pb-5">
                   <h3 class="pb-3">Submit a magnet link</h3>
                   <form id='magnet-upload-form' action="/torrents/magnet-upload" method="POST">
                      <input id="magnet-uri-input" type="text" name="magnet" placeholder="magnet:uri" value="">
+                     <input hidden="true" class="category-submission" name="category" value="">
                   </form>
                </section>
                <small>or...</small>
@@ -33,6 +47,7 @@
                      <span id='file-status'></span>
                      <button id="file-delete" type='button' class="btn btn-lg btn-toucan-delete">
                      </button>
+                     <input hidden='true'class="category-submission" name="category" value="">
                   </form>
                </section>
             </div>

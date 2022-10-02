@@ -12,14 +12,14 @@ module.exports = {
     }
     res.render("login", {
       title: "Login",
-      layout: 'layouts/loggedOut'
+      layout: "layouts/loggedOut",
     });
   },
 
   postLogin: (req, res, next) => {
     const validationErrors = [];
 
-    console.log(req.body.account)
+    console.log(req.body.account);
     if (req.body.account.split(" ").join() !== req.body.account) {
       validationErrors.push({
         msg: "Please enter a valid username or email address.",
@@ -31,7 +31,7 @@ module.exports = {
 
     if (validationErrors.length) {
       req.flash("errors", validationErrors);
-      console.log('got validation error');
+      console.log("got validation error");
       return res.redirect("/login");
     }
 
@@ -80,7 +80,7 @@ module.exports = {
     }
     res.render("signup", {
       title: "Create Account",
-      layout: 'layouts/loggedOut'
+      layout: "layouts/loggedOut",
     });
   },
 

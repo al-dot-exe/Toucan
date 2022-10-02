@@ -18,12 +18,6 @@ if (window.location.pathname === "/") startTorrentUploadProcess();
 startTorrentViewServices(); //band-aid
 startFileSearchServices();
 
-// inputs are dragging and not selecting correclty <,<
-// document.querySelectorAll('input').forEach(input => {
-//    input.addEventListener('dblclick', () => this.select())
-//    input.addEventListener('click', () => this.select());
-// });
-
 if (
   window.location.pathname === "/login" ||
   window.location.pathname === "/signup"

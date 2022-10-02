@@ -1,24 +1,84 @@
-<h1>This will be where your settings go for account, torrents, etc.</h1>
+<section id="torrent-view-page">
+   <section id='torrents-page-title' class="">
+      <div class="container d-flex flex-row justify-content-between align-items-center mt-5">
+         <h1 id="torrent-name" class="ms-4 ps-1 mb-0">Settings</h1>
+      </div>
+   </section>
 
-<section>
-   <h3>User</h3>
-   <p>change username</p>
-   <p>change password</p>
-   <p>change email</p>
-   <p>delete account</p>
-</section>
+   <section id="torrent-view-body" class="container d-flex flex-column align-items-start justify-content-center mb-3 px-5">
+     <div id="torrent-info" class="d-flex flex-column justify-content-center h-100 pt-2">
 
-<section>
-   <h3>Torrent Client</h3>
-   <p>Protocol (UDP/TCP)</p>
-   <p>DHT</p>
-   <p>Tracker</p>
-   <p>LSD</p>
-   <!-- <p>Port Range</p> -->
-   <p> Min seeders in Peer Set</p>
-   <p> Max seeders in Peer Set</p>
-   <p> Max upload slots</p>
-   <p> Max download slots</p>
-   <p> Max upload rate</p>
-   <p> Max download rate</p>
+    <form class="form" action="/settings-update" method="POST" id="settings form">
+      <section class="d-flex flex-column justify-content-start align-items-start">
+         <h2 class="fs-1">Account</h2>
+         <p>Change username</p>
+         <input type="text" name="userName" class="mb-4 w-25 form-control" value="<%=user.userName%>">
+         <p>Change email</p>
+         <input type="email" name="email" class="mb-4 w-25 form-control" value="<%=user.email%>">
+
+           <!-- Need something more secure for password changes -->
+
+      </section>
+
+      <section class="d-flex flex-column justify-content-start align-items-start">
+           <h2 class="fs-1">Toucan</h2>
+           <p> Set max upload rate (KB/s):
+           <input type="text" name="uploadLimit" class="form-control" value="<%= `${(settings.uploadLimit / 1000).toFixed(2)}` %>" />
+           </p>
+           <p> Set max download rate (KB/s):
+           <input type="text" name="downloadLimit" class="form-control" value="<%= `${(settings.downloadLimit / 1000).toFixed(2)}` %>" />
+           </p>
+           <p> Set max connections per torrent:
+             <input type="text" name="maxConns" class="form-control" value="<%=settings.maxConns%>" />
+           </p>
+           <p>Enable Trackers: 
+             <select name="tracker" class="form-control">
+               <option value="<%=settings.tracker%>"><%=settings.tracker%></option>
+               <option value="<%=!settings.tracker%>"><%=!settings.tracker%></option>
+             </select>
+           </p>
+      </section>
+
+      <section class="d-flex flex-column justify-content-start align-items-start">
+           <h4 class="fs-3"> Advanced Settings</h4>
+           <p>Peer Blacklist (Seperate with spaces ex: "127.0.0.1 127.0.0.3 127.0.0.4")</p>
+           <input type="text" name="blockList" class="mb-4 form-control" value="<%=user.blockList%>">
+           <p>Enable DHT: 
+             <select name="dht" class="form-control">
+               <option value="<%=settings.dht%>"><%=settings.dht%></option>
+               <option value="<%=!settings.dht%>"><%=!settings.dht%></option>
+             </select>
+            <a href="https://www.youtube.com/watch?v=_kCHOpINA5g" target="_blank" rel="noopener noreferrer">
+               <i class="bi bi-info-circle-fill"></i>
+             </a>
+           </p>
+           <p>Enable LSD: <%=settings.lsd%>  
+             <select name="lsd" class="form-control">
+               <option value="<%=settings.lsd%>"><%=settings.lsd%></option>
+               <option value="<%=!settings.lsd%>"><%=!settings.lsd%></option>
+             </select>
+            <a href="https://www.bittorrent.org/beps/bep_0014.html" target="_blank" rel="noopener noreferrer">
+               <i class="bi bi-info-circle-fill"></i>
+             </a>
+           </p>
+        </section>
+
+        <input type="hidden" name="_method" value="PUT" />
+        <button type="submit" class=" mb-4 btn btn-toucan-text btn-block mb-4 w-25 fs-5 p-2">Save</button>
+    </form>
+
+    <form class="" action="/reset-settings" method="POST" id="update-settings">
+        <input type="hidden" name="_method" value="PUT" />
+        <button type="submit" class=" mb-4 btn btn-toucan-text btn-block mb-4 w-25 fs-5 p-2">Reset</button>
+    </form>
+
+       <form class="px-0" action="/delete-account" method="POST" id="delete-from">
+        <input type="hidden" name="_method" value="DELETE" />
+        <button type="submit" class="btn btn-toucan-delete d-flex justify-content-start align-items-center">
+        <button type="submit" class=" mb-4 btn btn-danger btn-block mb-4 w-25 fs-5 p-2">Delete Account!</button>
+         </button>
+       </form> 
+
+     </div> 
+   </section>
 </section>
