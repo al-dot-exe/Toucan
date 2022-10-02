@@ -2,10 +2,9 @@
 async function startTorrentUploadProcess() {
   // Init feathers app
   const app = feathers();
+  const socket = io(`https://localhost:3131/`, {});
 
-  // const socket = io(`http://0.0.0.0:3131/`);
-
-  const socket = io(`http://localhost:3131/`); // band-aid
+  // band-aid
 
   // Register socket.io to talk to server
   app.configure(feathers.socketio(socket));
@@ -36,7 +35,7 @@ async function startTorrentUploadProcess() {
   fileDeleteButton.addEventListener("click", clearUpload);
 
   // !!! FIGURING OUT CATEGORIES !!!
-  
+
   const fileStatus = `${dotTorrent.value
       ? dotTorrent.value.split("\\").pop()
       : "no file selected..."
@@ -64,7 +63,9 @@ async function startTorrentUploadProcess() {
       : submitButton.setAttribute("form", "magnet-upload-form");
 
     console.log(torrentCategory.childNodes[3].value);
-    categorySubmissions.forEach(submission => submission.value = torrentCategory.childNodes[3].value);
+    categorySubmissions.forEach(
+      (submission) => (submission.value = torrentCategory.childNodes[3].value)
+    );
   }
 
   function clearUpload() {
