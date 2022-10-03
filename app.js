@@ -1,12 +1,11 @@
+const morgan = require("morgan"); //Logging
 const express = require("@feathersjs/express"); //MVC framework
 const feathers = require("@feathersjs/feathers"); //Realtime framework
 const socketio = require("@feathersjs/socketio"); //Realtime APIs with websockets
 const expressLayouts = require("express-ejs-layouts"); //Ejs layouts structure
 const fs = require("fs-extra");
 const methodOverride = require("method-override"); //Override http methods
-const logger = require("morgan"); //Logging
 const path = require("path"); //directory traversal
-const multer = require("multer"); //file uploads
 const https = require("https"); // HTTPS
 const cors = require("cors"); //Cross origin resource sharing
 const helmet = require("helmet"); //Default security headers
@@ -31,6 +30,8 @@ const app = express(feathers());
  * .ENV config
  */
 require("dotenv").config({ path: "config/.env" });
+if (process.env.NODE_ENV === "development") app.use(morgan("dev"));
+
 
 /*
  * Passport init
@@ -45,11 +46,10 @@ const appInit = async () => {
   await startToucan(); // start torrent client
 
   // Start listening
-  if (process.env.NODE_ENV === "development") logger("dev");
   const PORT = process.env.PORT || 5000;
 
   server
-    .listen(PORT, '0.0.0.0')
+    .listen(PORT, "0.0.0.0")
     .on("listening", () =>
       console.log(
         `\nA Toucan is now flying in ${process.env.NODE_ENV} mode on port ${PORT}!\n`
