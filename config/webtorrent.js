@@ -67,10 +67,11 @@ const startToucan = async () => {
         parsedTorrent = torrent.torrentID;
       }
       console.log(`\nTorrent: ${torrent.name}\nInfo Hash: ${torrent.id}`);
+      console.log(torrent.folderPath);
       client.add(
         parsedTorrent,
         {
-          path: "database/torrents/",
+          path: `database/torrents/${torrent.category}`
         },
         () => { }
       );
@@ -84,19 +85,6 @@ const startToucan = async () => {
       "\nIt looks like there was an error while loading the Torrents back <.<"
     );
     console.error(err);
-  }
-
-  // Check for WebRTC support
-  console.log("\nChecking for WEBRTC support...");
-  try {
-    if (client.WEBRTC_SUPPORT) {
-      console.log("We are rolling with WebRTC!");
-    } else {
-      console.log("No WebRTC support");
-    }
-  } catch (err) {
-    console.error(err);
-    console.log("Something is going wrong with web torrent rtc support :/");
   }
 };
 

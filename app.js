@@ -49,7 +49,7 @@ const appInit = async () => {
   const PORT = process.env.PORT || 5000;
 
   server
-    .listen(PORT)
+    .listen(PORT, '0.0.0.0')
     .on("listening", () =>
       console.log(
         `\nA Toucan is now flying in ${process.env.NODE_ENV} mode on port ${PORT}!\n`

@@ -1,7 +1,7 @@
 // Public js file for working with a single Torrent in real time
 async function startTorrentViewServices() {
   // Declare web sockets
-  const socket = io(`https://localhost:3131/`, {});
+  const socket = io(`https://0.0.0.0:3131/`, {});
 
   // Init feathers app
   const app = feathers();

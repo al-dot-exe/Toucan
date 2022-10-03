@@ -1,22 +1,27 @@
-const fs = require('fs-extra');
+("use strict");
+
+const JSZip = require("jszip");
+const fs = require("fs-extra");
 
 module.exports = {
-   createTorrentArchive: async (folder, zip) => {
-      try {
-         const directoryContents = fs.readdirSync(folder, {
-            withFileTypes: true
-         });
-         directoryContents.forEach(({ name }) => {
-            const path = `${folder}/${name}`;
-            if (fs.statSync(path).isFile()) {
-               zip.file(name, fs.readFileSync(path, "utf-8"));
-            }
-            if (fs.statSync(path).isDirectory()) createTorrentArchive(name, path, zip);
-            console.log(`Adding: ${path}`);
-         });
-      } catch (err) {
-         console.error(err);
-      }
-   }
-}
-
+  createTorrentArchive: async (folderPath, zip) => {
+    try {
+      const folder = fs.readdirSync(folderPath, {
+        withFileTypes: true,
+      });
+      console.log("\nCreating archive...");
+      folder.forEach(async ({ name }) => {
+        console.log(name);
+        const filePath = `${folderPath}/${name}`;
+        if (fs.statSync(filePath).isFile()) {
+          const stream = fs.createReadStream(filePath);
+          await zip.file(name, stream);
+        }
+        if (fs.statSync(filePath).isDirectory())
+          await createTorrentArchive(filePath, zip);
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  },
+};

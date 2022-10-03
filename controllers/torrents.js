@@ -170,7 +170,7 @@ module.exports = {
         console.log(
           "\nCan't find requested torrent\nRegenerating file path for torrent record..."
         );
-        torrentPath = `database/torrents/${torrentRecord.category}${torrentRecord.name}`;
+        torrentPath = `database/torrents/${torrentRecord.category}/${torrentRecord.name}`;
       }
 
       const status = client.get(torrentRecord.id);
@@ -180,9 +180,10 @@ module.exports = {
         if (torrentIsDir) {
           const zip = new JSZip();
           const torrentArchive = zip.folder(torrentRecord.name);
-          createTorrentArchive(torrentPath, torrentArchive);
+          await createTorrentArchive(torrentPath, torrentArchive);
+          console.log("Finished archiving torrent");
 
-          console.log("\nGenerating Torrent .zip...");
+          console.log(`\nGenerating ${torrentRecord.name}.zip...`);
           zip
             .generateNodeStream({ type: "nodebuffer", streamFiles: true })
             .pipe(

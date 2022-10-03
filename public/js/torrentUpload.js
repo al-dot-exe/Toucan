@@ -2,7 +2,7 @@
 async function startTorrentUploadProcess() {
   // Init feathers app
   const app = feathers();
-  const socket = io(`https://localhost:3131/`, {});
+  const socket = io(`https://0.0.0.0:3131/`, {});
 
   // band-aid
 
