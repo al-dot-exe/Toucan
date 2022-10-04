@@ -6,6 +6,7 @@ const expressLayouts = require("express-ejs-layouts"); //Ejs layouts structure
 const fs = require("fs-extra");
 const methodOverride = require("method-override"); //Override http methods
 const path = require("path"); //directory traversal
+const http = require("http"); // So we can always redirect to https
 const https = require("https"); // HTTPS
 const cors = require("cors"); //Cross origin resource sharing
 const helmet = require("helmet"); //Default security headers
@@ -46,13 +47,18 @@ const appInit = async () => {
   await startToucan(); // start torrent client
 
   // Start listening
-  const PORT = process.env.PORT || 5000;
+  const HTTP = 8000;
+  http.createServer(app).listen(HTTP); // just listening so we can always redirect
+
+  const HTTPS =
+    (process.env.NODE_ENV === "development") ? (process.env.PORT || 5000) : 4333;
+
   secureServer
-    .listen(PORT, '0.0.0.0')
+    .listen(HTTPS, "0.0.0.0")
 
     .on("listening", () =>
       console.log(
-        `\nA Toucan is now flying in ${process.env.NODE_ENV} mode on port ${PORT}!\n`
+        `\nA Toucan is now flying in ${process.env.NODE_ENV} mode on port ${HTTPS}!\n`
       )
     );
   app.setup(secureServer); // Enables SSL
@@ -114,7 +120,7 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.configure(socketio());
-app.configure(express.rest()); // to view services json, 
+app.configure(express.rest()); // to view services json,
 
 /*
  * Method Override middleware

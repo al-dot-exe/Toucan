@@ -3,6 +3,7 @@ const router = app.Router();
 const multer = require('multer');
 const uploads = multer({ dest: './database/uploads/' });
 const torrentsController = require('../controllers/torrents.js');
+const { isSecure } = require("../middleware/secure");
 const { ensureAuth, ensureGuest } = require('../middleware/auth');
 
 // @desc  // Show Torrent client dashboard if logged in
