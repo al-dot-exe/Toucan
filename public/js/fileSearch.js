@@ -4,7 +4,10 @@ import { Autocomplete } from "./autocomplete.js";
 
 async function startFileSearchServices() {
   // Declare web sockets
-  const socket = io(`https://0.0.0.0:3131/`, {});
+  const socket = io(`wss://${window.location.host}`, {
+    transports: ['websocket'],
+    rejectUnauthorized: false,
+    });
 
   // Init feathers app
   const app = feathers();
@@ -44,7 +47,7 @@ async function startFileSearchServices() {
       data: folderNames,
       maximumItems: 5,
       onSelectItem: ({ label, value }) => {
-        window.location.assign(`https://0.0.0.0:3131/torrents/${value}`);
+        window.location.assign(`https://${window.location.host}/torrents/${value}`);
       },
     });
 
