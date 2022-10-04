@@ -21,17 +21,17 @@ const clientServices = require("./services/client.services"); //Torrent client s
 const fileSearchServices = require("./services/fileSearch.services"); //File searching services
 const { sequelize, connectDB } = require("./config/database"); //Sqlite database
 const { startToucan } = require("./config/webtorrent"); //Start WebTorrent client
+require("dotenv").config({ path: "config/.env" }); // .env config route
 
 /*
  * Feathers|Express init
  */
 const app = express(feathers());
-/*
- * .ENV config
- */
-require("dotenv").config({ path: "config/.env" });
-if (process.env.NODE_ENV === "development") app.use(morgan("dev"));
 
+/*
+ * logging must come after framework declaration
+ */
+if (process.env.NODE_ENV === "development") app.use(morgan("dev"));
 
 /*
  * Passport init
@@ -47,21 +47,21 @@ const appInit = async () => {
 
   // Start listening
   const PORT = process.env.PORT || 5000;
+  secureServer
+    .listen(PORT, '0.0.0.0')
 
-  server
-    .listen(PORT, "0.0.0.0")
     .on("listening", () =>
       console.log(
         `\nA Toucan is now flying in ${process.env.NODE_ENV} mode on port ${PORT}!\n`
       )
     );
-  app.setup(server); // Enables SSL
+  app.setup(secureServer); // Enables SSL
 };
 
 /*
  * Security middleware
  */
-const server = https.createServer(
+const secureServer = https.createServer(
   {
     key: fs.readFileSync("database/key.pem", "utf8"),
     cert: fs.readFileSync("database/cert.pem", "utf8"),
@@ -114,7 +114,7 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.configure(socketio());
-app.configure(express.rest()); // to view services json, can also use rest.nvim
+app.configure(express.rest()); // to view services json, 
 
 /*
  * Method Override middleware

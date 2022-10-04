@@ -10,13 +10,13 @@
               </button>
             </div>
 
-            <div id="mobile-logo-container" class="d-lg-none">
+            <div id="mobile-logo-container" class="d-lg-none w-25">
               <a href="/" class="d-lg-none d-flex flex-row justify-content-center">
                  <img src="/assets/images/logo.png" width="65" alt="" />
               </a>
             </div>
 
-           <div id="menu-desktop" class="d-none d-lg-flex flex-row pt-3 mt-1 justify-content-start w-50 px-auto mx-0">
+           <div id="menu-desktop" class="d-none d-lg-flex flex-row pt-3 mt-1 justify-content-start w-25 px-auto mx-0">
               <ul class="d-lg-flex flex-row justify-content-start align-items-center ps-0">
 
                 <li id="desktop-logo-container" class="w-25">
@@ -26,25 +26,25 @@
                 </li>
 
                  <li>
-                    <a href="/">
+                    <a href="/" class="fs-2">
                     Home
                     </a>
                  </li>
 
                  <li>
-                    <a href="/torrents/dashboard">
+                    <a href="/torrents/dashboard" class="fs-2">
                     Torrents
                     </a>
                  </li>
 
                  <li>
-                    <a href="/settings">
+                    <a href="/settings" class="fs-2">
                     Settings
                     </a>
                  </li>
 
                  <li>
-                    <a href="/logout">
+                    <a href="/logout" class="fs-2">
                     Logout
                     </a>
                  </li>
@@ -52,14 +52,16 @@
            </div>
 
 
-            <div id="search-container" class="d-flex justify-content-end w-lg-25">
-               <div class='search-bar'>
-                 <input id="file-search" type="search" class="search-bar__input" placeholder="Torrent search" aria-label="search">
-                 <button id='btn-search' class='search-bar__submit pt-1 flex-row justify-content-center align-items-center' type="submit">
-                   <label for="file-search" class="d-flex flex-row justify-content-center align-items-center">
+            <div id="search-container" class="d-flex justify-content-end w-25 w-lg-50">
+               <div class='btn-group w-100 d-flex flex-row justify-content-end'>
+                 <button id='torrent-search-btn' class='flex-row justify-content-center align-items-center dropdown-toggle' data-bs-toggle="dropdown" type="submit">
+                   <label for="torrent-search-input" class="d-flex flex-row justify-content-center align-items-center">
                       <i class="bi bi-search"></i>
                    </label>
                  </button>
+                 <ul id="torrent-search-popup" class="dropdown-menu">
+                   <input id="torrent-search-input" type="search" class="form-control dropdown-item" placeholder="Search" aria-label="search" autocomplete="off">
+                 </ul>
                </div>
             </div>
 
