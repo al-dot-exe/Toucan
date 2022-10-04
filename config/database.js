@@ -9,6 +9,7 @@ const sequelize = new Sequelize({
   storage: "database/db.sqlite",
   host: "localhost",
   dialect: "sqlite",
+  logging: (process.env.NODE_ENV === "development") ? true : false
 });
 
 const connectDB = async () => {

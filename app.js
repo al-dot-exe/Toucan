@@ -4,7 +4,7 @@ const socketio = require("@feathersjs/socketio"); //Realtime APIs with websocket
 const expressLayouts = require("express-ejs-layouts"); //Ejs layouts structure
 const fs = require("fs-extra");
 const methodOverride = require("method-override"); //Override http methods
-const logger = require("morgan"); //Logging
+const morgan = require("morgan"); //Logging
 const path = require("path"); //directory traversal
 const multer = require("multer"); //file uploads
 const https = require("https"); // HTTPS
@@ -22,15 +22,17 @@ const clientServices = require("./services/client.services"); //Torrent client s
 const fileSearchServices = require("./services/fileSearch.services"); //File searching services
 const { sequelize, connectDB } = require("./config/database"); //Sqlite database
 const { startToucan } = require("./config/webtorrent"); //Start WebTorrent client
+require("dotenv").config({ path: "config/.env" }); // .env config route
 
 /*
  * Feathers|Express init
  */
 const app = express(feathers());
+
 /*
- * .ENV config
+ * logging must come after framework declaration
  */
-require("dotenv").config({ path: "config/.env" });
+if (process.env.NODE_ENV === "development") app.use(morgan("dev"));
 
 /*
  * Passport init
@@ -45,7 +47,7 @@ const appInit = async () => {
   await startToucan(); // start torrent client
 
   // Start listening
-  if (process.env.NODE_ENV === "development") logger("dev");
+
   const PORT = process.env.PORT || 5000;
 
   server
