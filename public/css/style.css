@@ -18,6 +18,53 @@
   --toucan-general: #9c9c9a;
 }
 
+body {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--background);
+  font-family: "Kiwi Maru";
+}
+
+body > section {
+  height: 100%;
+  overflow: auto;
+}
+
+header {
+  /* height: 10%; */
+  background-color: var(--background);
+}
+nav div#header-container,
+#footer-container,
+.torrents-page-body {
+  max-width: 90%;
+}
+
+.header-menu {
+  max-width: 35%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#mobile-logo-container {
+  max-width: 20%;
+  width: 100%;
+}
+#desktop-logo-container {
+  padding: 0;
+}
+
+footer {
+  height: 10%;
+  background-color: var(--background);
+}
+
+small {
+  color: rgba(0, 0, 0, 0.5);
+}
+
 /* 
 *
 * Button styling
@@ -85,52 +132,84 @@
   color: var(--toucan-red);
 }
 
-body {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background-color: var(--background);
-  font-family: "Kiwi Maru";
+/*
+* Torrent search btn at the top!
+*/
+#torrent-search-btn:before {
+  content: none;
 }
 
-body > section {
+#torrent-search-btn {
+  font-size: 1.5rem;
+  cursor: pointer;
+  border-radius: 50%;
+  background: var(--background);
+  padding: 10px 15px;
+  transition: background 0.3s ease-in-out;
+}
+#torrent-search-btn:hover,
+#torrent-search-btn:focus,
+#torrent-search-btn:active {
+  background: var(--toucan-outlines);
+  color: var(--modal-background);
+}
+
+#torrent-search-btn:after {
+  content: none;
+}
+
+#torrent-search-popup {
+  position: static;
+  width: 100%;
   height: 100%;
-  overflow: auto;
+  border: none;
+  border-radius: 5px;
 }
-
-header {
-  /* height: 10%; */
-  background-color: var(--background);
-}
-nav div#header-container,
-#footer-container,
-.torrents-page-body {
-  max-width: 90%;
-}
-
-.header-menu {
-  max-width: 35%;
+#torrent-search-input {
+  background: var(--modal-background);
+  border: none;
   width: 100%;
-  margin: 0;
-  padding: 0;
+  height: 100%;
+  font-size: 1.5rem;
 }
 
-#mobile-logo-container {
-  max-width: 20%;
+/* For file search */
+#autocomplete-dropdown {
+  right: auto;
+  left: 50%;
+  -webkit-transform: translate(-50%, 50%);
+  -o-transform: translate(-50%, 50%);
+  transform: translate(-50%, 50%);
+  border: none;
+  /* border-radius: 10px; */
+  box-shadow: 0 0 3px lightgrey;
+  font-size: 2rem;
+}
+
+#autocomplete-dropdown * {
   width: 100%;
-}
-#desktop-logo-container {
-  padding: 0;
-}
-
-footer {
-  height: 10%;
-  background-color: var(--background);
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
 }
 
-small {
-  color: rgba(0, 0, 0, 0.5);
+@media only screen and (max-width: 1000px) {
+  #torrent-search-popup{
+    position: absolute;
+  -webkit-transform: translate(-80%, 10%);
+  -o-transform: translate(-80%,10%);
+  transform: translate(-80%, 10%);
+    width: 300%;
+  }
+  #autocomplete-dropdown {
+    /* right: auto; */
+  -webkit-transform: translate(-75%, 25%);
+  -o-transform: translate(-75%,25%);
+  transform: translate(-75%, 25%);
+
+  }
 }
+
 
 #home-page,
 #login-page,
@@ -188,7 +267,6 @@ div#torrent-category select:hover {
   border: 0;
   color: rgba(0, 0, 0, 0.63);
 }
-
 
 .torrents-page {
   background: linear-gradient(
@@ -280,7 +358,6 @@ input {
 .modal-footer {
   max-width: 100vw;
   border: 0;
-
 }
 .modal-body div,
 .modal-footer div {
@@ -410,9 +487,8 @@ h1 {
 
 h2 {
   font-size: 3.2rem;
-  color: rgba(0, 0, 0, 0.70);
+  color: rgba(0, 0, 0, 0.7);
 }
-
 
 h3 {
   font-size: 2.8rem;
@@ -479,7 +555,7 @@ input {
 }
 
 #password-hide-toggle * {
-  color: rgba(0, 0, 0, 0.50);
+  color: rgba(0, 0, 0, 0.5);
   /* color: pink; */
 }
 .btn-toucan-text,
@@ -505,6 +581,7 @@ input {
   border-radius: 4px solid;
   padding: 3px;
 }
+
 
 #torrents-filter ul li a {
   font-size: 1.5rem;

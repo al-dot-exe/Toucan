@@ -52,14 +52,16 @@
            </div>
 
 
-            <div id="search-container" class="d-flex justify-content-end w-lg-25">
-               <div class='input-group'>
-                 <button id='btn-search' class='pt-1 flex-row justify-content-center align-items-center' type="submit">
+            <div id="search-container" class="d-flex justify-content-end w-25 w-lg-50">
+               <div class='btn-group w-100 d-flex flex-row justify-content-end'>
+                 <button id='torrent-search-btn' class='flex-row justify-content-center align-items-center dropdown-toggle' data-bs-toggle="dropdown" type="button">
                    <label for="torrent-search-input" class="d-flex flex-row justify-content-center align-items-center">
                       <i class="bi bi-search"></i>
                    </label>
                  </button>
-                 <input id="torrent-search-input" type="search" class="form-control" placeholder="Search" aria-label="search" autocomplete="off">
+                 <ul id="torrent-search-popup" class="dropdown-menu">
+                   <input id="torrent-search-input" type="search" class="form-control dropdown-item" placeholder="Search" aria-label="search" autocomplete="off">
+                 </ul>
                </div>
             </div>
 

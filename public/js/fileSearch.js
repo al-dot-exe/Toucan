@@ -35,7 +35,7 @@ async function startFileSearchServices() {
       data: folderNames,
       maximumItems: 5,
       onSelectItem: ({ label, value }) => {
-        window.location.assign(`https://0.0.0.0/torrents/${value}`);
+        window.location.assign(`https://0.0.0.0:3131/torrents/${value}`);
       },
     });
   }
