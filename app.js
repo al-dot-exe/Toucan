@@ -71,40 +71,42 @@ const server = https.createServer(
   app
 );
 app.use(cors());
-app.use(
-  helmet({
-    //Feathers js CORSP is currently not set on their end
-    crossOriginEmbedderPolicy: false, // band-aid
-  })
-);
-app.use(
-  helmet.contentSecurityPolicy({
-    directives: {
-      "default-src": [
-        "'self'",
-        "data:",
-        "https://cdn.jsdelivr.net/npm/webtorrent@latest/webtorrent.min.js",
-        "https://unpkg.com/@feathersjs/client@%5E4.3.0/dist/feathers.js",
-        "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js",
-        "https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js",
-      ],
-      "script-src": [
-        "'self'",
-        "eval",
-        "https://cdn.jsdelivr.net/npm/webtorrent@latest/webtorrent.min.js",
-        "https://unpkg.com/@feathersjs/client@%5E4.3.0/dist/feathers.js",
-        "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js",
-        "https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js",
-      ],
-      "img-src": [
-        "'self'",
-        "eval",
-        "https://images.unsplash.com/photo-1532503353673-585dcc16ad86?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
-        "https://images.unsplash.com/photo-1516421417223-d0c0551e1031?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1219&q=80",
-      ],
-    },
-  })
-);
+// app.use(
+//   helmet({
+//     //Feathers js CORSP is currently not set on their end
+//     crossOriginEmbedderPolicy: false, // band-aid
+//   })
+// );
+// app.use(
+//   helmet.contentSecurityPolicy({
+//     directives: {
+//       "default-src": [
+//         "'self'",
+//         "data:",
+//         "https://0.0.0.0:3131/",
+//         "https://cdn.jsdelivr.net/npm/webtorrent@latest/webtorrent.min.js",
+//         "https://unpkg.com/@feathersjs/client@%5E4.3.0/dist/feathers.js",
+//         "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js",
+//         "https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js",
+//       ],
+//       "script-src": [
+//         "'self'",
+//         "eval",
+//         "https://0.0.0.0:3131/",
+//         "https://cdn.jsdelivr.net/npm/webtorrent@latest/webtorrent.min.js",
+//         "https://unpkg.com/@feathersjs/client@%5E4.3.0/dist/feathers.js",
+//         "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js",
+//         "https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js",
+//       ],
+//       "img-src": [
+//         "'self'",
+//         "eval",
+//         "https://images.unsplash.com/photo-1532503353673-585dcc16ad86?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
+//         "https://images.unsplash.com/photo-1516421417223-d0c0551e1031?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1219&q=80",
+//       ],
+//     },
+//   })
+// );
 
 /*
  * Frontend middleware

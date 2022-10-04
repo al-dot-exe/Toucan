@@ -13,7 +13,16 @@ async function startFileSearchServices() {
   app.configure(feathers.socketio(socket));
 
   // Select DOM items and Event Listeners
+  const torrentSearchButton = document.getElementById("torrent-search-btn");
   const torrentSearch = document.getElementById("torrent-search-input");
+  
+  torrentSearchButton.addEventListener('click', focusInput);
+
+  function focusInput() {
+    console.log(torrentSearch);
+    console.log('Should be working')
+    torrentSearch.focus();
+  }
 
   async function init() {
     await app.service("file-search-services").create({ null: null });
@@ -38,6 +47,7 @@ async function startFileSearchServices() {
         window.location.assign(`https://0.0.0.0:3131/torrents/${value}`);
       },
     });
+
   }
 
   // Initialize File Search

@@ -16,7 +16,6 @@ const startToucan = async () => {
     console.log("\nApplying saved settings to client...");
 
     clientRecord = clientRecord[0];
-    console.log(clientRecord);
 
     client.throttleUpload(clientRecord.uploadLimit);
     client.throttleDownload(clientRecord.downloadLimit);

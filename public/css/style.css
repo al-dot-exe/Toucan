@@ -164,6 +164,7 @@ small {
   height: 100%;
   border: none;
   border-radius: 5px;
+  /* padding: 3px; */
 }
 #torrent-search-input {
   background: var(--modal-background);
@@ -172,6 +173,14 @@ small {
   height: 100%;
   font-size: 1.5rem;
 }
+input#torrent-search-input:hover,
+input#torrent-search-input:focus,
+input#torrent-search-input:active {
+  outline: none;
+  box-shadow:0 0 10px var(--toucan-outlines);
+}
+
+
 
 /* For file search */
 #autocomplete-dropdown {
@@ -181,7 +190,7 @@ small {
   -o-transform: translate(-50%, 50%);
   transform: translate(-50%, 50%);
   border: none;
-  /* border-radius: 10px; */
+  border-radius: 5px;
   box-shadow: 0 0 3px lightgrey;
   font-size: 2rem;
 }
@@ -198,15 +207,8 @@ small {
     position: absolute;
   -webkit-transform: translate(-80%, 10%);
   -o-transform: translate(-80%,10%);
-  transform: translate(-80%, 10%);
+    transform: translate(-80%, 10%);
     width: 300%;
-  }
-  #autocomplete-dropdown {
-    /* right: auto; */
-  -webkit-transform: translate(-75%, 25%);
-  -o-transform: translate(-75%,25%);
-  transform: translate(-75%, 25%);
-
   }
 }
 
