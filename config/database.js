@@ -22,7 +22,9 @@ const connectDB = async () => {
       await sequelize.sync();
       console.log("\nDatabase is now Nsync");
     } catch (err) {
-      console.log("\nLooks like we ran into an error when syncing the database <.<");
+      console.log(
+        "\nLooks like we ran into an error when syncing the database <.<"
+      );
       console.error(err);
     }
   } catch (err) {
