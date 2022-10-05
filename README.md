@@ -1,3 +1,5 @@
 # Toucan Torrent
 
-![Toucan Torrent.example](./example/tucan-v1-2022-10-04_18.19.26.gif)
+![Home page example](./example/toucan-home.png)
+
+![Dashboard page example](./example/toucan-dashboard.png)
