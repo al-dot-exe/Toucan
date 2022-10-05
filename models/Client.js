@@ -39,7 +39,7 @@ const ClientSchema = Client.init(
       allowNull: true,
     },
     dht: {
-      type: DataTypes.BOOLEAN, // band-aid (see webtorrent docs)
+      type: DataTypes.BOOLEAN,
       defaultValue: false,
       allowNull: true,
     },

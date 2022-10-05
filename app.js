@@ -47,26 +47,32 @@ const appInit = async () => {
   await startToucan(); // start torrent client
 
   // Start listening
-  const HTTP = 8000;
-  http.createServer(app).listen(HTTP); // just listening so we can always redirect
+  const HTTP = process.env.PORT_HTTP || 8000;
+  const HTTPS = process.env.PORT_HTTPS || 5000;
 
-  const HTTPS =
-    (process.env.NODE_ENV === "development") ? (process.env.PORT || 5000) : 4333;
+  insecureServer
+    .listen(HTTP, "0.0.0.0")
+    .on("listening", () =>
+      console.log(
+        `\nA Toucan is now flying in ${process.env.NODE_ENV} mode on port ${HTTP}!\n`
+      )
+    );
 
   secureServer
     .listen(HTTPS, "0.0.0.0")
-
     .on("listening", () =>
       console.log(
-        `\nA Toucan is now flying in ${process.env.NODE_ENV} mode on port ${HTTPS}!\n`
+        `\nA Toucan is now flying privately in ${process.env.NODE_ENV} mode with TLS on port ${HTTPS}!\n`
       )
     );
   app.setup(secureServer); // Enables SSL
 };
 
+
 /*
  * Security middleware
  */
+const insecureServer = http.createServer(app); // listening but will always be redirected
 const secureServer = https.createServer(
   {
     key: fs.readFileSync("database/key.pem", "utf8"),

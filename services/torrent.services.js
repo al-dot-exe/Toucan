@@ -72,10 +72,12 @@ class TorrentServices {
             });
          }
 
-         function toggleTorrent(data, torrents) {
+      // Something strange stuff is going on between toggling individual torrents and the entire client.
+      // For example. The client is not able to be toggled unless we have more than one torrent seeding.
+      // It works fine for now but it is something I hope to solve in the future.
+         function toggleTorrent(data, torrents) { //band-aid
             let backendOfTorrent = client.get(data.id);
             data.paused ? backendOfTorrent.pause() : backendOfTorrent.resume();
-            // band-aid
             torrents.forEach(torrent => {
                if (torrent.id === data.id) torrent.paused = backendOfTorrent.paused;
             });

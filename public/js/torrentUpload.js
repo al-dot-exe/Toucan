@@ -3,11 +3,9 @@ async function startTorrentUploadProcess() {
   // Init feathers app
   const app = feathers();
   const socket = io(`wss://${window.location.host}`, {
-    transports: ['websocket'],
+    transports: ["websocket"],
     rejectUnauthorized: false,
-    });
-
-  // band-aid
+  });
 
   // Register socket.io to talk to server
   app.configure(feathers.socketio(socket));
@@ -36,8 +34,6 @@ async function startTorrentUploadProcess() {
   modalClose.addEventListener("click", clearUpload);
   dotTorrent.addEventListener("change", updateFileStatus);
   fileDeleteButton.addEventListener("click", clearUpload);
-
-  // !!! FIGURING OUT CATEGORIES !!!
 
   const fileStatus = `${dotTorrent.value
       ? dotTorrent.value.split("\\").pop()
@@ -109,7 +105,11 @@ async function startTorrentUploadProcess() {
          `;
   }
 
-  async function continueUpload(e, type) {
+  // Still a funky solution
+  // Users are technically able to complete the upload process by just pressing the enter key
+  // without calling this function. Torrents will never be duplicated but it is a detail that
+  // disrupts the user experience
+  async function continueUpload(e, type) { //band-aid
     if (
       (magnetURI.value || dotTorrent.value) &&
       !(magnetURI.value && dotTorrent.value)
@@ -121,13 +121,13 @@ async function startTorrentUploadProcess() {
           .get(await dotTorrent.files[0].arrayBuffer());
       if (!parsedTorrent) {
         alert("Invalid torrentId submitted");
-        backButton.click(); // band-aid
+        backButton.click();
       } else {
         insertParsedTorrentData(parsedTorrent);
       }
     } else {
       alert("Submit either a magnet link or a .torrent file");
-      backButton.click(); // band-aid
+      backButton.click();
     }
     updateFileStatus();
   }

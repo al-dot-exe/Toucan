@@ -116,8 +116,9 @@ async function startDashboardServices() {
     });
   }
 
-  async function changeTorrentPausedStatus(row, currentData) {
-    //band-aid
+  // The amount of nested targeting in this function is quite disgusting, really throughout this file. 
+  // Finding a more efficient and less fragile solution requires a bit more time on my end.
+  async function changeTorrentPausedStatus(row, currentData) { // band-aid
     if (currentData.paused) {
       row.className =
         "torrent-row paused container d-flex flex-row justify-content-between align-items-center  py-1 my-3 w-100";
@@ -163,10 +164,10 @@ async function startDashboardServices() {
   }
 
   // Toggle torrent pause or resume
-  async function toggleTorrent(e) {
+  // The nested targeting, like above is quite messy, but it is good enough to release to the world for now
+  async function toggleTorrent(e) { // band-aid
     e.preventDefault();
     const clientStatus = await app.service("client-services").find();
-    //band-aid
     const torrentRow =
       e.srcElement.parentElement.parentElement.parentElement.parentElement
         .parentElement.parentElement;
