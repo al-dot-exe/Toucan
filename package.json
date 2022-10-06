@@ -1,6 +1,6 @@
 {
   "name": "toucan-torrent",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A browser based torrent client built on top of the WebTorrent api",
   "main": "app.js",
   "scripts": {
