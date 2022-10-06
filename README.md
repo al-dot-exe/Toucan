@@ -21,7 +21,7 @@ mkdir database
 touch db.sqlite
 ```
 
-2. Since this is a web app, https is **required** for this app to function correctly. For this exampe, we will create and sign our own certs
+2. Since this is a web app, https is **required** for this app to function correctly. For this example, we will create and sign our own certs
 
 **!WARNING!**   DO NOT CHANGE ANY OF THE NAMES HERE. The .pem files are read as they are from within app.js
 
@@ -66,12 +66,12 @@ From there just navigate to the ip address and specified port from another devic
 I used [Feathers](https://feathersjs.com/), [Node](https://nodejs.org/en/), [Express](https://expressjs.com/),[ & Sqlite](https://www.sqlite.org/index.html) to build out this project.
 So I guess the...FNES stack? (pronounced finess)
 
-Toucan is built on top of the web torrent api and offers real time updates by using services and websockets from the Feathersjs framework
-The feathers framework utilizes socket.io to deliver updates to and from the server. Another example use case for this functionality can be found in real time chats.
+Toucan is built on top of the WebTorrent API and offers real time updates from the Feathersjs framework.
+The Feathers framework utilizes socket.io to deliver updates to and from the server. Another example use case for this functionality can be found in real time chats.
 Sqlite is the database of choice. It's lightweight and very easy to make small changes for those familiar with SQL syntax.
-I also utilized the Sequelize ORM tool to database insertion and queries a more seamless process. The whole app is routed with the Express framework, which integrates well
-with Feathers services. I could add a Frontend libraries frameworks but one of the original goals of this project was learn more about without any tools
-to make the process easier. With that said, I did add bootstrap because css styling can be notoriously tedious and am planning to transition the ejs over to React and jpx eventually.
+I also utilized the Sequelize ORM tool to make insertion and queries a more seamless process. The whole app is routed with the Express framework, which integrates well
+with Feathersjs. I COULD add a Frontend library/framework, but one of the original goals of this project was to learn more about frontend development without utilizing any tools
+to make the process easier. With that said, I did add bootstrap because css styling can be notoriously tedious and I'm planning to transition over to React and jpx eventually.
 
 ## Roadmap:
 
@@ -80,22 +80,22 @@ When I have the time, there are some known bugs I want to address as well as fea
 #### Known Bugs:
 
 - Pausing the client as well as individual torrents gives periodically strange behavior, for example the client has trouble pausing if there is only one torrent seeding.
-- The CSP currently has the Embedder policy set to false, this due to the fact that the Feathers JS api link doesn't have an acceptabe CORSP, something that should addressed.
+- The CSP currently has the Embedder policy set to false, this is due to the fact that the Feathers url doesn't have an acceptabe CORSP, something that should be addressed.
 - Currently if seeding torrent records are deleted, the search engine still includes those names in the results when they should be deleted.
-- Torrent folders also do not get deleted from the datatabase when the seeding records are deleted, this causes the torrents folder to get bloated with inaccessible torrents
+- Torrent folders also do not get deleted from the datatabase when the seeding records are deleted, this causes the torrents folder to get bloated with inaccessible torrents.
 - The CSS is a mess in my opinion. Since I had very limited time on this project's release (a month to be exact) I had to throw it all in a single stylesheet. This can be cleaned up overtime.
-- The password visibility toggle on the login page isn't working properly. This should be a simple fix
-- When torrents are deleted. The client Feathers service is not removing those properties. This may not be much of a an issue but it's not a clean solution.
+- The password visibility toggle on the login page isn't working properly. This should be a simple fix.
+- When torrents are deleted. The client Feathers service is not removing those properties. This may not be much of an issue but it's not a clean solution.
 - The torrent service has a similar issue to the client service, Torrents that are deleted are not being removed from the service object.
 
 #### Future Features:
 
-- It wouldn't be a webtorrent based app without streaming services for music and video. I hope to add as many as the api offers in the future including chromecast and vlc support.
+- It wouldn't be a WebTorrent based app without streaming services for music and video. I hope to add as many as the api offers in the future including chromecast and vlc support.
 - I would like to add the same feature for e-book formats so books can be read straight from the site.
-- For added layers of security I would like to address the current access controls, which are really nonexistent. Sure the app is meant to only be ran in a LAN for only other computerswithin that LAN to access. But adding some kind of administration system along with passport so an admin has more control over how other accounts are created is a more ideal solution.
-- I'm thinking about adding a CI & CD process down the road so updates will always come to users seamlessly.
+- For added layers of security I would like to address the current access controls, which are really nonexistent. Sure the app is meant to only be ran in a LAN for only other computers within that LAN to access. But adding some kind of administration system along with passport so an admin has more control over how other accounts are created is a more ideal solution.
+- I'm thinking about adding a CI & CD process down the road so updates will always come to users seamlessly when pushed to main.
 
-There are plenty of other things to address but this roadmap should keep me busy for a while.
+There are plenty of other things to address, but this roadmap should keep me busy for a while.
 
 ### Dependencies
 
