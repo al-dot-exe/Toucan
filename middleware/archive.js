@@ -9,7 +9,7 @@ module.exports = {
     archive
   ) => {
     try {
-      console.log(`Generating ${folderName}.zip...`);
+      console.info(`Generating ${folderName}.zip...`);
 
       archive.on("warning", (err) => {
         if (err.code === "ENOENT") {
@@ -31,7 +31,7 @@ module.exports = {
       });
 
       folder.forEach(async ({ name }) => {
-        console.log(name);
+        console.info(`Adding ${name} to ${folderName}.zip...`);
         const filePath = `${folderPath}/${name}`;
         if (fs.statSync(filePath).isFile()) {
           // handle files with a read stream
@@ -44,7 +44,20 @@ module.exports = {
         }
       });
 
-      console.log("Finalizing torrent archive...");
+      console.info(`\nZipping ${folderName}.zip, this may take a while...`);
+      archive.on("progress", async (progress) => {
+        await progress.entries.processed % 10 === 0
+          ? console.info(
+            `${Math.round(
+              (progress.entries.processed / progress.entries.total) * 100
+            )}%`
+          )
+          : process.stdout.write(
+            `${Math.round(
+              (progress.entries.processed / progress.entries.total) * 100
+            )}% `
+          );
+      });
       archive.finalize();
     } catch (err) {
       console.error(err);

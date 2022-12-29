@@ -178,6 +178,7 @@ module.exports = {
 
       if (status.done) {
         if (torrentIsDir) {
+          // archive creation process
 
           const writeStream = fs.createWriteStream(
             `${torrentPath}/${torrentRecord.name}.zip`
@@ -186,10 +187,10 @@ module.exports = {
 
           // Fires when the archive is finalized whether there is a descriptor or not
           writeStream.on("close" || "end", async () => {
-            console.log("Finished archiving torrent");
-            console.log(archive.pointer() + " total bytes");
-            //updating the path will ensure next time is faster
-            console.info(`\nUpdating ${torrentRecord.name} path in database`)
+            console.info("\nFinished archiving torrent");
+            console.info(archive.pointer() + " total bytes");
+            //updating the path will ensure the next download will be faster
+            console.info(`\nUpdating ${torrentRecord.name} path in database`);
             torrentPath = `${torrentPath}/${torrentRecord.name}.zip`;
             await Torrent.update(
               { folderPath: torrentPath },
@@ -199,20 +200,19 @@ module.exports = {
                 },
               }
             );
-            console.log("\nSuccess! Sending torrent archive to user!");
+            console.info("\nSuccess! Sending torrent archive to user!");
             res.download(torrentPath);
           });
 
-          console.log("\nCreating torrent archive...");
+          console.info("\nCreating torrent archive...");
           await createTorrentArchive(
             torrentPath,
             torrentRecord.name,
             writeStream,
             archive
           );
-
         } else {
-          console.log("\nSending torrent file to user!");
+          console.info("\nSending torrent file to user!");
           res.download(torrentPath);
         }
       } else {
