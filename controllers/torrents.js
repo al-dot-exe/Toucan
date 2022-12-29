@@ -1,6 +1,6 @@
 const Torrent = require("../models/Torrent");
 const User = require("../models/User");
-const JSZip = require("jszip");
+const archiver = require("archiver"); // the new archiving module
 const { createTorrentArchive } = require("../middleware/archive.js");
 const fs = require("fs-extra");
 const { client } = require("../config/webtorrent");
@@ -178,33 +178,41 @@ module.exports = {
 
       if (status.done) {
         if (torrentIsDir) {
-          const zip = new JSZip();
-          const torrentArchive = zip.folder(torrentRecord.name);
-          await createTorrentArchive(torrentPath, torrentArchive);
-          console.log("Finished archiving torrent");
+          // archive creation process
 
-          console.log(`\nGenerating ${torrentRecord.name}.zip...`);
-          zip
-            .generateNodeStream({ type: "nodebuffer", streamFiles: true })
-            .pipe(
-              fs.createWriteStream(`${torrentPath}/${torrentRecord.name}.zip`)
-            )
-            .on("finish", () => {
-              //updating path first will ensure next time is faster
-              torrentPath = `${torrentPath}/${torrentRecord.name}.zip`;
-              Torrent.update(
-                { folderPath: torrentPath },
-                {
-                  where: {
-                    id: req.params.id,
-                  },
-                }
-              );
-              console.log("\nSuccess! sending done torrent to user!");
-              res.download(torrentPath);
-            });
+          const writeStream = fs.createWriteStream(
+            `${torrentPath}/${torrentRecord.name}.zip`
+          );
+          const archive = archiver("zip", { zlib: { level: 9 } });
+
+          // Fires when the archive is finalized whether there is a descriptor or not
+          writeStream.on("close" || "end", async () => {
+            console.info("\nFinished archiving torrent");
+            console.info(archive.pointer() + " total bytes");
+            //updating the path will ensure the next download will be faster
+            console.info(`\nUpdating ${torrentRecord.name} path in database`);
+            torrentPath = `${torrentPath}/${torrentRecord.name}.zip`;
+            await Torrent.update(
+              { folderPath: torrentPath },
+              {
+                where: {
+                  id: req.params.id,
+                },
+              }
+            );
+            console.info("\nSuccess! Sending torrent archive to user!");
+            res.download(torrentPath);
+          });
+
+          console.info("\nCreating torrent archive...");
+          await createTorrentArchive(
+            torrentPath,
+            torrentRecord.name,
+            writeStream,
+            archive
+          );
         } else {
-          console.log("\nSending done torrent to user!");
+          console.info("\nSending torrent file to user!");
           res.download(torrentPath);
         }
       } else {
