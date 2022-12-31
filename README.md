@@ -120,7 +120,7 @@ There are plenty of other things to address, but this roadmap should keep me bus
 [EJS Layouts for Express](https://www.npmjs.com/package/express-ejs-layouts) |
 [Fs Extra](https://www.npmjs.com/package/fs-extra) |
 [Helmet](https://www.npmjs.com/package/helmet) |
-[JsZip](https://www.npmjs.com/package/jszip) |
+[Archiver](https://www.npmjs.com/package/archiver) |
 [Method Override](https://www.npmjs.com/package/method-override) |
 [Moment](https://www.npmjs.com/package/moment) |
 [Multer](https://www.npmjs.com/package/multer) |
